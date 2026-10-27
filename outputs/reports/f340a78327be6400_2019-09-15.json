@@ -1,0 +1,45 @@
+{
+ "id": "f340a78327be6400",
+ "date": "2019-09-15",
+ "lat": -2.2119,
+ "lon": 113.8148,
+ "note": "Demo photo: DenY Krisbiyantoro, CC BY-SA 4.0, Wikimedia Commons. Not taken at this spot; placed here to show the workflow.",
+ "photo": "/outputs/reports/f340a78327be6400.jpg",
+ "classification": {
+  "category": "smouldering_peat",
+  "confidence": 0.9,
+  "visible": [
+   "firefighter with hose",
+   "smoke rising from ground",
+   "charred ground",
+   "hazy forest"
+  ],
+  "crew_present": true
+ },
+ "error": null,
+ "llm_calls": [
+  {
+   "time": "2026-10-27T21:17:22",
+   "tag": "report classify",
+   "model": "muse-spark-1.3",
+   "cache_key": "25617e0b0c1ae5a3785d9079",
+   "cache_hit": true,
+   "prompt_tokens": 1544,
+   "completion_tokens": 536,
+   "reasoning_tokens": 477,
+   "finish_reason": "stop",
+   "seconds": 0.0,
+   "cost_usd": 0.0
+  }
+ ],
+ "cost_usd": 0.0,
+ "decision": {
+  "kind": "confirm",
+  "action": "Confirms C4 (P1) from the ground.",
+  "nearest_cluster": "C4",
+  "nearest_cluster_km": 0.0,
+  "nearest_cluster_tier": "P1",
+  "place": "Tongkiling",
+  "province": "Central Kalimantan"
+ }
+}

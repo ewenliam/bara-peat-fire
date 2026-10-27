@@ -1,0 +1,392 @@
+{"time": "2026-10-27T18:51:52", "tag": "agent 2019-09-15 step 0", "model": "muse-spark-1.3", "cache_key": "f35ef742a4e79ca76ba89221", "cache_hit": false, "prompt_tokens": 1097, "completion_tokens": 592, "reasoning_tokens": 412, "finish_reason": "tool_calls", "seconds": 3.06, "cost_usd": 0.003887}
+{"time": "2026-10-27T18:52:09", "tag": "agent 2019-09-15 step 1", "model": "muse-spark-1.3", "cache_key": "d53c190747085e5cc3caab35", "cache_hit": false, "prompt_tokens": 3562, "completion_tokens": 3531, "reasoning_tokens": 2568, "finish_reason": "stop", "seconds": 15.34, "cost_usd": 0.019459}
+{"time": "2026-10-27T18:52:31", "tag": "agent 2019-09-15 step 0", "model": "muse-spark-1.3", "cache_key": "4969df64c68c48c9febd2178", "cache_hit": false, "prompt_tokens": 1174, "completion_tokens": 752, "reasoning_tokens": 571, "finish_reason": "tool_calls", "seconds": 4.1, "cost_usd": 0.004664}
+{"time": "2026-10-27T18:52:53", "tag": "agent 2019-09-15 step 1", "model": "muse-spark-1.3", "cache_key": "69a38074b1b0a67df429cc13", "cache_hit": false, "prompt_tokens": 3640, "completion_tokens": 4000, "reasoning_tokens": 3998, "finish_reason": "length", "seconds": 20.51, "cost_usd": 0.020299}
+{"time": "2026-10-27T18:53:11", "tag": "agent 2019-09-15 step 2", "model": "muse-spark-1.3", "cache_key": "ab4566b51c732e8d825f1706", "cache_hit": false, "prompt_tokens": 3681, "completion_tokens": 4000, "reasoning_tokens": 3212, "finish_reason": "length", "seconds": 17.7, "cost_usd": 0.021601}
+{"time": "2026-10-27T18:53:15", "tag": "agent 2019-09-15 step 0", "model": "muse-spark-1.3", "cache_key": "4969df64c68c48c9febd2178", "cache_hit": true, "prompt_tokens": 1174, "completion_tokens": 752, "reasoning_tokens": 571, "finish_reason": "tool_calls", "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T18:53:17", "tag": "agent 2019-09-15 step 1", "model": "muse-spark-1.3", "cache_key": "69a38074b1b0a67df429cc13", "cache_hit": true, "prompt_tokens": 3640, "completion_tokens": 4000, "reasoning_tokens": 3998, "finish_reason": "length", "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T18:53:17", "tag": "agent 2019-09-15 step 2", "model": "muse-spark-1.3", "cache_key": "ab4566b51c732e8d825f1706", "cache_hit": true, "prompt_tokens": 3681, "completion_tokens": 4000, "reasoning_tokens": 3212, "finish_reason": "length", "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T18:53:38", "tag": "agent 2019-09-15 step 0", "model": "muse-spark-1.3", "cache_key": "d9b4999d8014025e45d398d4", "cache_hit": false, "prompt_tokens": 1174, "completion_tokens": 402, "reasoning_tokens": 224, "finish_reason": "tool_calls", "seconds": 2.3, "cost_usd": 0.003176}
+{"time": "2026-10-27T18:54:00", "tag": "agent 2019-09-15 step 1", "model": "muse-spark-1.3", "cache_key": "f0b01962a58ed004b11727c9", "cache_hit": false, "prompt_tokens": 3187, "completion_tokens": 5031, "reasoning_tokens": 3941, "finish_reason": "stop", "seconds": 20.26, "cost_usd": 0.024115}
+{"time": "2026-10-27T18:54:16", "tag": "agent 2019-09-15 step 0", "model": "muse-spark-1.3", "cache_key": "d9b4999d8014025e45d398d4", "cache_hit": true, "prompt_tokens": 1174, "completion_tokens": 402, "reasoning_tokens": 224, "finish_reason": "tool_calls", "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T18:54:42", "tag": "agent 2019-09-15 step 1", "model": "muse-spark-1.3", "cache_key": "88764b757157fe2ed58f245a", "cache_hit": false, "prompt_tokens": 3141, "completion_tokens": 5294, "reasoning_tokens": 4260, "finish_reason": "stop", "seconds": 23.95, "cost_usd": 0.025175}
+{"time": "2026-10-27T19:11:30", "tag": "agent 2019-09-15 step 0", "model": "muse-spark-1.3", "cache_key": "ef7566b7aa26dbfa6e6e2668", "cache_hit": false, "prompt_tokens": 1480, "completion_tokens": 887, "reasoning_tokens": 607, "finish_reason": "tool_calls", "seconds": 4.07, "cost_usd": 0.00562}
+{"time": "2026-10-27T19:11:58", "tag": "agent 2019-09-15 step 1", "model": "muse-spark-1.3", "cache_key": "570f3d91a67ba856547003a7", "cache_hit": false, "prompt_tokens": 5250, "completion_tokens": 5695, "reasoning_tokens": 4396, "finish_reason": "stop", "seconds": 26.37, "cost_usd": 0.030766}
+{"time": "2026-10-27T19:39:47", "tag": "sam canal", "model": "sam-3.1", "cache_key": "b9502ac40cc015f6094fa55c", "cache_hit": false, "seconds": 1.98, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:39:51", "tag": "sam river", "model": "sam-3.1", "cache_key": "a768ae300f93c64df50ee5bf", "cache_hit": false, "seconds": 2.66, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:39:55", "tag": "sam water", "model": "sam-3.1", "cache_key": "eac8fb51a1201b50f9e5476b", "cache_hit": false, "seconds": 2.14, "cost_usd": 0.0025, "status": "completed"}
+{"tag": "sam debug non-stream", "model": "sam-3.1", "cache_hit": false, "cost_usd": 0.0025}
+{"tag": "sam debug stream", "model": "sam-3.1", "cache_hit": false, "cost_usd": 0.0025}
+{"time": "2026-10-27T19:41:02", "tag": "sam river", "model": "sam-3.1", "cache_key": "59cb082e4efdce04f9b3f77d", "cache_hit": false, "seconds": 4.06, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:41:07", "tag": "sam canal", "model": "sam-3.1", "cache_key": "2302017440617b4e443bc806", "cache_hit": false, "seconds": 2.03, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:41:09", "tag": "sam road", "model": "sam-3.1", "cache_key": "29d5c3a473a8cd22436a4ca5", "cache_hit": false, "seconds": 2.96, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:41:15", "tag": "sam drainage ditch", "model": "sam-3.1", "cache_key": "646f0ea85bb0b45d3270b189", "cache_hit": false, "seconds": 2.38, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:41:17", "tag": "sam road", "model": "sam-3.1", "cache_key": "624d1418111aec57a53a5787", "cache_hit": false, "seconds": 1.66, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:41:19", "tag": "sam burn scar", "model": "sam-3.1", "cache_key": "201d7cfb844d46f76ed262e0", "cache_hit": false, "seconds": 1.78, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:41:47", "tag": "sam water", "model": "sam-3.1", "cache_key": "efb1b8c7bade085f8ba61df4", "cache_hit": false, "seconds": 2.25, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:44:48", "tag": "sam river", "model": "sam-3.1", "cache_key": "db6b555ad354b751a1d5ca78", "cache_hit": false, "seconds": 3.62, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:45:05", "tag": "sam river", "model": "sam-3.1", "cache_key": "122b1685cbac63d0876e1e0c", "cache_hit": false, "seconds": 3.3, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:45:24", "tag": "sam river", "model": "sam-3.1", "cache_key": "84d531b7a65e156cb12ddc2d", "cache_hit": false, "seconds": 2.96, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:45:49", "tag": "sam river", "model": "sam-3.1", "cache_key": "267db2fb0fa96f6c1dc7ac99", "cache_hit": false, "seconds": 4.07, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:46:06", "tag": "sam river", "model": "sam-3.1", "cache_key": "e05174f18ea04e50a6df275f", "cache_hit": false, "seconds": 3.51, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:46:24", "tag": "sam river", "model": "sam-3.1", "cache_key": "c65a4a62bfc9a0c6b56b6dcc", "cache_hit": false, "seconds": 2.77, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:46:41", "tag": "sam river", "model": "sam-3.1", "cache_key": "d779be2935aa34f12c483afa", "cache_hit": false, "seconds": 3.31, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:47:28", "tag": "sam black river", "model": "sam-3.1", "cache_key": "c0c89e12d9f321735b67174b", "cache_hit": false, "seconds": 9.17, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:47:38", "tag": "sam lake", "model": "sam-3.1", "cache_key": "3e62d209b83b41611679174b", "cache_hit": false, "seconds": 4.39, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:47:42", "tag": "sam stream", "model": "sam-3.1", "cache_key": "8f1e241293182b91598874c2", "cache_hit": false, "seconds": 2.54, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:48:25", "tag": "sam river", "model": "sam-3.1", "cache_key": "db6b555ad354b751a1d5ca78", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:48:39", "tag": "sam river", "model": "sam-3.1", "cache_key": "122b1685cbac63d0876e1e0c", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:48:54", "tag": "sam river", "model": "sam-3.1", "cache_key": "84d531b7a65e156cb12ddc2d", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:49:09", "tag": "sam river", "model": "sam-3.1", "cache_key": "9ccf0eadda3915805d374a1d", "cache_hit": false, "seconds": 3.55, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:49:26", "tag": "sam river", "model": "sam-3.1", "cache_key": "e05174f18ea04e50a6df275f", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:49:40", "tag": "sam river", "model": "sam-3.1", "cache_key": "c65a4a62bfc9a0c6b56b6dcc", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:49:54", "tag": "sam river", "model": "sam-3.1", "cache_key": "d779be2935aa34f12c483afa", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:50:34", "tag": "sam river", "model": "sam-3.1", "cache_key": "864421b5480a4fd0ac99253b", "cache_hit": false, "seconds": 3.62, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:51:04", "tag": "sam zoom test waterway", "model": "sam-3.1", "cache_key": "bf5beb147b92cc05b86592fb", "cache_hit": false, "seconds": 4.35, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:51:09", "tag": "sam zoom test muddy river", "model": "sam-3.1", "cache_key": "305f75f913c1854be1a75412", "cache_hit": false, "seconds": 2.96, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:51:15", "tag": "sam zoom test river", "model": "sam-3.1", "cache_key": "c0e62f18caf80141a31cc13a", "cache_hit": false, "seconds": 2.36, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:51:20", "tag": "sam zoom test river", "model": "sam-3.1", "cache_key": "a405f6d14ba833b736cd9c71", "cache_hit": false, "seconds": 1.52, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:51:25", "tag": "sam zoom test canal", "model": "sam-3.1", "cache_key": "55e889a0359141b21a7e0e11", "cache_hit": false, "seconds": 2.72, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:51:27", "tag": "sam zoom test river", "model": "sam-3.1", "cache_key": "c7d9a7c593463dce6e214074", "cache_hit": false, "seconds": 2.67, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:51:33", "tag": "sam zoom test canal", "model": "sam-3.1", "cache_key": "0afb8fb2789840a63298397f", "cache_hit": false, "seconds": 1.9, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:51:35", "tag": "sam zoom test river", "model": "sam-3.1", "cache_key": "9d401a0a05808da5b057f270", "cache_hit": false, "seconds": 1.23, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:52:11", "tag": "sam river", "model": "sam-3.1", "cache_key": "db6b555ad354b751a1d5ca78", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:52:11", "tag": "sam waterway", "model": "sam-3.1", "cache_key": "ba060c0aefad95b092873cb0", "cache_hit": false, "seconds": 2.43, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:52:14", "tag": "sam river", "model": "sam-3.1", "cache_key": "2dcd902951b9ca029a27c8c8", "cache_hit": false, "seconds": 2.07, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:52:16", "tag": "sam river", "model": "sam-3.1", "cache_key": "c0c49c8dfd5afa543efbab53", "cache_hit": false, "seconds": 2.56, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:52:19", "tag": "sam river", "model": "sam-3.1", "cache_key": "00f973160ceb2e693f58f769", "cache_hit": false, "seconds": 1.66, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:52:20", "tag": "sam river", "model": "sam-3.1", "cache_key": "ce9ca1bd03c126ebffab7365", "cache_hit": false, "seconds": 1.55, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:52:25", "tag": "sam river", "model": "sam-3.1", "cache_key": "122b1685cbac63d0876e1e0c", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:52:26", "tag": "sam waterway", "model": "sam-3.1", "cache_key": "bffa8989160daa5522df2026", "cache_hit": false, "seconds": 3.16, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:52:31", "tag": "sam river", "model": "sam-3.1", "cache_key": "a0df3a1247d4c28e838a5ec5", "cache_hit": false, "seconds": 2.12, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:52:33", "tag": "sam river", "model": "sam-3.1", "cache_key": "a9593e49346b97ee324a2da0", "cache_hit": false, "seconds": 1.87, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:52:35", "tag": "sam river", "model": "sam-3.1", "cache_key": "8f7e93aba6c94b4c0b393083", "cache_hit": false, "seconds": 2.01, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:52:37", "tag": "sam river", "model": "sam-3.1", "cache_key": "4510ad2d9382485d3d16611f", "cache_hit": false, "seconds": 1.41, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:52:42", "tag": "sam river", "model": "sam-3.1", "cache_key": "864421b5480a4fd0ac99253b", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:52:42", "tag": "sam waterway", "model": "sam-3.1", "cache_key": "bf5beb147b92cc05b86592fb", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:52:42", "tag": "sam river", "model": "sam-3.1", "cache_key": "c877b87c40c2bfad60ac3ed0", "cache_hit": false, "seconds": 1.87, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:52:44", "tag": "sam river", "model": "sam-3.1", "cache_key": "c0e62f18caf80141a31cc13a", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:52:44", "tag": "sam river", "model": "sam-3.1", "cache_key": "e78c5b33b0b8f337c66cb49b", "cache_hit": false, "seconds": 1.83, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:52:46", "tag": "sam river", "model": "sam-3.1", "cache_key": "657552b0f7c4434b75342eda", "cache_hit": false, "seconds": 1.55, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:52:51", "tag": "sam river", "model": "sam-3.1", "cache_key": "9ccf0eadda3915805d374a1d", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:52:51", "tag": "sam waterway", "model": "sam-3.1", "cache_key": "b27fee6d236fd9cebc3dc568", "cache_hit": false, "seconds": 3.23, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:52:55", "tag": "sam river", "model": "sam-3.1", "cache_key": "dd573f5d0c457c11bbec2ab9", "cache_hit": false, "seconds": 1.55, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:52:57", "tag": "sam river", "model": "sam-3.1", "cache_key": "0f794807c802966cea1fbc2d", "cache_hit": false, "seconds": 2.35, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:52:59", "tag": "sam river", "model": "sam-3.1", "cache_key": "f0a4e6398cda67769abe2ea6", "cache_hit": false, "seconds": 2.24, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:53:02", "tag": "sam river", "model": "sam-3.1", "cache_key": "dd1be9db99c42a44b82a5876", "cache_hit": false, "seconds": 2.0, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:53:07", "tag": "sam river", "model": "sam-3.1", "cache_key": "e05174f18ea04e50a6df275f", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:53:07", "tag": "sam waterway", "model": "sam-3.1", "cache_key": "48cca730431416e61c9748c7", "cache_hit": false, "seconds": 4.19, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:53:12", "tag": "sam river", "model": "sam-3.1", "cache_key": "c7d9a7c593463dce6e214074", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:53:12", "tag": "sam river", "model": "sam-3.1", "cache_key": "fa8778ea6f3af7ef208bb118", "cache_hit": false, "seconds": 1.95, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:53:14", "tag": "sam river", "model": "sam-3.1", "cache_key": "872d9acd0dfd2f1ec67e0f96", "cache_hit": false, "seconds": 2.06, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:53:16", "tag": "sam river", "model": "sam-3.1", "cache_key": "c05cc0d661664178d1df3add", "cache_hit": false, "seconds": 2.05, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:53:21", "tag": "sam river", "model": "sam-3.1", "cache_key": "c65a4a62bfc9a0c6b56b6dcc", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:53:21", "tag": "sam waterway", "model": "sam-3.1", "cache_key": "c90aaadac10cb8d83dac3723", "cache_hit": false, "seconds": 2.11, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:53:23", "tag": "sam river", "model": "sam-3.1", "cache_key": "e1d8818a3770e8aef2a5083b", "cache_hit": false, "seconds": 1.76, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:53:25", "tag": "sam river", "model": "sam-3.1", "cache_key": "90c0b0b6ced33fab6913ba67", "cache_hit": false, "seconds": 2.39, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:53:28", "tag": "sam river", "model": "sam-3.1", "cache_key": "642d5d7d750856cd4c5a1497", "cache_hit": false, "seconds": 1.57, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:53:29", "tag": "sam river", "model": "sam-3.1", "cache_key": "2b1de3fef984d9472b7c1374", "cache_hit": false, "seconds": 1.39, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:53:34", "tag": "sam river", "model": "sam-3.1", "cache_key": "d779be2935aa34f12c483afa", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:53:34", "tag": "sam waterway", "model": "sam-3.1", "cache_key": "691e2e8e564ad152afc9154a", "cache_hit": false, "seconds": 3.52, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:53:37", "tag": "sam river", "model": "sam-3.1", "cache_key": "337c7859c2450bd75a8a23e6", "cache_hit": false, "seconds": 1.93, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:53:39", "tag": "sam river", "model": "sam-3.1", "cache_key": "fd059ae73a091a52968ba83e", "cache_hit": false, "seconds": 2.52, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:53:42", "tag": "sam river", "model": "sam-3.1", "cache_key": "1c4477195b5655594509d173", "cache_hit": false, "seconds": 1.41, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:53:43", "tag": "sam river", "model": "sam-3.1", "cache_key": "0640088558bf8f0b6b778b73", "cache_hit": false, "seconds": 1.25, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T19:54:38", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "db6b555ad354b751a1d5ca78", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:38", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "ba060c0aefad95b092873cb0", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:38", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "2dcd902951b9ca029a27c8c8", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:38", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "c0c49c8dfd5afa543efbab53", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:38", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "00f973160ceb2e693f58f769", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:38", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "ce9ca1bd03c126ebffab7365", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:39", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "122b1685cbac63d0876e1e0c", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:39", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "bffa8989160daa5522df2026", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:40", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "a0df3a1247d4c28e838a5ec5", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:40", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "a9593e49346b97ee324a2da0", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:40", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "8f7e93aba6c94b4c0b393083", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:40", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "4510ad2d9382485d3d16611f", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:41", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "864421b5480a4fd0ac99253b", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:41", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "bf5beb147b92cc05b86592fb", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:41", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "c877b87c40c2bfad60ac3ed0", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:41", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "c0e62f18caf80141a31cc13a", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:41", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "e78c5b33b0b8f337c66cb49b", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:41", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "657552b0f7c4434b75342eda", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:41", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "9ccf0eadda3915805d374a1d", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:41", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "b27fee6d236fd9cebc3dc568", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:42", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "dd573f5d0c457c11bbec2ab9", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:42", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "0f794807c802966cea1fbc2d", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:42", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "f0a4e6398cda67769abe2ea6", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:42", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "dd1be9db99c42a44b82a5876", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:42", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "e05174f18ea04e50a6df275f", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:42", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "48cca730431416e61c9748c7", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:42", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "c7d9a7c593463dce6e214074", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:42", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "fa8778ea6f3af7ef208bb118", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:42", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "872d9acd0dfd2f1ec67e0f96", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:42", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "c05cc0d661664178d1df3add", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:43", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "c65a4a62bfc9a0c6b56b6dcc", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:43", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "c90aaadac10cb8d83dac3723", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:43", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "e1d8818a3770e8aef2a5083b", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:43", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "90c0b0b6ced33fab6913ba67", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:43", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "642d5d7d750856cd4c5a1497", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:43", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "2b1de3fef984d9472b7c1374", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:43", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "d779be2935aa34f12c483afa", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:43", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "691e2e8e564ad152afc9154a", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:43", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "337c7859c2450bd75a8a23e6", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:43", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "fd059ae73a091a52968ba83e", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:43", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "1c4477195b5655594509d173", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:54:43", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "0640088558bf8f0b6b778b73", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:03", "tag": "agent 2019-09-15 step 0", "model": "muse-spark-1.3", "cache_key": "c331456399b89a1f68a33891", "cache_hit": false, "prompt_tokens": 1641, "completion_tokens": 667, "reasoning_tokens": 339, "finish_reason": "tool_calls", "seconds": 3.29, "cost_usd": 0.004886}
+{"time": "2026-10-27T19:55:05", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "db6b555ad354b751a1d5ca78", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:05", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "ba060c0aefad95b092873cb0", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:05", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "2dcd902951b9ca029a27c8c8", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:05", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "c0c49c8dfd5afa543efbab53", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:05", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "00f973160ceb2e693f58f769", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:05", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "ce9ca1bd03c126ebffab7365", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:06", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "122b1685cbac63d0876e1e0c", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:06", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "bffa8989160daa5522df2026", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:07", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "a0df3a1247d4c28e838a5ec5", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:07", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "a9593e49346b97ee324a2da0", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:08", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "8f7e93aba6c94b4c0b393083", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:08", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "4510ad2d9382485d3d16611f", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:08", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "864421b5480a4fd0ac99253b", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:08", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "bf5beb147b92cc05b86592fb", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:08", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "c877b87c40c2bfad60ac3ed0", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:08", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "c0e62f18caf80141a31cc13a", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:08", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "e78c5b33b0b8f337c66cb49b", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:08", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "657552b0f7c4434b75342eda", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:09", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "9ccf0eadda3915805d374a1d", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:09", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "b27fee6d236fd9cebc3dc568", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:09", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "dd573f5d0c457c11bbec2ab9", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:09", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "0f794807c802966cea1fbc2d", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:09", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "f0a4e6398cda67769abe2ea6", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:09", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "dd1be9db99c42a44b82a5876", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:09", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "e05174f18ea04e50a6df275f", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:09", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "48cca730431416e61c9748c7", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:09", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "c7d9a7c593463dce6e214074", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:09", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "fa8778ea6f3af7ef208bb118", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:09", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "872d9acd0dfd2f1ec67e0f96", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:09", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "c05cc0d661664178d1df3add", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:10", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "c65a4a62bfc9a0c6b56b6dcc", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:10", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "c90aaadac10cb8d83dac3723", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:10", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "e1d8818a3770e8aef2a5083b", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:10", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "90c0b0b6ced33fab6913ba67", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:10", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "642d5d7d750856cd4c5a1497", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:10", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "2b1de3fef984d9472b7c1374", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:10", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "d779be2935aa34f12c483afa", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:10", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "691e2e8e564ad152afc9154a", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:10", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "337c7859c2450bd75a8a23e6", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:10", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "fd059ae73a091a52968ba83e", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:10", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "1c4477195b5655594509d173", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:10", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "0640088558bf8f0b6b778b73", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:31", "tag": "agent 2019-09-15 step 1", "model": "muse-spark-1.3", "cache_key": "86dfef39cc4df6b7120b9d5e", "cache_hit": false, "prompt_tokens": 6076, "completion_tokens": 5537, "reasoning_tokens": 4205, "finish_reason": "stop", "seconds": 21.12, "cost_usd": 0.031127}
+{"time": "2026-10-27T19:55:46", "tag": "sam river", "model": "sam-3.1", "cache_key": "122b1685cbac63d0876e1e0c", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:46", "tag": "sam waterway", "model": "sam-3.1", "cache_key": "bffa8989160daa5522df2026", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:48", "tag": "sam river", "model": "sam-3.1", "cache_key": "a0df3a1247d4c28e838a5ec5", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:48", "tag": "sam river", "model": "sam-3.1", "cache_key": "a9593e49346b97ee324a2da0", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:48", "tag": "sam river", "model": "sam-3.1", "cache_key": "8f7e93aba6c94b4c0b393083", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T19:55:48", "tag": "sam river", "model": "sam-3.1", "cache_key": "4510ad2d9382485d3d16611f", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:15", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "db6b555ad354b751a1d5ca78", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:15", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "ba060c0aefad95b092873cb0", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:15", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "2dcd902951b9ca029a27c8c8", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:15", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "c0c49c8dfd5afa543efbab53", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:15", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "00f973160ceb2e693f58f769", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:15", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "ce9ca1bd03c126ebffab7365", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:16", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "122b1685cbac63d0876e1e0c", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:16", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "bffa8989160daa5522df2026", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:18", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "a0df3a1247d4c28e838a5ec5", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:18", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "a9593e49346b97ee324a2da0", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:18", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "8f7e93aba6c94b4c0b393083", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:18", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "4510ad2d9382485d3d16611f", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:19", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "864421b5480a4fd0ac99253b", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:19", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "bf5beb147b92cc05b86592fb", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:19", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "c877b87c40c2bfad60ac3ed0", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:19", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "c0e62f18caf80141a31cc13a", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:19", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "e78c5b33b0b8f337c66cb49b", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:19", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "657552b0f7c4434b75342eda", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:20", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "9ccf0eadda3915805d374a1d", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:20", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "b27fee6d236fd9cebc3dc568", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:21", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "dd573f5d0c457c11bbec2ab9", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:21", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "0f794807c802966cea1fbc2d", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:21", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "f0a4e6398cda67769abe2ea6", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:21", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "dd1be9db99c42a44b82a5876", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:21", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "e05174f18ea04e50a6df275f", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:21", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "48cca730431416e61c9748c7", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:21", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "c7d9a7c593463dce6e214074", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:21", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "fa8778ea6f3af7ef208bb118", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:21", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "872d9acd0dfd2f1ec67e0f96", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:21", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "c05cc0d661664178d1df3add", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:22", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "c65a4a62bfc9a0c6b56b6dcc", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:22", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "c90aaadac10cb8d83dac3723", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:22", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "e1d8818a3770e8aef2a5083b", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:22", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "90c0b0b6ced33fab6913ba67", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:22", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "642d5d7d750856cd4c5a1497", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:22", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "2b1de3fef984d9472b7c1374", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:22", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "d779be2935aa34f12c483afa", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:22", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "691e2e8e564ad152afc9154a", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:22", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "337c7859c2450bd75a8a23e6", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:22", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "fd059ae73a091a52968ba83e", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:22", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "1c4477195b5655594509d173", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:16:22", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "0640088558bf8f0b6b778b73", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T20:19:11", "tag": "agent 2019-08-20 step 0", "model": "muse-spark-1.3", "cache_key": "540762265a2e2368554e36a8", "cache_hit": false, "prompt_tokens": 1641, "completion_tokens": 1061, "reasoning_tokens": 733, "finish_reason": "tool_calls", "seconds": 4.07, "cost_usd": 0.006561}
+{"time": "2026-10-27T20:19:24", "tag": "sam 2019-08-20 C18", "model": "sam-3.1", "cache_key": "a67e167a1e0c7d8df0511f9b", "cache_hit": false, "seconds": 2.79, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:19:27", "tag": "sam 2019-08-20 C18", "model": "sam-3.1", "cache_key": "5a44d38755613be669aee6e8", "cache_hit": false, "seconds": 1.92, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:19:29", "tag": "sam 2019-08-20 C18", "model": "sam-3.1", "cache_key": "7fc3073a748da62487307245", "cache_hit": false, "seconds": 1.74, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:19:31", "tag": "sam 2019-08-20 C18", "model": "sam-3.1", "cache_key": "913be0e7e7ecf51a4240a4b5", "cache_hit": false, "seconds": 3.24, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:19:34", "tag": "sam 2019-08-20 C18", "model": "sam-3.1", "cache_key": "dbd44ac7cd1bd6efbb718188", "cache_hit": false, "seconds": 2.42, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:19:36", "tag": "sam 2019-08-20 C18", "model": "sam-3.1", "cache_key": "2ea5edf4e67cbbb0833ca656", "cache_hit": false, "seconds": 1.89, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:19:49", "tag": "sam 2019-08-20 C1", "model": "sam-3.1", "cache_key": "6f43c6b5b1ea590c63a61182", "cache_hit": false, "seconds": 3.21, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:19:52", "tag": "sam 2019-08-20 C1", "model": "sam-3.1", "cache_key": "012802f24bf598f2ff517fc3", "cache_hit": false, "seconds": 3.42, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:19:56", "tag": "sam 2019-08-20 C1", "model": "sam-3.1", "cache_key": "41df9218c9d71c32e4dc9e28", "cache_hit": false, "seconds": 1.58, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:19:57", "tag": "sam 2019-08-20 C1", "model": "sam-3.1", "cache_key": "97bc6abd56583d0d76044408", "cache_hit": false, "seconds": 1.66, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:19:59", "tag": "sam 2019-08-20 C1", "model": "sam-3.1", "cache_key": "aeedd795745db5c417fb0fc6", "cache_hit": false, "seconds": 1.58, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:20:01", "tag": "sam 2019-08-20 C1", "model": "sam-3.1", "cache_key": "6927d803b24e6aa46c40f45d", "cache_hit": false, "seconds": 1.76, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:20:17", "tag": "sam 2019-08-20 C2", "model": "sam-3.1", "cache_key": "cf6efb7ee73b383fcb39b5ed", "cache_hit": false, "seconds": 2.24, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:20:19", "tag": "sam 2019-08-20 C2", "model": "sam-3.1", "cache_key": "05e24d1c01a800c885943b74", "cache_hit": false, "seconds": 2.46, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:20:21", "tag": "sam 2019-08-20 C2", "model": "sam-3.1", "cache_key": "a8aec45d6131e770adbed664", "cache_hit": false, "seconds": 1.6, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:20:23", "tag": "sam 2019-08-20 C2", "model": "sam-3.1", "cache_key": "00bfb1411f3e16d9d4ff59a8", "cache_hit": false, "seconds": 0.82, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:20:24", "tag": "sam 2019-08-20 C2", "model": "sam-3.1", "cache_key": "5ee9e4845d2fdee59b1b58e1", "cache_hit": false, "seconds": 2.03, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:20:26", "tag": "sam 2019-08-20 C2", "model": "sam-3.1", "cache_key": "fa24b515dc13e25bf6a6394f", "cache_hit": false, "seconds": 1.61, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:20:33", "tag": "sam 2019-08-20 C21", "model": "sam-3.1", "cache_key": "055aab01eef27b96a2470d81", "cache_hit": false, "seconds": 4.35, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:20:41", "tag": "sam 2019-08-20 C21", "model": "sam-3.1", "cache_key": "3597c817bf84f6f8f80949ec", "cache_hit": false, "seconds": 4.1, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:20:49", "tag": "sam 2019-08-20 C21", "model": "sam-3.1", "cache_key": "32878b0a3cc373a2feaa44a8", "cache_hit": false, "seconds": 2.4, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:20:52", "tag": "sam 2019-08-20 C21", "model": "sam-3.1", "cache_key": "fb1c788886575dc24429ff0e", "cache_hit": false, "seconds": 2.51, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:20:57", "tag": "sam 2019-08-20 C21", "model": "sam-3.1", "cache_key": "21bc2125267a0de00998e8da", "cache_hit": false, "seconds": 1.78, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:20:58", "tag": "sam 2019-08-20 C21", "model": "sam-3.1", "cache_key": "f0bdfe8c9435160bbe39f909", "cache_hit": false, "seconds": 1.54, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:21:12", "tag": "sam 2019-08-20 C51", "model": "sam-3.1", "cache_key": "ac56a57c72d0ab6e0c1cf7c6", "cache_hit": false, "seconds": 2.51, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:21:15", "tag": "sam 2019-08-20 C51", "model": "sam-3.1", "cache_key": "1aafbd9bb54d49aa7d45a416", "cache_hit": false, "seconds": 2.73, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:21:17", "tag": "sam 2019-08-20 C51", "model": "sam-3.1", "cache_key": "efb30d4a2f112abc9cbd65ee", "cache_hit": false, "seconds": 2.82, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:21:20", "tag": "sam 2019-08-20 C51", "model": "sam-3.1", "cache_key": "93180ebd90d0a505a4de7cfc", "cache_hit": false, "seconds": 2.04, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:21:22", "tag": "sam 2019-08-20 C51", "model": "sam-3.1", "cache_key": "375ae479cbe6979e3bc133bf", "cache_hit": false, "seconds": 1.72, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:21:24", "tag": "sam 2019-08-20 C51", "model": "sam-3.1", "cache_key": "3cb58f5030201d869253dc77", "cache_hit": false, "seconds": 1.75, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:21:38", "tag": "sam 2019-08-20 C202", "model": "sam-3.1", "cache_key": "a695999369792ff51ed74374", "cache_hit": false, "seconds": 2.02, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:21:40", "tag": "sam 2019-08-20 C202", "model": "sam-3.1", "cache_key": "c2861e2d84a27971c456b6ea", "cache_hit": false, "seconds": 2.15, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:21:42", "tag": "sam 2019-08-20 C202", "model": "sam-3.1", "cache_key": "769e270dc9283d3e48f8c2a8", "cache_hit": false, "seconds": 2.2, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:21:45", "tag": "sam 2019-08-20 C202", "model": "sam-3.1", "cache_key": "b175bd4f76f014df1ab3aeec", "cache_hit": false, "seconds": 1.94, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:21:47", "tag": "sam 2019-08-20 C202", "model": "sam-3.1", "cache_key": "84ce5400bb22a0f12df6b88c", "cache_hit": false, "seconds": 2.32, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:21:49", "tag": "sam 2019-08-20 C202", "model": "sam-3.1", "cache_key": "801f61abd40c62a6dfcd7126", "cache_hit": false, "seconds": 1.42, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:21:57", "tag": "sam 2019-08-20 C41", "model": "sam-3.1", "cache_key": "d4811df2420c44ab6133a0d9", "cache_hit": false, "seconds": 3.05, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:22:00", "tag": "sam 2019-08-20 C41", "model": "sam-3.1", "cache_key": "0cb08dcde866778ca8c11d80", "cache_hit": false, "seconds": 2.47, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:22:03", "tag": "sam 2019-08-20 C41", "model": "sam-3.1", "cache_key": "24bf3336e592fc6a3f6a9b7f", "cache_hit": false, "seconds": 2.04, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:22:05", "tag": "sam 2019-08-20 C41", "model": "sam-3.1", "cache_key": "d80ae8fceab128758942cfad", "cache_hit": false, "seconds": 1.62, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:22:07", "tag": "sam 2019-08-20 C41", "model": "sam-3.1", "cache_key": "b84902b67b3780986daa4019", "cache_hit": false, "seconds": 1.81, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:22:08", "tag": "sam 2019-08-20 C41", "model": "sam-3.1", "cache_key": "9ef080c922bc11f99005bf07", "cache_hit": false, "seconds": 2.04, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:22:17", "tag": "sam 2019-08-20 C15", "model": "sam-3.1", "cache_key": "0c983e7bf076879c148b5dd2", "cache_hit": false, "seconds": 3.13, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:22:20", "tag": "sam 2019-08-20 C15", "model": "sam-3.1", "cache_key": "f049ba3def9e197521784d9f", "cache_hit": false, "seconds": 2.53, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:22:23", "tag": "sam 2019-08-20 C15", "model": "sam-3.1", "cache_key": "9f0da49d596aaa02fba9f69d", "cache_hit": false, "seconds": 2.65, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:22:26", "tag": "sam 2019-08-20 C15", "model": "sam-3.1", "cache_key": "91ec1c022525e15c586d6724", "cache_hit": false, "seconds": 2.21, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:22:28", "tag": "sam 2019-08-20 C15", "model": "sam-3.1", "cache_key": "684e7e0f5047dd74c6af4a2c", "cache_hit": false, "seconds": 1.63, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:22:29", "tag": "sam 2019-08-20 C15", "model": "sam-3.1", "cache_key": "75526c42177c2aeca2f0b8b0", "cache_hit": false, "seconds": 1.93, "cost_usd": 0.0025, "status": "completed"}
+{"time": "2026-10-27T20:22:50", "tag": "agent 2019-08-20 step 1", "model": "muse-spark-1.3", "cache_key": "43c914c6c2056eae1e2557ad", "cache_hit": false, "prompt_tokens": 6076, "completion_tokens": 5535, "reasoning_tokens": 4263, "finish_reason": "stop", "seconds": 18.73, "cost_usd": 0.031119}
+{"time": "2026-10-27T21:05:59", "tag": "agent 2019-09-15 step 0", "model": "muse-spark-1.3", "cache_key": "8fc8e7373ab7f19ad3b9e6c8", "cache_hit": false, "prompt_tokens": 1632, "completion_tokens": 1226, "reasoning_tokens": 889, "finish_reason": "tool_calls", "seconds": 4.07, "cost_usd": 0.007251}
+{"time": "2026-10-27T21:06:01", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "db6b555ad354b751a1d5ca78", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:01", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "ba060c0aefad95b092873cb0", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:01", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "2dcd902951b9ca029a27c8c8", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:01", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "c0c49c8dfd5afa543efbab53", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:01", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "00f973160ceb2e693f58f769", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:01", "tag": "sam 2019-09-15 C4", "model": "sam-3.1", "cache_key": "ce9ca1bd03c126ebffab7365", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:02", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "122b1685cbac63d0876e1e0c", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:02", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "bffa8989160daa5522df2026", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:03", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "a0df3a1247d4c28e838a5ec5", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:03", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "a9593e49346b97ee324a2da0", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:03", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "8f7e93aba6c94b4c0b393083", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:03", "tag": "sam 2019-09-15 C11", "model": "sam-3.1", "cache_key": "4510ad2d9382485d3d16611f", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:04", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "864421b5480a4fd0ac99253b", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:04", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "bf5beb147b92cc05b86592fb", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:04", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "c877b87c40c2bfad60ac3ed0", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:04", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "c0e62f18caf80141a31cc13a", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:04", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "e78c5b33b0b8f337c66cb49b", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:04", "tag": "sam 2019-09-15 C2", "model": "sam-3.1", "cache_key": "657552b0f7c4434b75342eda", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:05", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "9ccf0eadda3915805d374a1d", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:05", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "b27fee6d236fd9cebc3dc568", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:05", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "dd573f5d0c457c11bbec2ab9", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:05", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "0f794807c802966cea1fbc2d", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:05", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "f0a4e6398cda67769abe2ea6", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:05", "tag": "sam 2019-09-15 C5", "model": "sam-3.1", "cache_key": "dd1be9db99c42a44b82a5876", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:06", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "e05174f18ea04e50a6df275f", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:06", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "48cca730431416e61c9748c7", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:06", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "c7d9a7c593463dce6e214074", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:06", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "fa8778ea6f3af7ef208bb118", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:06", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "872d9acd0dfd2f1ec67e0f96", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:06", "tag": "sam 2019-09-15 C1", "model": "sam-3.1", "cache_key": "c05cc0d661664178d1df3add", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:06", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "c65a4a62bfc9a0c6b56b6dcc", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:06", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "c90aaadac10cb8d83dac3723", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:06", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "e1d8818a3770e8aef2a5083b", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:06", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "90c0b0b6ced33fab6913ba67", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:06", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "642d5d7d750856cd4c5a1497", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:06", "tag": "sam 2019-09-15 C73", "model": "sam-3.1", "cache_key": "2b1de3fef984d9472b7c1374", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:06", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "d779be2935aa34f12c483afa", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:06", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "691e2e8e564ad152afc9154a", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:06", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "337c7859c2450bd75a8a23e6", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:06", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "fd059ae73a091a52968ba83e", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:06", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "1c4477195b5655594509d173", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:06", "tag": "sam 2019-09-15 C3", "model": "sam-3.1", "cache_key": "0640088558bf8f0b6b778b73", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:06:22", "tag": "agent 2019-09-15 step 1", "model": "muse-spark-1.3", "cache_key": "9faa7803abdbf08049dce6e9", "cache_hit": false, "prompt_tokens": 6038, "completion_tokens": 5299, "reasoning_tokens": 3999, "finish_reason": "stop", "seconds": 15.25, "cost_usd": 0.030068}
+{"time": "2026-10-27T21:08:31", "tag": "chat 2019-09-15 step 0", "model": "muse-spark-1.3", "cache_key": "7e4dfa7cb4856c542cf61494", "cache_hit": false, "prompt_tokens": 1117, "completion_tokens": 522, "reasoning_tokens": 410, "finish_reason": "tool_calls", "seconds": 2.07, "cost_usd": 0.003615}
+{"time": "2026-10-27T21:08:36", "tag": "chat 2019-09-15 step 1", "model": "muse-spark-1.3", "cache_key": "aea661a5e2a629ce6f75ab92", "cache_hit": false, "prompt_tokens": 2072, "completion_tokens": 880, "reasoning_tokens": 796, "finish_reason": "tool_calls", "seconds": 4.3, "cost_usd": 0.00522}
+{"time": "2026-10-27T21:08:39", "tag": "chat 2019-09-15 step 2", "model": "muse-spark-1.3", "cache_key": "7b8759278bc1ea96cde03ccb", "cache_hit": false, "prompt_tokens": 2605, "completion_tokens": 951, "reasoning_tokens": 699, "finish_reason": "tool_calls", "seconds": 3.32, "cost_usd": 0.005062}
+{"time": "2026-10-27T21:08:44", "tag": "chat 2019-09-15 step 3", "model": "muse-spark-1.3", "cache_key": "1a784efe50b742cbf147342c", "cache_hit": false, "prompt_tokens": 3903, "completion_tokens": 1312, "reasoning_tokens": 1077, "finish_reason": "tool_calls", "seconds": 4.33, "cost_usd": 0.007655}
+{"time": "2026-10-27T21:08:55", "tag": "chat 2019-09-15 step 4", "model": "muse-spark-1.3", "cache_key": "fbf5e1461b42eb0aef95df4b", "cache_hit": false, "prompt_tokens": 5132, "completion_tokens": 2968, "reasoning_tokens": 2827, "finish_reason": "stop", "seconds": 10.56, "cost_usd": 0.019029}
+{"time": "2026-10-27T21:09:52", "tag": "chat 2019-09-15 step 0", "model": "muse-spark-1.3", "cache_key": "5be0cff004ed9266d9a1dfe3", "cache_hit": false, "prompt_tokens": 1208, "completion_tokens": 492, "reasoning_tokens": 404, "finish_reason": "tool_calls", "seconds": 2.51, "cost_usd": 0.003601}
+{"time": "2026-10-27T21:09:55", "tag": "chat 2019-09-15 step 1", "model": "muse-spark-1.3", "cache_key": "c7f0cd3c60e15561b5fc258e", "cache_hit": false, "prompt_tokens": 1752, "completion_tokens": 844, "reasoning_tokens": 570, "finish_reason": "tool_calls", "seconds": 2.99, "cost_usd": 0.004526}
+{"time": "2026-10-27T21:10:02", "tag": "chat 2019-09-15 step 2", "model": "muse-spark-1.3", "cache_key": "378329f0620fa6244bdd4548", "cache_hit": false, "prompt_tokens": 3233, "completion_tokens": 2313, "reasoning_tokens": 2147, "finish_reason": "stop", "seconds": 6.85, "cost_usd": 0.013872}
+{"time": "2026-10-27T21:11:30", "tag": "chat 2019-09-15 step 0", "model": "muse-spark-1.3", "cache_key": "2b11c41c5d5db6755f59c893", "cache_hit": false, "prompt_tokens": 1194, "completion_tokens": 459, "reasoning_tokens": 375, "finish_reason": "tool_calls", "seconds": 2.28, "cost_usd": 0.003443}
+{"time": "2026-10-27T21:11:39", "tag": "chat 2019-09-15 step 1", "model": "muse-spark-1.3", "cache_key": "20989264ed78c84ab1cc7c14", "cache_hit": false, "prompt_tokens": 1831, "completion_tokens": 2401, "reasoning_tokens": 2268, "finish_reason": "stop", "seconds": 8.62, "cost_usd": 0.012493}
+{"time": "2026-10-27T21:11:49", "tag": "chat 2019-09-15 step 2", "model": "muse-spark-1.3", "cache_key": "56fe723d50dfe01b34cffb2d", "cache_hit": false, "prompt_tokens": 1999, "completion_tokens": 2983, "reasoning_tokens": 2854, "finish_reason": "stop", "seconds": 9.61, "cost_usd": 0.013926}
+{"time": "2026-10-27T21:15:35", "tag": "report classify", "model": "muse-spark-1.3", "cache_key": "25617e0b0c1ae5a3785d9079", "cache_hit": false, "prompt_tokens": 1544, "completion_tokens": 536, "reasoning_tokens": 477, "finish_reason": "stop", "seconds": 3.14, "cost_usd": 0.004208}
+{"time": "2026-10-27T21:15:44", "tag": "report classify", "model": "muse-spark-1.3", "cache_key": "e84057af3912ca5103e0448d", "cache_hit": false, "prompt_tokens": 2894, "completion_tokens": 684, "reasoning_tokens": 627, "finish_reason": "stop", "seconds": 3.96, "cost_usd": 0.006524}
+{"time": "2026-10-27T21:15:56", "tag": "report classify", "model": "muse-spark-1.3", "cache_key": "925a1716b8fae38a2b5bec01", "cache_hit": false, "prompt_tokens": 1544, "completion_tokens": 1273, "reasoning_tokens": 1210, "finish_reason": "stop", "seconds": 6.57, "cost_usd": 0.00734}
+{"time": "2026-10-27T21:16:04", "tag": "report classify", "model": "muse-spark-1.3", "cache_key": "7c41f57c745773af00f6ebe4", "cache_hit": false, "prompt_tokens": 1390, "completion_tokens": 556, "reasoning_tokens": 500, "finish_reason": "stop", "seconds": 3.63, "cost_usd": 0.003992}
+{"time": "2026-10-27T21:17:21", "tag": "report classify", "model": "muse-spark-1.3", "cache_key": "e84057af3912ca5103e0448d", "cache_hit": true, "prompt_tokens": 2894, "completion_tokens": 684, "reasoning_tokens": 627, "finish_reason": "stop", "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:17:22", "tag": "report classify", "model": "muse-spark-1.3", "cache_key": "25617e0b0c1ae5a3785d9079", "cache_hit": true, "prompt_tokens": 1544, "completion_tokens": 536, "reasoning_tokens": 477, "finish_reason": "stop", "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:17:23", "tag": "report classify", "model": "muse-spark-1.3", "cache_key": "7c41f57c745773af00f6ebe4", "cache_hit": true, "prompt_tokens": 1390, "completion_tokens": 556, "reasoning_tokens": 500, "finish_reason": "stop", "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:17:24", "tag": "report classify", "model": "muse-spark-1.3", "cache_key": "925a1716b8fae38a2b5bec01", "cache_hit": true, "prompt_tokens": 1544, "completion_tokens": 1273, "reasoning_tokens": 1210, "finish_reason": "stop", "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:19:11", "tag": "selfcheck 2019-09-15", "model": "muse-spark-1.3", "cache_key": "5c033bddda6ae481a6f2d152", "cache_hit": false, "prompt_tokens": 2124, "completion_tokens": 5204, "reasoning_tokens": 4910, "finish_reason": "stop", "seconds": 20.94, "cost_usd": 0.024772}
+{"time": "2026-10-27T21:23:07", "tag": "agent 2019-08-20 step 0", "model": "muse-spark-1.3", "cache_key": "0ce9c1db16e0871469c1239d", "cache_hit": false, "prompt_tokens": 1695, "completion_tokens": 1407, "reasoning_tokens": 1070, "finish_reason": "tool_calls", "seconds": 4.94, "cost_usd": 0.008098}
+{"time": "2026-10-27T21:23:08", "tag": "sam 2019-08-20 C18", "model": "sam-3.1", "cache_key": "a67e167a1e0c7d8df0511f9b", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:08", "tag": "sam 2019-08-20 C18", "model": "sam-3.1", "cache_key": "5a44d38755613be669aee6e8", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:08", "tag": "sam 2019-08-20 C18", "model": "sam-3.1", "cache_key": "7fc3073a748da62487307245", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:08", "tag": "sam 2019-08-20 C18", "model": "sam-3.1", "cache_key": "913be0e7e7ecf51a4240a4b5", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:08", "tag": "sam 2019-08-20 C18", "model": "sam-3.1", "cache_key": "dbd44ac7cd1bd6efbb718188", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:08", "tag": "sam 2019-08-20 C18", "model": "sam-3.1", "cache_key": "2ea5edf4e67cbbb0833ca656", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:09", "tag": "sam 2019-08-20 C1", "model": "sam-3.1", "cache_key": "6f43c6b5b1ea590c63a61182", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:09", "tag": "sam 2019-08-20 C1", "model": "sam-3.1", "cache_key": "012802f24bf598f2ff517fc3", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:09", "tag": "sam 2019-08-20 C1", "model": "sam-3.1", "cache_key": "41df9218c9d71c32e4dc9e28", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:09", "tag": "sam 2019-08-20 C1", "model": "sam-3.1", "cache_key": "97bc6abd56583d0d76044408", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:09", "tag": "sam 2019-08-20 C1", "model": "sam-3.1", "cache_key": "aeedd795745db5c417fb0fc6", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:09", "tag": "sam 2019-08-20 C1", "model": "sam-3.1", "cache_key": "6927d803b24e6aa46c40f45d", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:10", "tag": "sam 2019-08-20 C2", "model": "sam-3.1", "cache_key": "cf6efb7ee73b383fcb39b5ed", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:10", "tag": "sam 2019-08-20 C2", "model": "sam-3.1", "cache_key": "05e24d1c01a800c885943b74", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:10", "tag": "sam 2019-08-20 C2", "model": "sam-3.1", "cache_key": "a8aec45d6131e770adbed664", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:10", "tag": "sam 2019-08-20 C2", "model": "sam-3.1", "cache_key": "00bfb1411f3e16d9d4ff59a8", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:10", "tag": "sam 2019-08-20 C2", "model": "sam-3.1", "cache_key": "5ee9e4845d2fdee59b1b58e1", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:10", "tag": "sam 2019-08-20 C2", "model": "sam-3.1", "cache_key": "fa24b515dc13e25bf6a6394f", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:10", "tag": "sam 2019-08-20 C21", "model": "sam-3.1", "cache_key": "055aab01eef27b96a2470d81", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:13", "tag": "sam 2019-08-20 C21", "model": "sam-3.1", "cache_key": "3597c817bf84f6f8f80949ec", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:16", "tag": "sam 2019-08-20 C21", "model": "sam-3.1", "cache_key": "32878b0a3cc373a2feaa44a8", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:17", "tag": "sam 2019-08-20 C21", "model": "sam-3.1", "cache_key": "fb1c788886575dc24429ff0e", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:18", "tag": "sam 2019-08-20 C21", "model": "sam-3.1", "cache_key": "21bc2125267a0de00998e8da", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:18", "tag": "sam 2019-08-20 C21", "model": "sam-3.1", "cache_key": "f0bdfe8c9435160bbe39f909", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:19", "tag": "sam 2019-08-20 C51", "model": "sam-3.1", "cache_key": "ac56a57c72d0ab6e0c1cf7c6", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:19", "tag": "sam 2019-08-20 C51", "model": "sam-3.1", "cache_key": "1aafbd9bb54d49aa7d45a416", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:19", "tag": "sam 2019-08-20 C51", "model": "sam-3.1", "cache_key": "efb30d4a2f112abc9cbd65ee", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:19", "tag": "sam 2019-08-20 C51", "model": "sam-3.1", "cache_key": "93180ebd90d0a505a4de7cfc", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:19", "tag": "sam 2019-08-20 C51", "model": "sam-3.1", "cache_key": "375ae479cbe6979e3bc133bf", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:19", "tag": "sam 2019-08-20 C51", "model": "sam-3.1", "cache_key": "3cb58f5030201d869253dc77", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:19", "tag": "sam 2019-08-20 C202", "model": "sam-3.1", "cache_key": "a695999369792ff51ed74374", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:19", "tag": "sam 2019-08-20 C202", "model": "sam-3.1", "cache_key": "c2861e2d84a27971c456b6ea", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:19", "tag": "sam 2019-08-20 C202", "model": "sam-3.1", "cache_key": "769e270dc9283d3e48f8c2a8", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:19", "tag": "sam 2019-08-20 C202", "model": "sam-3.1", "cache_key": "b175bd4f76f014df1ab3aeec", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:19", "tag": "sam 2019-08-20 C202", "model": "sam-3.1", "cache_key": "84ce5400bb22a0f12df6b88c", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:19", "tag": "sam 2019-08-20 C202", "model": "sam-3.1", "cache_key": "801f61abd40c62a6dfcd7126", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:20", "tag": "sam 2019-08-20 C41", "model": "sam-3.1", "cache_key": "d4811df2420c44ab6133a0d9", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:20", "tag": "sam 2019-08-20 C41", "model": "sam-3.1", "cache_key": "0cb08dcde866778ca8c11d80", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:20", "tag": "sam 2019-08-20 C41", "model": "sam-3.1", "cache_key": "24bf3336e592fc6a3f6a9b7f", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:20", "tag": "sam 2019-08-20 C41", "model": "sam-3.1", "cache_key": "d80ae8fceab128758942cfad", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:20", "tag": "sam 2019-08-20 C41", "model": "sam-3.1", "cache_key": "b84902b67b3780986daa4019", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:20", "tag": "sam 2019-08-20 C41", "model": "sam-3.1", "cache_key": "9ef080c922bc11f99005bf07", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:20", "tag": "sam 2019-08-20 C15", "model": "sam-3.1", "cache_key": "0c983e7bf076879c148b5dd2", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:20", "tag": "sam 2019-08-20 C15", "model": "sam-3.1", "cache_key": "f049ba3def9e197521784d9f", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:20", "tag": "sam 2019-08-20 C15", "model": "sam-3.1", "cache_key": "9f0da49d596aaa02fba9f69d", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:20", "tag": "sam 2019-08-20 C15", "model": "sam-3.1", "cache_key": "91ec1c022525e15c586d6724", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:20", "tag": "sam 2019-08-20 C15", "model": "sam-3.1", "cache_key": "684e7e0f5047dd74c6af4a2c", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:20", "tag": "sam 2019-08-20 C15", "model": "sam-3.1", "cache_key": "75526c42177c2aeca2f0b8b0", "cache_hit": true, "seconds": 0.0, "cost_usd": 0.0}
+{"time": "2026-10-27T21:23:43", "tag": "agent 2019-08-20 step 1", "model": "muse-spark-1.3", "cache_key": "762b8e8a0a6986ec2f6e6605", "cache_hit": false, "prompt_tokens": 6122, "completion_tokens": 4464, "reasoning_tokens": 3198, "finish_reason": "stop", "seconds": 22.24, "cost_usd": 0.024811}

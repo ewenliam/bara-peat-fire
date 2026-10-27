@@ -1,0 +1,907 @@
+{
+ "date": "2019-09-15",
+ "briefing": {
+  "date": "2019-09-15",
+  "forecast_for": "2019-09-16",
+  "headline": "Peat fires in Jambi and Central Kalimantan drive high spread risk for 2019-09-16",
+  "clusters": [
+   {
+    "cluster_id": "C1",
+    "province": "Jambi",
+    "tier": "P1",
+    "earliest_detection_lat": -1.5829,
+    "earliest_detection_lon": 104.0355,
+    "expected_new_cells": 68.5,
+    "max_probability": 0.742,
+    "top_drivers": [
+     "+ detections in the 3x3 cells, last 7 days",
+     "+ days since the cell last burned",
+     "+ detections in the 5x5 cells around it today"
+    ],
+    "note": "C1 has peat_share 0.95 with 16 days since 10 mm of rain, driven by + detections in the 3x3 cells, last 7 days."
+   },
+   {
+    "cluster_id": "C4",
+    "province": "Central Kalimantan",
+    "tier": "P1",
+    "earliest_detection_lat": -2.2684,
+    "earliest_detection_lon": 113.8145,
+    "expected_new_cells": 47.7,
+    "max_probability": 0.743,
+    "top_drivers": [
+     "+ detections in the 3x3 cells, last 7 days",
+     "+ days since the cell last burned",
+     "+ detections in the 5x5 cells around it today"
+    ],
+    "note": "C4 has peat_share 0.88 with 17 days since 10 mm of rain, driven by + detections in the 3x3 cells, last 7 days."
+   },
+   {
+    "cluster_id": "C2",
+    "province": "Central Kalimantan",
+    "tier": "P1",
+    "earliest_detection_lat": -2.4953,
+    "earliest_detection_lon": 114.4118,
+    "expected_new_cells": 34.0,
+    "max_probability": 0.708,
+    "top_drivers": [
+     "+ detections in the 3x3 cells, last 7 days",
+     "+ days since the cell last burned",
+     "+ detections in the 5x5 cells around it today"
+    ],
+    "note": "C2 has peat_share 0.91 with 18 days since 10 mm of rain, driven by + detections in the 3x3 cells, last 7 days."
+   },
+   {
+    "cluster_id": "C3",
+    "province": "Central Kalimantan",
+    "tier": "P1",
+    "earliest_detection_lat": -3.0574,
+    "earliest_detection_lon": 114.0521,
+    "expected_new_cells": 31.8,
+    "max_probability": 0.723,
+    "top_drivers": [
+     "+ detections in the 3x3 cells, last 7 days",
+     "+ days since the cell last burned",
+     "+ detections in the 5x5 cells around it today"
+    ],
+    "note": "C3 has peat_share 0.99 with 25 days since 10 mm of rain, driven by + detections in the 3x3 cells, last 7 days."
+   },
+   {
+    "cluster_id": "C13",
+    "province": "West Kalimantan",
+    "tier": "P1",
+    "earliest_detection_lat": -2.0133,
+    "earliest_detection_lon": 110.2269,
+    "expected_new_cells": 27.9,
+    "max_probability": 0.793,
+    "top_drivers": [
+     "+ detections in the 3x3 cells, last 7 days",
+     "+ days since the cell last burned",
+     "+ detections in the 5x5 cells around it today"
+    ],
+    "note": "C13 has peat_share 0.77 with 18 days since 10 mm of rain, driven by + detections in the 3x3 cells, last 7 days."
+   }
+  ],
+  "new_fire_watch": [
+   {
+    "lat": 0.75,
+    "lon": 110.95,
+    "probability": 0.354
+   },
+   {
+    "lat": 0.75,
+    "lon": 110.75,
+    "probability": 0.34
+   },
+   {
+    "lat": 0.35,
+    "lon": 110.75,
+    "probability": 0.332
+   }
+  ],
+  "dispatch": [
+   {
+    "base": "Palangkaraya",
+    "order": [
+     "C4",
+     "C11",
+     "C2"
+    ]
+   },
+   {
+    "base": "Jambi City",
+    "order": [
+     "C5",
+     "C1"
+    ]
+   },
+   {
+    "base": "Banjarbaru",
+    "order": [
+     "C73",
+     "C3"
+    ]
+   }
+  ],
+  "briefing": "P1 means brigade now, P2 village fire watch, P3 monitor; visiting is not extinguishing and earliest detection is first satellite detection, not ignition point. Top risk is peat fires after dry spell: C1 Jambi 238 detections today, peat_share 0.95, 16 days since 10 mm; C4 Central Kalimantan 189 detections, 0.88, 17 days; C2 92 detections, 0.91, 18 days; C3 108 detections, 0.99, 25 days; C13 West Kalimantan 128 detections, 0.77, 18 days. Palangkaraya crew: C4, then C11, then C2; Jambi City crew: C5, then C1; Banjarbaru crew: C73, then C3. Rivers: C4 no river seen within 5.1 km; C11 3820 m SW; C2 5700 m NE; C5 5110 m SE; C1 no river seen within 5.1 km; C73 no river seen within 5.1 km; C3 no river seen within 5.1 km.",
+  "caveats": [
+   "Earliest detection is the first satellite detection, not the ignition point, and some clusters were already burning at window start.",
+   "Water search finds rivers only; drainage canals are too narrow at 10 m pixels and are not detected, and small rivers can be missed.",
+   "Spread forecast for 2019-09-16 uses threshold 0.171 and new-fire forecast uses threshold 0.08; visiting a cluster is not extinguishing it."
+  ]
+ },
+ "grounding_errors": [],
+ "passed": true,
+ "repairs": 0,
+ "tool_trace": [
+  {
+   "step": 0,
+   "tool": "detect_clusters",
+   "top_n": 10
+  },
+  {
+   "step": 0,
+   "tool": "forecast_spread",
+   "top_n": 5
+  },
+  {
+   "step": 0,
+   "tool": "forecast_new_fires",
+   "top_n": 3
+  },
+  {
+   "step": 0,
+   "tool": "triage_clusters",
+   "top_n": 10
+  },
+  {
+   "step": 0,
+   "tool": "plan_dispatch",
+   "top_n": 3
+  },
+  {
+   "step": 0,
+   "tool": "find_water_sources",
+   "top_n": 3
+  },
+  {
+   "step": 1,
+   "final": true,
+   "errors": []
+  }
+ ],
+ "tool_results": {
+  "detect_clusters": [
+   {
+    "date": "2019-09-15",
+    "window": "2019-09-09 to 2019-09-15",
+    "detections_today": 5449,
+    "clusters_in_window": 6034,
+    "clusters_active_today": 904,
+    "note": "earliest_detection is the first satellite detection, not the ignition point",
+    "clusters": [
+     {
+      "cluster_id": "C1",
+      "location": {
+       "nearest_place": "Betung",
+       "place_km": 22.1,
+       "province": "Jambi"
+      },
+      "earliest_detection": {
+       "lat": -1.5829,
+       "lon": 104.0355,
+       "time_utc": "2019-09-09 05:47",
+       "already_burning_at_window_start": true
+      },
+      "centre": {
+       "lat": -1.649,
+       "lon": 104.082
+      },
+      "detections_7d": 2732,
+      "detections_today": 238,
+      "total_frp_mw": 44276
+     },
+     {
+      "cluster_id": "C4",
+      "location": {
+       "nearest_place": "Tongkiling",
+       "place_km": 10.3,
+       "province": "Central Kalimantan"
+      },
+      "earliest_detection": {
+       "lat": -2.2684,
+       "lon": 113.8145,
+       "time_utc": "2019-09-09 18:28",
+       "already_burning_at_window_start": true
+      },
+      "centre": {
+       "lat": -2.209,
+       "lon": 113.819
+      },
+      "detections_7d": 1625,
+      "detections_today": 189,
+      "total_frp_mw": 11633
+     },
+     {
+      "cluster_id": "C13",
+      "location": {
+       "nearest_place": "Kualapesaguan",
+       "place_km": 9.6,
+       "province": "West Kalimantan"
+      },
+      "earliest_detection": {
+       "lat": -2.0133,
+       "lon": 110.2269,
+       "time_utc": "2019-09-09 05:46",
+       "already_burning_at_window_start": true
+      },
+      "centre": {
+       "lat": -1.933,
+       "lon": 110.156
+      },
+      "detections_7d": 659,
+      "detections_today": 128,
+      "total_frp_mw": 4932
+     },
+     {
+      "cluster_id": "C42",
+      "location": {
+       "nearest_place": "Telukmelano",
+       "place_km": 7.5,
+       "province": "West Kalimantan"
+      },
+      "earliest_detection": {
+       "lat": -1.1165,
+       "lon": 110.0472,
+       "time_utc": "2019-09-12 06:30",
+       "already_burning_at_window_start": false
+      },
+      "centre": {
+       "lat": -1.135,
+       "lon": 110.024
+      },
+      "detections_7d": 220,
+      "detections_today": 125,
+      "total_frp_mw": 2020
+     },
+     {
+      "cluster_id": "C3",
+      "location": {
+       "nearest_place": "Dandang",
+       "place_km": 9.0,
+       "province": "Central Kalimantan"
+      },
+      "earliest_detection": {
+       "lat": -3.0574,
+       "lon": 114.0521,
+       "time_utc": "2019-09-09 05:46",
+       "already_burning_at_window_start": true
+      },
+      "centre": {
+       "lat": -3.128,
+       "lon": 114.051
+      },
+      "detections_7d": 1648,
+      "detections_today": 108,
+      "total_frp_mw": 9027
+     },
+     {
+      "cluster_id": "C21",
+      "location": {
+       "nearest_place": "Puding",
+       "place_km": 29.7,
+       "province": "Jambi"
+      },
+      "earliest_detection": {
+       "lat": -1.7877,
+       "lon": 104.0064,
+       "time_utc": "2019-09-09 05:47",
+       "already_burning_at_window_start": true
+      },
+      "centre": {
+       "lat": -1.803,
+       "lon": 103.994
+      },
+      "detections_7d": 388,
+      "detections_today": 100,
+      "total_frp_mw": 5614
+     },
+     {
+      "cluster_id": "C40",
+      "location": {
+       "nearest_place": "Belanti",
+       "place_km": 4.0,
+       "province": "Central Kalimantan"
+      },
+      "earliest_detection": {
+       "lat": -3.0984,
+       "lon": 112.3245,
+       "time_utc": "2019-09-09 18:28",
+       "already_burning_at_window_start": true
+      },
+      "centre": {
+       "lat": -3.106,
+       "lon": 112.343
+      },
+      "detections_7d": 230,
+      "detections_today": 98,
+      "total_frp_mw": 2934
+     },
+     {
+      "cluster_id": "C2",
+      "location": {
+       "nearest_place": "Sei Ahas",
+       "place_km": 10.3,
+       "province": "Central Kalimantan"
+      },
+      "earliest_detection": {
+       "lat": -2.4953,
+       "lon": 114.4118,
+       "time_utc": "2019-09-09 05:46",
+       "already_burning_at_window_start": true
+      },
+      "centre": {
+       "lat": -2.411,
+       "lon": 114.373
+      },
+      "detections_7d": 1841,
+      "detections_today": 92,
+      "total_frp_mw": 18524
+     },
+     {
+      "cluster_id": "C29",
+      "location": {
+       "nearest_place": "Datumakuta",
+       "place_km": 9.8,
+       "province": "East Kalimantan"
+      },
+      "earliest_detection": {
+       "lat": 2.4142,
+       "lon": 117.965,
+       "time_utc": "2019-09-12 17:30",
+       "already_burning_at_window_start": false
+      },
+      "centre": {
+       "lat": 2.438,
+       "lon": 117.916
+      },
+      "detections_7d": 255,
+      "detections_today": 88,
+      "total_frp_mw": 2992
+     },
+     {
+      "cluster_id": "C7",
+      "location": {
+       "nearest_place": "Matangai",
+       "place_km": 9.1,
+       "province": "Central Kalimantan"
+      },
+      "earliest_detection": {
+       "lat": -2.6133,
+       "lon": 114.2865,
+       "time_utc": "2019-09-09 05:46",
+       "already_burning_at_window_start": true
+      },
+      "centre": {
+       "lat": -2.602,
+       "lon": 114.293
+      },
+      "detections_7d": 912,
+      "detections_today": 84,
+      "total_frp_mw": 6226
+     }
+    ]
+   }
+  ],
+  "forecast_spread": [
+   {
+    "forecast_for": "2019-09-16",
+    "model": "LightGBM, 1.1 km cells near fires of the last 7 days, 2019 AP 0.308 vs 0.207 for the best persistence baseline",
+    "threshold": 0.171,
+    "candidate_cells": 130413,
+    "unassigned_cells": 0,
+    "expected_new_cells_total": 2266.5,
+    "clusters": [
+     {
+      "cluster_id": "C1",
+      "location": {
+       "nearest_place": "Betung",
+       "place_km": 22.1,
+       "province": "Jambi"
+      },
+      "earliest_detection": {
+       "lat": -1.5829,
+       "lon": 104.0355,
+       "time_utc": "2019-09-09 05:47",
+       "already_burning_at_window_start": true
+      },
+      "centre": {
+       "lat": -1.649,
+       "lon": 104.082
+      },
+      "detections_7d": 2732,
+      "detections_today": 238,
+      "total_frp_mw": 44276,
+      "expected_new_cells": 68.5,
+      "max_probability": 0.742,
+      "cells_above_threshold": 143,
+      "candidate_cells": 482,
+      "peat_share": 0.95,
+      "rain_30d_mm": 46,
+      "days_since_10mm": 16,
+      "risk": 133.3,
+      "tier": "P1",
+      "top_drivers": [
+       "+ detections in the 3x3 cells, last 7 days",
+       "+ days since the cell last burned",
+       "+ detections in the 5x5 cells around it today"
+      ]
+     },
+     {
+      "cluster_id": "C4",
+      "location": {
+       "nearest_place": "Tongkiling",
+       "place_km": 10.3,
+       "province": "Central Kalimantan"
+      },
+      "earliest_detection": {
+       "lat": -2.2684,
+       "lon": 113.8145,
+       "time_utc": "2019-09-09 18:28",
+       "already_burning_at_window_start": true
+      },
+      "centre": {
+       "lat": -2.209,
+       "lon": 113.819
+      },
+      "detections_7d": 1625,
+      "detections_today": 189,
+      "total_frp_mw": 11633,
+      "expected_new_cells": 47.7,
+      "max_probability": 0.743,
+      "cells_above_threshold": 78,
+      "candidate_cells": 350,
+      "peat_share": 0.88,
+      "rain_30d_mm": 92,
+      "days_since_10mm": 17,
+      "risk": 89.8,
+      "tier": "P1",
+      "top_drivers": [
+       "+ detections in the 3x3 cells, last 7 days",
+       "+ days since the cell last burned",
+       "+ detections in the 5x5 cells around it today"
+      ]
+     },
+     {
+      "cluster_id": "C2",
+      "location": {
+       "nearest_place": "Sei Ahas",
+       "place_km": 10.3,
+       "province": "Central Kalimantan"
+      },
+      "earliest_detection": {
+       "lat": -2.4953,
+       "lon": 114.4118,
+       "time_utc": "2019-09-09 05:46",
+       "already_burning_at_window_start": true
+      },
+      "centre": {
+       "lat": -2.411,
+       "lon": 114.373
+      },
+      "detections_7d": 1841,
+      "detections_today": 92,
+      "total_frp_mw": 18524,
+      "expected_new_cells": 34.0,
+      "max_probability": 0.708,
+      "cells_above_threshold": 63,
+      "candidate_cells": 300,
+      "peat_share": 0.91,
+      "rain_30d_mm": 82,
+      "days_since_10mm": 18,
+      "risk": 65.0,
+      "tier": "P1",
+      "top_drivers": [
+       "+ detections in the 3x3 cells, last 7 days",
+       "+ days since the cell last burned",
+       "+ detections in the 5x5 cells around it today"
+      ]
+     },
+     {
+      "cluster_id": "C3",
+      "location": {
+       "nearest_place": "Dandang",
+       "place_km": 9.0,
+       "province": "Central Kalimantan"
+      },
+      "earliest_detection": {
+       "lat": -3.0574,
+       "lon": 114.0521,
+       "time_utc": "2019-09-09 05:46",
+       "already_burning_at_window_start": true
+      },
+      "centre": {
+       "lat": -3.128,
+       "lon": 114.051
+      },
+      "detections_7d": 1648,
+      "detections_today": 108,
+      "total_frp_mw": 9027,
+      "expected_new_cells": 31.8,
+      "max_probability": 0.723,
+      "cells_above_threshold": 57,
+      "candidate_cells": 288,
+      "peat_share": 0.99,
+      "rain_30d_mm": 43,
+      "days_since_10mm": 25,
+      "risk": 63.5,
+      "tier": "P1",
+      "top_drivers": [
+       "+ detections in the 3x3 cells, last 7 days",
+       "+ days since the cell last burned",
+       "+ detections in the 5x5 cells around it today"
+      ]
+     },
+     {
+      "cluster_id": "C13",
+      "location": {
+       "nearest_place": "Kualapesaguan",
+       "place_km": 9.6,
+       "province": "West Kalimantan"
+      },
+      "earliest_detection": {
+       "lat": -2.0133,
+       "lon": 110.2269,
+       "time_utc": "2019-09-09 05:46",
+       "already_burning_at_window_start": true
+      },
+      "centre": {
+       "lat": -1.933,
+       "lon": 110.156
+      },
+      "detections_7d": 659,
+      "detections_today": 128,
+      "total_frp_mw": 4932,
+      "expected_new_cells": 27.9,
+      "max_probability": 0.793,
+      "cells_above_threshold": 38,
+      "candidate_cells": 266,
+      "peat_share": 0.77,
+      "rain_30d_mm": 43,
+      "days_since_10mm": 18,
+      "risk": 49.3,
+      "tier": "P1",
+      "top_drivers": [
+       "+ detections in the 3x3 cells, last 7 days",
+       "+ days since the cell last burned",
+       "+ detections in the 5x5 cells around it today"
+      ]
+     }
+    ]
+   }
+  ],
+  "forecast_new_fires": [
+   {
+    "forecast_for": "2019-09-16",
+    "model": "LightGBM, 11 km cells with no fire in the last 7 days, 2019 AP 0.057 vs base rate 0.0055",
+    "threshold": 0.08,
+    "quiet_cells_scored": 9013,
+    "cells_above_threshold": 810,
+    "cells": [
+     {
+      "lat": 0.75,
+      "lon": 110.95,
+      "probability": 0.354,
+      "peat_share": 0.06,
+      "days_since_10mm": 3,
+      "fires_nearby_7d": 5
+     },
+     {
+      "lat": 0.75,
+      "lon": 110.75,
+      "probability": 0.34,
+      "peat_share": 0.05,
+      "days_since_10mm": 3,
+      "fires_nearby_7d": 5
+     },
+     {
+      "lat": 0.35,
+      "lon": 110.75,
+      "probability": 0.332,
+      "peat_share": 0.1,
+      "days_since_10mm": 1,
+      "fires_nearby_7d": 7
+     }
+    ],
+    "top_drivers": [
+     "+ fires in neighbouring 11 km cells, last 30 days",
+     "+ past fire rate of the area",
+     "+ fires in this 11 km cell, last 30 days"
+    ]
+   }
+  ],
+  "triage_clusters": [
+   {
+    "forecast_for": "2019-09-16",
+    "rule": "risk = expected_new_cells x (1 + 1 x peat_share); P1 if risk >= 5, P2 if risk >= 1, else P3",
+    "tiers": {
+     "P1": "brigade now",
+     "P2": "village fire watch",
+     "P3": "monitor"
+    },
+    "clusters_per_tier": {
+     "P1": 105,
+     "P2": 361,
+     "P3": 5488
+    },
+    "risk_per_tier": {
+     "P1": 1795.6,
+     "P2": 730.7,
+     "P3": 1021.8
+    },
+    "top_p1": [
+     {
+      "cluster_id": "C1",
+      "risk": 133.3,
+      "expected_new_cells": 68.5,
+      "peat_share": 0.95
+     },
+     {
+      "cluster_id": "C4",
+      "risk": 89.8,
+      "expected_new_cells": 47.7,
+      "peat_share": 0.88
+     },
+     {
+      "cluster_id": "C2",
+      "risk": 65.0,
+      "expected_new_cells": 34.0,
+      "peat_share": 0.91
+     },
+     {
+      "cluster_id": "C3",
+      "risk": 63.5,
+      "expected_new_cells": 31.8,
+      "peat_share": 0.99
+     },
+     {
+      "cluster_id": "C13",
+      "risk": 49.3,
+      "expected_new_cells": 27.9,
+      "peat_share": 0.77
+     },
+     {
+      "cluster_id": "C5",
+      "risk": 47.2,
+      "expected_new_cells": 25.1,
+      "peat_share": 0.88
+     },
+     {
+      "cluster_id": "C6",
+      "risk": 46.1,
+      "expected_new_cells": 24.0,
+      "peat_share": 0.92
+     },
+     {
+      "cluster_id": "C7",
+      "risk": 41.0,
+      "expected_new_cells": 21.2,
+      "peat_share": 0.93
+     },
+     {
+      "cluster_id": "C12",
+      "risk": 39.2,
+      "expected_new_cells": 22.9,
+      "peat_share": 0.71
+     },
+     {
+      "cluster_id": "C8",
+      "risk": 37.1,
+      "expected_new_cells": 19.5,
+      "peat_share": 0.9
+     }
+    ]
+   }
+  ],
+  "plan_dispatch": [
+   {
+    "assumptions": {
+     "crews": "one per provincial capital (assumed base)",
+     "speed_kmh": 30.0,
+     "route_factor": 1.4,
+     "hours_on_site": 2.0,
+     "hours_per_day": 10.0
+    },
+    "method": "exact best order per crew (dynamic programming), maximising peat-weighted risk covered; visiting is not extinguishing",
+    "risk_total_p1_p2": 2526.3,
+    "risk_covered_all_crews": 562.8,
+    "routes": [
+     {
+      "base": "Palangkaraya",
+      "province": "Central Kalimantan",
+      "stops": [
+       {
+        "cluster_id": "C4",
+        "arrive_h": 0.5,
+        "location": {
+         "nearest_place": "Tongkiling",
+         "place_km": 10.3,
+         "province": "Central Kalimantan"
+        }
+       },
+       {
+        "cluster_id": "C11",
+        "arrive_h": 3.5,
+        "location": {
+         "nearest_place": "Bakengbengkel",
+         "place_km": 4.6,
+         "province": "Central Kalimantan"
+        }
+       },
+       {
+        "cluster_id": "C2",
+        "arrive_h": 7.7,
+        "location": {
+         "nearest_place": "Sei Ahas",
+         "place_km": 10.3,
+         "province": "Central Kalimantan"
+        }
+       }
+      ],
+      "risk_covered": 188.1
+     },
+     {
+      "base": "Jambi City",
+      "province": "Jambi",
+      "stops": [
+       {
+        "cluster_id": "C5",
+        "arrive_h": 1.9,
+        "location": {
+         "nearest_place": "Lenderang",
+         "place_km": 5.4,
+         "province": "Jambi"
+        }
+       },
+       {
+        "cluster_id": "C1",
+        "arrive_h": 5.8,
+        "location": {
+         "nearest_place": "Betung",
+         "place_km": 22.1,
+         "province": "Jambi"
+        }
+       }
+      ],
+      "risk_covered": 180.6
+     },
+     {
+      "base": "Banjarbaru",
+      "province": "South Kalimantan",
+      "stops": [
+       {
+        "cluster_id": "C73",
+        "arrive_h": 3.7,
+        "location": {
+         "nearest_place": "Basarang",
+         "place_km": 6.1,
+         "province": "Central Kalimantan"
+        }
+       },
+       {
+        "cluster_id": "C3",
+        "arrive_h": 7.1,
+        "location": {
+         "nearest_place": "Dandang",
+         "place_km": 9.0,
+         "province": "Central Kalimantan"
+        }
+       }
+      ],
+      "risk_covered": 76.2
+     }
+    ]
+   }
+  ],
+  "find_water_sources": [
+   {
+    "method": "SAM 3.1 (Meta) masks for 'river' and 'waterway' on a 10 x 10 km Sentinel-2 true-colour chip centred on the cluster; distance from the cluster centre",
+    "limits": "rivers only: drainage canals are too narrow at 10 m pixels and are not detected; small rivers can be missed",
+    "stops": [
+     {
+      "cluster_id": "C4",
+      "crew_base": "Palangkaraya",
+      "image": "Sentinel-2 S2A_49MHT_20240919_0_L2A (2024-09-19)",
+      "searched_km_each_side": 5.1,
+      "river_found": false
+     },
+     {
+      "cluster_id": "C11",
+      "crew_base": "Palangkaraya",
+      "image": "Sentinel-2 S2A_49MHT_20230902_0_L2A (2023-09-02)",
+      "searched_km_each_side": 5.1,
+      "river_found": true,
+      "nearest_river_m": 3820,
+      "direction": "SW",
+      "river_lat": -2.3247,
+      "river_lon": 113.9734,
+      "sam_confidence": 0.82
+     },
+     {
+      "cluster_id": "C2",
+      "crew_base": "Palangkaraya",
+      "image": "Sentinel-2 S2A_49MHT_20230902_0_L2A (2023-09-02)",
+      "searched_km_each_side": 5.1,
+      "river_found": true,
+      "nearest_river_m": 5700,
+      "direction": "NE",
+      "river_lat": -2.3872,
+      "river_lon": 114.4188,
+      "sam_confidence": 0.71
+     },
+     {
+      "cluster_id": "C5",
+      "crew_base": "Jambi City",
+      "image": "Sentinel-2 S2A_48MUD_20250518_0_L2A (2025-05-18)",
+      "searched_km_each_side": 5.1,
+      "river_found": true,
+      "nearest_river_m": 5110,
+      "direction": "SE",
+      "river_lat": -1.3599,
+      "river_lon": 103.9197,
+      "sam_confidence": 0.6
+     },
+     {
+      "cluster_id": "C1",
+      "crew_base": "Jambi City",
+      "image": "Sentinel-2 S2B_48MUD_20240725_0_L2A (2024-07-25)",
+      "searched_km_each_side": 5.1,
+      "river_found": false
+     },
+     {
+      "cluster_id": "C73",
+      "crew_base": "Banjarbaru",
+      "image": "Sentinel-2 S2A_49MHS_20250725_0_L2A (2025-07-25)",
+      "searched_km_each_side": 5.1,
+      "river_found": false
+     },
+     {
+      "cluster_id": "C3",
+      "crew_base": "Banjarbaru",
+      "image": "Sentinel-2 S2A_49MHS_20250725_0_L2A (2025-07-25)",
+      "searched_km_each_side": 5.1,
+      "river_found": false
+     }
+    ]
+   }
+  ]
+ },
+ "llm_calls": [
+  {
+   "time": "2026-10-27T21:05:59",
+   "tag": "agent 2019-09-15 step 0",
+   "model": "muse-spark-1.3",
+   "cache_key": "8fc8e7373ab7f19ad3b9e6c8",
+   "cache_hit": false,
+   "prompt_tokens": 1632,
+   "completion_tokens": 1226,
+   "reasoning_tokens": 889,
+   "finish_reason": "tool_calls",
+   "seconds": 4.07,
+   "cost_usd": 0.007251
+  },
+  {
+   "time": "2026-10-27T21:06:22",
+   "tag": "agent 2019-09-15 step 1",
+   "model": "muse-spark-1.3",
+   "cache_key": "9faa7803abdbf08049dce6e9",
+   "cache_hit": false,
+   "prompt_tokens": 6038,
+   "completion_tokens": 5299,
+   "reasoning_tokens": 3999,
+   "finish_reason": "stop",
+   "seconds": 15.25,
+   "cost_usd": 0.030068
+  }
+ ],
+ "run_cost_usd": 0.037319
+}

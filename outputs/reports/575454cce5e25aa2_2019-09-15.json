@@ -1,0 +1,45 @@
+{
+ "id": "575454cce5e25aa2",
+ "date": "2019-09-15",
+ "lat": -2.3019,
+ "lon": 113.6148,
+ "note": "Demo photo: Gambut Pratama, CC BY-SA 4.0, Wikimedia Commons. Not taken at this spot; placed here to show the workflow.",
+ "photo": "/outputs/reports/575454cce5e25aa2.jpg",
+ "classification": {
+  "category": "burn_scar",
+  "confidence": 0.9,
+  "visible": [
+   "blackened burned ground",
+   "charred vegetation",
+   "green regrowth",
+   "distant burnt treeline"
+  ],
+  "crew_present": false
+ },
+ "error": null,
+ "llm_calls": [
+  {
+   "time": "2026-10-27T21:17:21",
+   "tag": "report classify",
+   "model": "muse-spark-1.3",
+   "cache_key": "e84057af3912ca5103e0448d",
+   "cache_hit": true,
+   "prompt_tokens": 2894,
+   "completion_tokens": 684,
+   "reasoning_tokens": 627,
+   "finish_reason": "stop",
+   "seconds": 0.0,
+   "cost_usd": 0.0
+  }
+ ],
+ "cost_usd": 0.0,
+ "decision": {
+  "kind": "burn_scar",
+  "action": "Burned ground. Peat can keep smouldering below the surface: check again in the coming days.",
+  "nearest_cluster": "C2400",
+  "nearest_cluster_km": 13.3,
+  "nearest_cluster_tier": "P3",
+  "place": "Tjandjang",
+  "province": "Central Kalimantan"
+ }
+}
