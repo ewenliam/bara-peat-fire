@@ -5,6 +5,7 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 .claude/
-# Logs stay local, except the Meta API spend ledger
+# Logs stay local, except the Meta API spend ledger and the Muse Spark build logs
 logs/*
 !logs/meta_usage.jsonl
+!logs/builds/
