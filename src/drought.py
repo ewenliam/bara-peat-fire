@@ -107,7 +107,8 @@ def submit(c: Client, first: int, last: int, intermediate: bool) -> None:
 
 def split_years(paths: list[Path], years: list[int], tag: str) -> None:
     """Write one file per year from a downloaded file (or the files of an unzipped archive)."""
-    with xr.open_mfdataset([str(p) for p in paths], combine="by_coords") as ds:
+    # xr.merge instead of open_mfdataset: no dask in the venv
+    with xr.merge([xr.open_dataset(p) for p in paths]) as ds:
         for year in years:
             part = ds.sel(valid_time=ds["valid_time"].dt.year == year)
             part.load().to_netcdf(year_path(year, tag))
@@ -132,7 +133,7 @@ def fetch(c: Client) -> None:
                 z.extractall(folder)
             paths = sorted(folder.glob("*.nc"))
         else:
-            paths = [raw.rename(raw.with_suffix(".nc"))]
+            paths = [raw.replace(raw.with_suffix(".nc"))]  # replace: rename fails on Windows if the .nc exists
         split_years(paths, job["years"], job["tag"])
         del jobs[job_id]
         save_jobs(jobs)
