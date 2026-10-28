@@ -33,12 +33,12 @@ Research behind this plan: `C:\Users\ewenl\reports\Bara global impact upgrade pl
 | Transcript plus photo to report JSON | Muse Spark 1.3 | Standard only: reporter data must not become training data |
 | Briefings, what-if chat, map self-check | Muse Spark 1.3 | Standard |
 | Water near crew stops | SAM 3.1 | Standard |
-| Writing code modules (Claude supervises) | Muse Spark 1.3 Contributor, fall back to Standard if unavailable | Contributor is fine here: the repo is public anyway. Never put `.env` values in a prompt |
+| Writing code modules (Claude supervises) | Muse Spark 1.3 Standard (Contributor tier not confirmed; the first module cost $0.05, so the saving is negligible) | Never put `.env` values in a prompt. Prompts and replies are kept in `logs/builds/` |
 | Hard one-off tasks only | Muse Wonder | After Spark fails twice on the same task |
 
 ## Rules for every day
 
-- Meta API budget is $150 total. Spend logged so far: $0.72 (`python src/llm.py`). Split: builder up to $50, app runs and evals up to $50, $50 reserve. Raise the code cap (now $20) only when needed.
+- Meta API budget is $150 total. Spend logged so far: $0.77 on Oct 28 (`python src/llm.py`). Split: builder up to $50, app runs and evals up to $50, $50 reserve. Raise the code cap (now $20) only when needed.
 - The LLM never decides a route. Meta models perceive and write; the forecast, fusion rules, solver and number check stay deterministic and hand-written.
 - Builder loop: Claude writes the spec and acceptance tests, Muse Spark writes one module, Claude and you read the diff, tests pass, `git diff --check` is clean, no secrets. You must be able to explain every line.
 - Never touch 2023 data before the pre-registration file is committed.
@@ -49,10 +49,10 @@ Research behind this plan: `C:\Users\ewenl\reports\Bara global impact upgrade pl
 
 | Date | Build | Done when |
 |---|---|---|
-| **Wed Oct 28** | (you, done) Read the rules. (you, done) Theme: Build for Your World. (you) Create the WhatsApp Cloud API test number and add your phone as a recipient. Write and commit the 2023 pre-registration (metrics, baselines, threshold chosen on 2019). Queue 2023 FIRMS (S-NPP and NOAA-20) and CHIRPS. Expose the webhook through a public HTTPS tunnel and pass the GET challenge. | Prereg committed; downloads queued; webhook verified |
-| **Thu Oct 29** | Intake (first Muse Spark builder tasks): signature check, idempotent handler, immediate media download, ffmpeg OGG to WAV, Voice Transcribe, Muse Spark extraction to a JSON schema. | An English voice note from your phone becomes a validated JSON row |
+| **Wed Oct 28** | (you, done) Read the rules. (you, done) Theme: Build for Your World. (you) Create the WhatsApp Cloud API test number and add your phone as a recipient. Write and commit the 2023 pre-registration (metrics, baselines, threshold chosen on 2019). Queue 2023 FIRMS (S-NPP and NOAA-20) and CHIRPS. Expose the webhook through a public HTTPS tunnel and pass the GET challenge. (done) Webhook routes in `src/whatsapp_routes.py`, signature check built by Muse Spark (`src/whatsapp_webhook.py`). (you) cloudflared tunnel and Meta Configuration. | Prereg committed; downloads queued; webhook verified |
+| **Thu Oct 29** | Intake (Muse Spark builder tasks): media download (spec after a real voice note and photo payload are in the inbox), ffmpeg OGG to WAV (Voice Transcribe accepts only mono 16-bit PCM WAV at 16 or 24 kHz; install ffmpeg first), Voice Transcribe (`muse-voice-transcribe-1.0`, place names as `keywords`), Muse Spark extraction (spec and tests ready: `specs/field_report.md`; schema and grounding checks are Claude-owned in `src/report_schema.py`). | An English voice note from your phone becomes a validated JSON row |
 | **Fri Oct 30** | Fusion and re-plan: match report to hotspot and cell, state machine (unverified, confirmed, smouldering, dismissed), tier change, solver rerun, route diff, reply to the crew number, map update in the UI, follow-up question when location is missing. | Phone to map to crew phone works twice in a row |
-| **Sat Oct 31** | Proof: run the 2023 test once; 2023 dispatch replay; season grounding batch. Drought Code cut-off: keep it only if 2023 arrived, otherwise drop it and say so. | Results table frozen |
+| **Sat Oct 31** | Proof: run the 2023 test once; 2023 dispatch replay; season grounding batch. Drought Code: decided Oct 28, not in the headline model. All years arrived, but the pre-registration froze the 2023 models without it; adding it would mean the test no longer checks the committed model. At most one exploratory ablation after the test, labelled as such. | Results table frozen |
 | **Sun Nov 1** | S-NPP delivery ends 13:00 UTC. Live daily run on NOAA-20/21 with timestamps (needs `FIRMS_MAP_KEY`). Record 20 to 50 scripted English voice notes; score transcription and extraction. | Live plan renders; field-loop eval table |
 | **Mon Nov 2** | README: results, portability table (data swaps per region), users, impact chain, limitations, "who built what" table, how to rebuild `data/`. Feature freeze at midnight. | README complete |
 | **Tue Nov 3** | Script and record the 3-minute video plus a 60-second backup capture; rehearse "what breaks first". | Final video under 3:00 |
@@ -78,13 +78,13 @@ Stretch, only if ahead by Nov 1: Omnilingual ASR side by side with Voice Transcr
 - Triage tiers and exact dispatch solver; 2019 Jul-Oct replay: 13,460 vs 11,632 next-day fire cells reached (+15.7%) on fewer visits.
 - Muse Spark agent with tool calls, grounding checks, cost ledger, spend cap and cache; SAM 3.1 water masks; what-if chat, season replay, field photo reports, map self-check.
 - FastAPI + MapLibre/deck.gl web app, Bara logo, repo pushed to github.com/ewenliam/bara-peat-fire.
-- Drought Code (CEMS): 2011-2022 downloaded Oct 28 after fixing the fetch step; 2023-2025 and 2026 submitted Oct 28, the background loop fetches them.
+- Drought Code (CEMS): 2011-2025 plus 2026 interim on disk Oct 28. Not used in the frozen models (see Oct 31).
 
 ## Open items
 
 - [[TODO: verify]] VIIRS `type == 0` means "presumed vegetation fire".
 - DBSCAN chains very large fires into one cluster (Sept 2019: one cluster has 10,412 detections). Tune `EPS_KM` / `KM_PER_DAY` or add a max-duration rule.
-- Rain features are lagged 2 days. Live run needs a low-latency rain feed: CHIRPS final ends Sep 30, 2026; IMERG Early is the candidate.
+- Live rain feed (checked Oct 28). The frozen model uses CHIRPS 0.25 deg with a 2-day lag; final CHIRPS on disk ends 2026-09-30. CHIRPS preliminary (`products/CHIRPS-2.0/prelim/global_daily/netcdf/p25/`, monthly files) had Oct 1 to 25 on Oct 28 and updates in pentads, so on Nov 1 it likely still ends Oct 25; CHIRP also ends Oct 25. IMERG Early daily V07 (`GPM_3IMERGDE.07`) had Oct 27 on Oct 28 but needs a free NASA Earthdata login. Plan: CHIRPS prelim, gap days from IMERG Early averaged to 0.25 deg, and disclose that live rain mixes products the model was not trained on (training used CHIRPS final).
 - The chat number check cannot catch a number taken from the wrong scenario. Consider tagging each what-if result with a scenario id.
 - Map self-check gave one false alarm on its first run (sea crossing on Bangka). Rerun once.
 - Demo polish: overlapping stop labels in dense areas.

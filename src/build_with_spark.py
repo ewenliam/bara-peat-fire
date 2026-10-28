@@ -22,7 +22,7 @@ from llm import LEDGER, MetaLLM, call_cost, check_budget
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILD_LOG = ROOT / "logs" / "builds"
-MAX_TOKENS = 8000
+MAX_TOKENS = 16000  # reasoning plus code; 8000 ran out on field_report (all reasoning)
 
 SYSTEM = """You are the builder for Bara, a peat fire forecast and crew dispatch tool.
 Write exactly one Python module that meets the spec and passes the acceptance tests.
@@ -40,7 +40,8 @@ def module_spend(tag: str) -> float:
 
 
 def extract_code(text: str) -> str:
-    blocks = re.findall(r"```python\n(.*?)```", text, flags=re.S)
+    # fences only count at the start of a line: generated code may contain "```" in a string
+    blocks = re.findall(r"^```python[ \t]*\n(.*?)^```[ \t]*$", text, flags=re.S | re.M)
     if len(blocks) != 1:
         raise SystemExit(f"expected one python code block, got {len(blocks)}; see the build log")
     return blocks[0]
@@ -53,6 +54,8 @@ def main() -> None:
     ap.add_argument("target", type=Path)
     ap.add_argument("--cap", type=float, default=5.0, help="USD cap for this module")
     ap.add_argument("--feedback", type=Path, help="review notes or test output for a retry")
+    ap.add_argument("--effort", default="medium",
+                    choices=["minimal", "low", "medium", "high", "xhigh", "max"])
     args = ap.parse_args()
 
     tag = f"build:{args.target.stem}"
@@ -70,13 +73,14 @@ def main() -> None:
         user += f"\n\n## Feedback on the previous attempt\n\n{args.feedback.read_text(encoding='utf-8')}"
     messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": user}]
 
-    reply = llm.chat(messages, max_tokens=MAX_TOKENS, tag=tag)
+    reply = llm.chat(messages, max_tokens=MAX_TOKENS, tag=tag, reasoning_effort=args.effort)
     text = reply.choices[0].message.content or ""
 
     BUILD_LOG.mkdir(parents=True, exist_ok=True)
     stamp = time.strftime("%Y%m%d_%H%M%S")
     log_path = BUILD_LOG / f"{args.target.stem}_{stamp}.md"
-    log_path.write_text(f"# Build {tag} {stamp}\n\nmodel: {llm.model}\ncost_usd: {llm.run_cost:.6f}\n"
+    log_path.write_text(f"# Build {tag} {stamp}\n\nmodel: {llm.model}\neffort: {args.effort}\n"
+                        f"cost_usd: {llm.run_cost:.6f}\n"
                         f"finish_reason: {reply.choices[0].finish_reason}\n\n## Prompt\n\n{user}\n\n"
                         f"## Reply\n\n{text}\n", encoding="utf-8")
 

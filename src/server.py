@@ -25,6 +25,7 @@ from reports import list_reports, submit as submit_report
 from selfcheck import review
 from tools import FireTools
 from water import CHIP_PX
+from whatsapp_routes import router as whatsapp_router
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "outputs"
@@ -32,6 +33,7 @@ WEB = ROOT / "web"
 FIRST_DAY, LAST_DAY = "2019-01-08", "2019-12-30"
 
 app = FastAPI(title="Bara")
+app.include_router(whatsapp_router)  # /webhook; before the static mount at "/" so it wins
 
 
 @lru_cache(maxsize=12)

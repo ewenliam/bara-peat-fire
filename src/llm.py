@@ -4,7 +4,8 @@ Every call is appended to logs/meta_usage.jsonl (tokens, cost, cache hit). Befor
 goes out, its worst-case cost (estimated input + full max_tokens output) is added to the
 amount already spent; if that passes META_SPEND_CAP_USD the call is refused.
 
-Responses are cached in cache/meta/ by a hash of (model, messages, tools, max_tokens), so
+Responses are cached in cache/meta/ by a hash of (model, messages, tools, max_tokens,
+response_format, reasoning_effort), so
 rerunning the same agent run costs nothing and can be replayed without an API key.
 
 Set in .env (optional):
@@ -85,10 +86,17 @@ class MetaLLM:
         return self._client
 
     def chat(self, messages: list[dict], tools: list[dict] | None = None,
-             max_tokens: int = 4000, tag: str = "") -> ChatCompletion:
+             max_tokens: int = 4000, tag: str = "",
+             response_format: dict | None = None,
+             reasoning_effort: str | None = None) -> ChatCompletion:
+        # max_tokens caps reasoning plus visible output combined (dev.meta.ai/docs/reasoning)
         request = {"model": self.model, "messages": messages, "max_tokens": max_tokens}
         if tools:
             request["tools"] = tools
+        if response_format:  # structured output, e.g. {"type": "json_schema", ...}
+            request["response_format"] = response_format
+        if reasoning_effort:  # minimal, low, medium, high, xhigh, max
+            request["reasoning_effort"] = reasoning_effort
         key = hashlib.sha256(json.dumps(request, sort_keys=True).encode()).hexdigest()[:24]
         cached_path = CACHE_DIR / f"{key}.json"
 
