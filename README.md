@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="web/brand/bara-logo-light.png">
+    <img src="web/brand/bara-logo-dark.png" alt="Bara logo" width="220">
+  </picture>
+</p>
+
 # Bara
 
 *Bara* is Indonesian for embers: peat fires smoulder underground like embers. Bara is a
