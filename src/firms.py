@@ -4,14 +4,17 @@ from pathlib import Path
 import pandas as pd
 
 RAW_DIR = Path(__file__).resolve().parents[1] / "data" / "raw"
-URL = "https://firms.modaps.eosdis.nasa.gov/data/country/viirs-snpp/{year}/viirs-snpp_{year}_Indonesia.csv"
+URL = "https://firms.modaps.eosdis.nasa.gov/data/country/{product}/{year}/{product}_{year}_Indonesia.csv"
+# FIRMS archive folder per satellite; NOAA-20 is filed as "jpss1"
+PRODUCTS = {"snpp": "viirs-snpp", "noaa20": "viirs-jpss1"}
 
 # Sumatra + Kalimantan (Indonesian side), the main peat fire regions.
 REGION_BBOX = {"lon_min": 95.0, "lon_max": 119.5, "lat_min": -6.5, "lat_max": 6.0}
 
 
-def load_years(years: list[int], bbox: dict[str, float] = REGION_BBOX) -> pd.DataFrame:
-    """Return vegetation-fire detections for the given years inside bbox.
+def load_years(years: list[int], bbox: dict[str, float] = REGION_BBOX,
+               sensor: str = "snpp") -> pd.DataFrame:
+    """Return vegetation-fire detections for the given years inside bbox, from one satellite.
 
     Filters:
     - type == 0: assumed "presumed vegetation fire" (types 1-3 are volcano, static
@@ -20,9 +23,10 @@ def load_years(years: list[int], bbox: dict[str, float] = REGION_BBOX) -> pd.Dat
     """
     frames = []
     for year in years:
-        path = RAW_DIR / f"viirs-snpp_{year}_Indonesia.csv"
+        product = PRODUCTS[sensor]
+        path = RAW_DIR / f"{product}_{year}_Indonesia.csv"
         if not path.exists():
-            raise FileNotFoundError(f"{path} missing; download from {URL.format(year=year)}")
+            raise FileNotFoundError(f"{path} missing; download from {URL.format(product=product, year=year)}")
         frames.append(pd.read_csv(path))
     df = pd.concat(frames, ignore_index=True)
 

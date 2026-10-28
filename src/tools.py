@@ -1,8 +1,7 @@
 """Deterministic tools the Muse Spark agent calls. Every number in a briefing comes from here.
 
-v0 replays 2019 only: the spread and new-fire models were scored on 2019 and the feature
-tables exist for it. Note that 2019 was also the early-stopping year, so it is not a clean
-test; the held-out test is 2023.
+v0 replays 2019 and 2023: the feature tables exist for both. 2019 was the early-stopping
+year, so it is not a clean test; 2023 is the held-out test (src/test_2023.py).
 
 Usage (offline check, no API calls):
     python src/tools.py --date 2019-09-15
@@ -29,7 +28,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PROC = ROOT / "data" / "processed"
 MODELS = ROOT / "models"
 OUT = ROOT / "outputs"
-REPLAY_YEARS = (2019,)
+REPLAY_YEARS = (2019, 2023)  # 2023 is the held-out test year (PREREGISTRATION_2023.md)
 SPREAD_MODEL = "spread_y_2019_2019"
 IGNITION_MODEL = "ignition_y_ign_2019"
 FULL_SPEC = "LightGBM + peat + rain"
@@ -154,7 +153,7 @@ class FireTools:
         if hasattr(self, "cells"):
             return
         booster, threshold = _model(SPREAD_MODEL)
-        cells = _rows("samples_2019_2019_feat", self.date)
+        cells = _rows(f"samples_{self.date.year}_{self.date.year}_feat", self.date)
         self.X = cells[booster.feature_name()]
         cells["p"] = booster.predict(self.X)
         tree = cKDTree(_km(self.hotspots["longitude"].to_numpy(),
@@ -283,7 +282,7 @@ class FireTools:
 
     def forecast_new_fires(self, top_n: int = 8) -> dict:
         booster, threshold = _model(IGNITION_MODEL)
-        cells = _rows("ign_2019", self.date)
+        cells = _rows(f"ign_{self.date.year}", self.date)
         X = cells[booster.feature_name()]
         cells["p"] = booster.predict(X)
         top = cells.sort_values("p", ascending=False).head(top_n)
