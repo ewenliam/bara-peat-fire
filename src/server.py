@@ -18,6 +18,7 @@ from pydantic import BaseModel
 
 from agent import run as run_agent, save_run
 from chat import ask
+from firms import load_years
 from imagery import chip_key
 from llm import BudgetExceeded, spend_cap, spent_usd
 from places import crew_bases, locate
@@ -43,6 +44,14 @@ def tools_for(day: str) -> FireTools:
     t = FireTools(day)
     t.table()
     return t
+
+
+@lru_cache(maxsize=4)
+def median_daily_detections(year: int) -> int:
+    """Median detections per day over the whole year, so a crisis day can be read in context."""
+    per_day = load_years([year]).groupby("acq_date").size()
+    days = pd.date_range(f"{year}-01-01", f"{year}-12-31")
+    return int(per_day.reindex(days, fill_value=0).median())
 
 
 def _r(x, n: int = 1) -> float:
@@ -92,6 +101,7 @@ def day(date: str) -> dict:
         "date": date, "forecast_for": spread["forecast_for"],
         "kpis": {
             "detections_today": detect["detections_today"],
+            "detections_median_day": median_daily_detections(int(date[:4])),
             "clusters_active_today": detect["clusters_active_today"],
             "p1": int(counts.get("P1", 0)), "p2": int(counts.get("P2", 0)),
             "expected_new_cells": spread["expected_new_cells_total"],
@@ -213,7 +223,8 @@ app.mount("/outputs", StaticFiles(directory=OUT), name="outputs")
 
 @app.get("/")
 def index() -> FileResponse:
-    return FileResponse(WEB / "index.html")
+    # always revalidate the page, so the ?v= tags on app.js and style.css reach the browser
+    return FileResponse(WEB / "index.html", headers={"Cache-Control": "no-cache"})
 
 
 app.mount("/", StaticFiles(directory=WEB), name="web")

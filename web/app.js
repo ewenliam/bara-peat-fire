@@ -1,6 +1,9 @@
 // Bara front end: one map (MapLibre + deck.gl) and a side panel. All numbers come from /api.
-const TIER_RGB = { P1: [239, 68, 68], P2: [245, 158, 11], P3: [100, 116, 139] };
-const ROUTE_RGB = [96, 165, 250];
+// Field briefing palette (web/style.css): ember P1 from the Bara mark, ochre P2, stone P3, forest routes
+const TIER_RGB = { P1: [178, 38, 30], P2: [154, 91, 5], P3: [125, 117, 107] };
+const ROUTE_RGB = [30, 91, 79];
+const INK = [31, 27, 23];
+const PAPER = [250, 247, 240];
 const state = { date: null, day: null, briefing: null, replay: null, selected: null, meta: null };
 
 const $ = (id) => document.getElementById(id);
@@ -16,11 +19,19 @@ async function api(path, opts) {
 // ---------- map
 const map = new maplibregl.Map({
   container: "map",
-  style: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
+  style: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
   center: [110.5, -1.5], zoom: 5.2, attributionControl: { compact: true },
   preserveDrawingBuffer: true,  // lets the map self-check take a snapshot of what is on screen
 });
 map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
+// Warm the light basemap to paper: land, water and parks only; labels and roads stay as they are
+map.on("style.load", () => {
+  for (const l of map.getStyle().layers) {
+    if (l.type === "background") map.setPaintProperty(l.id, "background-color", "#f3eee4");
+    else if (l.type === "fill" && /water/.test(l.id)) map.setPaintProperty(l.id, "fill-color", "#d9e0dc");
+    else if (l.type === "fill" && /landcover|park|wood|forest/.test(l.id)) map.setPaintProperty(l.id, "fill-color", "#e7e3d3");
+  }
+});
 const overlay = new deck.MapboxOverlay({ interleaved: true, layers: [], getTooltip: tooltip });
 map.addControl(overlay);
 
@@ -49,7 +60,7 @@ function render() {
       getPosition: (c) => [c.lon, c.lat],
       getRadius: (c) => Math.min(Math.max(Math.sqrt(c.risk) * 900, 1500), 14000),
       getFillColor: (c) => [...TIER_RGB[c.tier], c.tier === "P3" ? 120 : 200],
-      getLineColor: (c) => (state.selected === c.id ? [255, 255, 255, 255] : [11, 17, 32, 200]),
+      getLineColor: (c) => (state.selected === c.id ? [...INK, 255] : [...PAPER, 230]),
       stroked: true, lineWidthMinPixels: 1,
       updateTriggers: { getLineColor: state.selected },
       onClick: ({ object }) => object && selectCluster(object.id),
@@ -57,12 +68,12 @@ function render() {
     new deck.ScatterplotLayer({
       id: "truth", data: truth ? clusters.filter((c) => c.next_day_cells > 0) : [], radiusUnits: "meters",
       getPosition: (c) => [c.lon, c.lat], getRadius: (c) => Math.sqrt(c.next_day_cells) * 1100,
-      filled: false, stroked: true, getLineColor: [255, 255, 255, 220], lineWidthMinPixels: 2,
+      filled: false, stroked: true, getLineColor: [...INK, 200], lineWidthMinPixels: 2,
     }),
     new deck.ScatterplotLayer({
       id: "new-fires", data: d.new_fires, pickable: true, radiusUnits: "meters",
-      getPosition: (c) => [c.lon, c.lat], getRadius: 5500, filled: true, getFillColor: [168, 85, 247, 40],
-      stroked: true, getLineColor: [168, 85, 247, 230], lineWidthMinPixels: 2,
+      getPosition: (c) => [c.lon, c.lat], getRadius: 5500, filled: true, getFillColor: [122, 46, 110, 30],
+      stroked: true, getLineColor: [122, 46, 110, 230], lineWidthMinPixels: 2,
     }),
     new deck.PathLayer({
       id: "routes", data: d.routes, widthUnits: "pixels", getWidth: 3, getColor: [...ROUTE_RGB, 230],
@@ -70,25 +81,25 @@ function render() {
     }),
     new deck.ScatterplotLayer({
       id: "bases", data: d.bases, pickable: true, radiusUnits: "pixels", getRadius: 5,
-      getPosition: (b) => [b.lon, b.lat], getFillColor: [229, 236, 246], stroked: true, getLineColor: [11, 17, 32], lineWidthMinPixels: 2,
+      getPosition: (b) => [b.lon, b.lat], getFillColor: PAPER, stroked: true, getLineColor: INK, lineWidthMinPixels: 2,
     }),
     new deck.TextLayer({
       id: "stop-labels", data: labels, getPosition: (s) => [s.lon, s.lat], getText: (s) => s.text,
-      getSize: 13, getColor: [229, 236, 246], getPixelOffset: [0, -16], fontFamily: "Fira Code, monospace",
-      background: true, getBackgroundColor: [17, 26, 46, 220], backgroundPadding: [4, 2],
+      getSize: 13, getColor: INK, getPixelOffset: [0, -16], fontFamily: "IBM Plex Mono, monospace",
+      background: true, getBackgroundColor: [...PAPER, 235], backgroundPadding: [4, 2],
     }),
   ];
   const today = new Set(d.routes.map((r) => `${r.base}|${r.stops.map((s) => s.cluster_id).join(",")}`));
   const changed = (state.scenario || []).filter((r) => !today.has(`${r.base}|${r.order.join(",")}`));
   if (changed.length) layers.push(new deck.PathLayer({
-    id: "scenario", data: changed, widthUnits: "pixels", getWidth: 5, getColor: [251, 191, 36, 230],
+    id: "scenario", data: changed, widthUnits: "pixels", getWidth: 5, getColor: [214, 124, 38, 230],
     getPath: (r) => r.path, capRounded: true, jointRounded: true,
   }));
   if (typeof reportLayers === "function") layers.push(...reportLayers());
   const sel = d.clusters.find((c) => c.id === state.selected);
   if (sel) layers.push(new deck.ScatterplotLayer({
     id: "origin", data: [sel], radiusUnits: "pixels", getRadius: 6, getPosition: (c) => [c.origin_lon, c.origin_lat],
-    getFillColor: [255, 255, 255], stroked: true, getLineColor: [239, 68, 68], lineWidthMinPixels: 3,
+    getFillColor: PAPER, stroked: true, getLineColor: TIER_RGB.P1, lineWidthMinPixels: 3,
   }));
   overlay.setProps({ layers });
 }
@@ -97,8 +108,8 @@ function render() {
 function renderKpis() {
   const k = state.day.kpis;
   const items = [
-    ["Hotspots today", fmt(k.detections_today), "NASA VIIRS"],
-    ["Active fires", fmt(k.clusters_active_today), "clusters"],
+    ["Hotspots today", fmt(k.detections_today), `NASA VIIRS; median day in ${state.day.date.slice(0, 4)}: ${fmt(k.detections_median_day)}`],
+    ["Fire clusters", fmt(k.clusters_active_today), "hotspots grouped by distance and time"],
     ["P1 brigade now", fmt(k.p1), "peat-weighted risk 5+", "p1"],
     ["P2 village watch", fmt(k.p2), "risk 1 to 5", "p2"],
     ["Expected new cells", fmt(k.expected_new_cells), `tomorrow, ${state.day.forecast_for}`],
@@ -278,9 +289,9 @@ function drawHudChart() {
   const f = rp.frames, n = f.length;
   const max = Math.max(...f.map((x) => x.bara_reached));
   const line = (key) => f.map((x, i) => `${(i / (n - 1)) * 1000},${88 - (x[key] / max) * 80}`).join(" ");
-  $("hud-chart").innerHTML = `<polyline points="${line("biggest_reached")}" fill="none" stroke="#94a3b8" stroke-width="2" vector-effect="non-scaling-stroke"/>
-    <polyline points="${line("bara_reached")}" fill="none" stroke="#60a5fa" stroke-width="2" vector-effect="non-scaling-stroke"/>
-    <line id="hud-cursor" x1="0" x2="0" y1="0" y2="90" stroke="#e5ecf6" stroke-width="1" vector-effect="non-scaling-stroke"/>`;
+  $("hud-chart").innerHTML = `<polyline points="${line("biggest_reached")}" fill="none" stroke="#7d756b" stroke-width="2" vector-effect="non-scaling-stroke"/>
+    <polyline points="${line("bara_reached")}" fill="none" stroke="#1e5b4f" stroke-width="2" vector-effect="non-scaling-stroke"/>
+    <line id="hud-cursor" x1="0" x2="0" y1="0" y2="90" stroke="#1f1b17" stroke-width="1" vector-effect="non-scaling-stroke"/>`;
 }
 
 function showReplayFrame(i) {
@@ -301,9 +312,9 @@ function showReplayFrame(i) {
       getFillColor: (c) => [...tierRgb[c[2]], 190] }),
     new deck.ScatterplotLayer({ id: "r-truth", data: f.clusters.filter((c) => c[4] > 0), radiusUnits: "meters",
       getPosition: (c) => [c[0], c[1]], getRadius: (c) => Math.sqrt(c[4]) * 1100, filled: false, stroked: true,
-      getLineColor: [255, 255, 255, 200], lineWidthMinPixels: 1.5 }),
-    new deck.PathLayer({ id: "r-biggest", data: f.biggest, getPath: (p) => p, getColor: [148, 163, 184, 170], widthUnits: "pixels", getWidth: 2 }),
-    new deck.PathLayer({ id: "r-bara", data: f.bara, getPath: (p) => p, getColor: [96, 165, 250, 240], widthUnits: "pixels", getWidth: 3 }),
+      getLineColor: [...INK, 190], lineWidthMinPixels: 1.5 }),
+    new deck.PathLayer({ id: "r-biggest", data: f.biggest, getPath: (p) => p, getColor: [...TIER_RGB.P3, 170], widthUnits: "pixels", getWidth: 2 }),
+    new deck.PathLayer({ id: "r-bara", data: f.bara, getPath: (p) => p, getColor: [...ROUTE_RGB, 240], widthUnits: "pixels", getWidth: 3 }),
   ] });
 }
 
@@ -412,8 +423,8 @@ async function sendChat(text) {
   refreshSpend();
 }
 // ---------- field photo reports
-const KIND_RGB = { confirm: [34, 197, 94], escalate: [239, 68, 68], new_fire: [239, 68, 68], burn_scar: [148, 163, 184],
-  possible_false_alarm: [251, 191, 36], clear: [148, 163, 184], unclear: [148, 163, 184] };
+const KIND_RGB = { confirm: [47, 110, 70], escalate: TIER_RGB.P1, new_fire: TIER_RGB.P1, burn_scar: TIER_RGB.P3,
+  possible_false_alarm: TIER_RGB.P2, clear: TIER_RGB.P3, unclear: TIER_RGB.P3 };
 const rep = { list: [], credits: null, pick: false, lat: null, lon: null, file: null, note: "" };
 
 async function loadReports() {
@@ -504,9 +515,9 @@ function reportLayers() {
   const pts = rep.list.filter((r) => r.decision);
   const links = pts.map((r) => { const c = d.clusters.find((x) => x.id === r.decision.nearest_cluster); return c && r.decision.nearest_cluster_km <= 5 ? { from: [r.lon, r.lat], to: [c.lon, c.lat] } : null; }).filter(Boolean);
   return [
-    new deck.LineLayer({ id: "report-links", data: links, getSourcePosition: (l) => l.from, getTargetPosition: (l) => l.to, getColor: [229, 236, 246, 160], getWidth: 1.5 }),
+    new deck.LineLayer({ id: "report-links", data: links, getSourcePosition: (l) => l.from, getTargetPosition: (l) => l.to, getColor: [...INK, 140], getWidth: 1.5 }),
     new deck.ScatterplotLayer({ id: "reports", data: pts, radiusUnits: "pixels", getRadius: 8, getPosition: (r) => [r.lon, r.lat],
-      getFillColor: (r) => KIND_RGB[r.decision.kind] || [148, 163, 184], stroked: true, getLineColor: [255, 255, 255], lineWidthMinPixels: 2 }),
+      getFillColor: (r) => KIND_RGB[r.decision.kind] || TIER_RGB.P3, stroked: true, getLineColor: INK, lineWidthMinPixels: 2 }),
   ];
 }
 

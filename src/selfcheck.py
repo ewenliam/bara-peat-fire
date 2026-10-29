@@ -23,8 +23,9 @@ MAX_TOKENS = 8000
 CLUSTER_RE = r"\bC\d+\b"
 
 PROMPT = """You review the map of a peat fire crew plan before it goes to a commander.
-The image is the live map: red dots are P1 clusters (brigade now), orange P2, blue lines are crew
-routes from a base (white dot) through numbered stops labelled like "1 C4". The JSON below is
+The image is the live map on a light paper-coloured basemap: dark red dots are P1 clusters
+(brigade now), ochre-brown dots P2, dark green lines are crew routes from a base (pale dot with a
+dark outline) through numbered stops labelled like "1 C4". The JSON below is
 the plan the map was drawn from.
 
 Check the map against the plan and against the geography you can see:

@@ -159,10 +159,13 @@ def readings(token: str) -> list[tuple[float, int]]:
 
 
 def grounded(token: str, pool: list[float], percent: bool) -> bool:
+    """True if the token matches a tool number. Tokens carry no sign (NUMBER skips "-"), and
+    text says "-86.0" or "fell by 86.0" for a tool value of -86.0, so magnitudes are compared.
+    This checks that a number came from a tool, not its direction."""
     for value, decimals in readings(token):
         tol = 0.5 * 10 ** -decimals + 1e-9
         for a in pool:
-            if abs(value - (a * 100 if percent else a)) <= tol:
+            if abs(value - abs(a * 100 if percent else a)) <= tol:
                 return True
     return False
 

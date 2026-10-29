@@ -21,12 +21,16 @@ import uvicorn
 from fastapi import FastAPI
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-os.environ["WA_APP_SECRET"] = "test-app-secret"
-os.environ["WA_VERIFY_TOKEN"] = "test-verify-token-123"
+TEST_ENV = Path(tempfile.mkdtemp()) / ".env"  # never the real .env
+TEST_ENV.write_text("WA_APP_SECRET=test-app-secret\nWA_VERIFY_TOKEN=test-verify-token-123\n", encoding="utf-8")
 
 import whatsapp_routes  # noqa: E402
 
+whatsapp_routes.ENV_FILE = TEST_ENV
+
 whatsapp_routes.INBOX = Path(tempfile.mkdtemp()) / "inbox.jsonl"
+PROCESSED: list[list[dict]] = []
+whatsapp_routes.PROCESS = PROCESSED.append  # never the real pipeline: no API calls in tests
 app = FastAPI()
 app.include_router(whatsapp_routes.router)
 
@@ -73,6 +77,11 @@ def test_2_post_stores_message_once():
     assert r.status_code == 200 and r.json() == {"stored": 0}
     rows = inbox_rows()
     assert len(rows) == 1 and rows[0]["id"] == "wamid.TEST1" and rows[0]["type"] == "text"
+    for _ in range(50):  # background task runs after the response
+        if PROCESSED:
+            break
+        time.sleep(0.05)
+    assert [[r["id"] for r in batch] for batch in PROCESSED] == [["wamid.TEST1"]], PROCESSED
     assert rows[0]["message"]["text"]["body"] == "Api di Kalampangan, asap tebal"
 
 
