@@ -4,13 +4,14 @@ Usage: from field_report import extract; extract("smoke near canal", llm=fake)
 """
 
 import json
-from typing import Optional
+from typing import Any, Optional
 
 from llm import MetaLLM
 from pydantic import ValidationError
 from report_schema import FieldReport, check_grounding, missing_fields
 
-MAX_TOKENS = 2000
+MAX_TOKENS = 8000
+REASONING_EFFORT = "low"
 
 SYSTEM_PROMPT = (
     "You extract fire reports for a peat fire brigade in Sumatra and Kalimantan.\n"
@@ -98,7 +99,7 @@ def extract(
     caption: Optional[str] = None,
     place_hints: Optional[list[str]] = None,
     has_shared_location: bool = False,
-    llm=None,
+    llm: Any = None,
 ) -> dict:
     """Extract a FieldReport with grounding and missing field checks."""
     if not transcript or not transcript.strip():
@@ -119,13 +120,24 @@ def extract(
         max_tokens=MAX_TOKENS,
         tag="report extract",
         response_format=response_format(),
+        reasoning_effort=REASONING_EFFORT,
     )
+    cost = round(llm.run_cost, 6)
+    calls = llm.run_calls
+    if reply.choices[0].finish_reason == "length":
+        return {
+            "report": None,
+            "error": "truncated: model ran out of tokens",
+            "grounding_problems": [],
+            "missing": [],
+            "grounded": False,
+            "cost_usd": cost,
+            "llm_calls": calls,
+        }
     content = reply.choices[0].message.content
     if content is None:
         content = ""
     report, error = parse_reply(content)
-    cost = round(llm.run_cost, 6)
-    calls = llm.run_calls
     if report is None:
         return {
             "report": None,

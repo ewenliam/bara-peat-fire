@@ -27,8 +27,9 @@ GOOD = {"fire_state": "active_flames", "place_text": "Kalampangan village", "lat
 
 
 class FakeLLM:
-    def __init__(self, content: str):
+    def __init__(self, content: str, finish_reason: str = "stop"):
         self.content = content
+        self.finish_reason = finish_reason
         self.calls = []
         self.run_cost = 0.0012345678
         self.run_calls = [{"tag": "report extract"}]
@@ -36,7 +37,7 @@ class FakeLLM:
     def chat(self, messages, **kwargs):
         self.calls.append((messages, kwargs))
         return SimpleNamespace(choices=[SimpleNamespace(message=SimpleNamespace(content=self.content),
-                                                        finish_reason="stop")])
+                                                        finish_reason=self.finish_reason)])
 
 
 def test_response_format():
@@ -94,8 +95,17 @@ def test_extract_grounded():
     assert out["report"]["needs"] == ["water"] and out["cost_usd"] == 0.001235
     messages, kwargs = llm.calls[0]
     assert kwargs == {"max_tokens": field_report.MAX_TOKENS, "tag": "report extract",
-                      "response_format": response_format()}
+                      "response_format": response_format(), "reasoning_effort": "low"}
+    assert field_report.MAX_TOKENS == 8000 and field_report.REASONING_EFFORT == "low"
     assert messages == build_messages(TRANSCRIPT, None, ["Kalampangan"])
+
+
+def test_truncated_reply_is_not_parsed():
+    for content in ["", json.dumps(GOOD)]:  # even valid-looking JSON is not trusted when cut off
+        out = extract(TRANSCRIPT, llm=FakeLLM(content, finish_reason="length"))
+        assert out["error"] == "truncated: model ran out of tokens", out["error"]
+        assert out["report"] is None and out["grounded"] is False
+        assert out["cost_usd"] == 0.001235 and out["llm_calls"] == [{"tag": "report extract"}]
 
 
 def test_extract_ungrounded_and_missing_location():

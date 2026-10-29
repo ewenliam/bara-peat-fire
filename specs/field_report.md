@@ -22,7 +22,8 @@ the JSON comes back as a string in `choices[0].message.content`.
 
 ```python
 SYSTEM_PROMPT: str
-MAX_TOKENS: int  # 2000
+MAX_TOKENS: int  # 8000 (covers reasoning plus the JSON; 2000 ran out on a real note)
+REASONING_EFFORT: str  # "low": this is extraction, not hard reasoning
 
 def response_format() -> dict
 def build_messages(transcript: str, caption: str | None = None,
@@ -52,7 +53,10 @@ def extract(transcript: str, caption: str | None = None, place_hints: list[str] 
   - If `transcript` is empty or only whitespace: return without calling the model, with
     `error == "empty transcript"`.
   - Otherwise use `llm` if given, else `MetaLLM()` from `src/llm.py`, and call
-    `llm.chat(messages, max_tokens=MAX_TOKENS, tag="report extract", response_format=response_format())`.
+    `llm.chat(messages, max_tokens=MAX_TOKENS, tag="report extract", response_format=response_format(),
+    reasoning_effort=REASONING_EFFORT)`. `max_tokens` caps reasoning plus visible output.
+  - If `reply.choices[0].finish_reason == "length"`, do not parse: return no report with
+    `error == "truncated: model ran out of tokens"` (cost and calls still reported).
   - Returns a dict with exactly these keys: `report` (`FieldReport.model_dump()` or None),
     `error` (str or None), `grounding_problems` (list from `check_grounding`, empty if no
     report), `missing` (list from `missing_fields(report, has_shared_location)`, empty if no
