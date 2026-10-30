@@ -39,6 +39,7 @@ REPORTS = WA_DIR / "reports.jsonl"
 ENV_FILE = ROOT / ".env"
 MEDIA_DIR = WA_DIR / "media"
 WAV_DIR = WA_DIR / "wav"
+UPLOAD_DIR = WA_DIR / "uploads"
 
 # Recognition hints for Voice Transcribe: places plus fire words it misheard ("peat" as "pit")
 KEYWORDS = ["Bara", "Kalampangan", "Bukit Tunggal", "Sebangau", "Palangka Raya", "peat", "smouldering", "hotspot", "canal"]
@@ -83,12 +84,32 @@ def _append(row: dict) -> None:
             f.write(json.dumps(row, ensure_ascii=False, default=str) + "\n")
 
 
+def _new_row(msg_id: str, kind: str, received_at: str) -> dict:
+    return {"id": msg_id, "type": kind, "received_at": received_at,
+            "processed_at": time.strftime("%Y-%m-%dT%H:%M:%S"), "status": "ok", "error": None,
+            "media": None, "transcript": None, "transcribe_cost_usd": 0.0, "extraction": None}
+
+
+def _listen(out: dict, audio: Path) -> None:
+    """WAV conversion, then Muse Voice Transcribe."""
+    wav = ogg_to_wav(audio, WAV_DIR, ffmpeg=ffmpeg_path())
+    heard = transcribe(wav, _env("META_API_KEY"), keywords=KEYWORDS, languages=LANGUAGES,
+                       base_url=_env("META_BASE_URL") or "https://api.meta.ai/v1")
+    out.update(transcript=heard["transcript"], transcribe_cost_usd=heard["cost_usd"])
+
+
+def _read(out: dict) -> None:
+    """Muse Spark extraction of the transcript into a field report, with our grounding checks."""
+    extraction = extract(out["transcript"], place_hints=PLACE_HINTS)
+    out["extraction"] = {k: v for k, v in extraction.items() if k != "llm_calls"}
+    if not extraction["grounded"]:
+        out["status"] = "needs_review"  # no report, or a claim not backed by the words said
+
+
 def process(row: dict) -> dict:
     """Run one inbox row through the pipeline and append the result to reports.jsonl."""
     kind = row.get("type")
-    out = {"id": row["id"], "type": kind, "received_at": row.get("received_at"),
-           "processed_at": time.strftime("%Y-%m-%dT%H:%M:%S"), "status": "ok", "error": None,
-           "media": None, "transcript": None, "transcribe_cost_usd": 0.0, "extraction": None}
+    out = _new_row(row["id"], kind, row.get("received_at"))
     allowed = {s.strip() for s in _env("WA_ALLOWED_SENDERS").split(",") if s.strip()}
     if row.get("from") not in allowed:
         out.update(status="skipped", error="sender not in WA_ALLOWED_SENDERS")
@@ -103,19 +124,31 @@ def process(row: dict) -> dict:
             out["media"] = {"path": media["path"].relative_to(ROOT).as_posix(), "mime_type": media["mime_type"],
                             "bytes": media["bytes"], "caption": body.get("caption")}
         if kind == "audio":
-            wav = ogg_to_wav(media["path"], WAV_DIR, ffmpeg=ffmpeg_path())
-            heard = transcribe(wav, _env("META_API_KEY"), keywords=KEYWORDS, languages=LANGUAGES,
-                               base_url=_env("META_BASE_URL") or "https://api.meta.ai/v1")
-            out.update(transcript=heard["transcript"], transcribe_cost_usd=heard["cost_usd"])
+            _listen(out, media["path"])
         elif kind == "text":
             out["transcript"] = msg["text"]["body"]
         elif kind != "image":
             out.update(status="unsupported", error=f"message type {kind!r} is not handled")
         if out["transcript"]:
-            extraction = extract(out["transcript"], place_hints=PLACE_HINTS)
-            out["extraction"] = {k: v for k, v in extraction.items() if k != "llm_calls"}
-            if not extraction["grounded"]:
-                out["status"] = "needs_review"  # no report, or a claim not backed by the words said
+            _read(out)
+    except EXPECTED_ERRORS as e:
+        out.update(status="error", error=f"{type(e).__name__}: {e}")
+    _append(out)
+    return out
+
+
+def process_upload(audio: bytes, suffix: str) -> dict:
+    """A voice note recorded in the Bara app instead of WhatsApp (the fallback when WhatsApp or
+    the tunnel is down): same steps, marked with source "browser"."""
+    stamp = time.strftime("%Y%m%d_%H%M%S")
+    path = UPLOAD_DIR / f"web_{stamp}{suffix}"
+    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(audio)
+    out = _new_row(f"web.{stamp}", "audio", time.strftime("%Y-%m-%dT%H:%M:%S"))
+    out.update(source="browser", media={"path": path.relative_to(ROOT).as_posix(), "bytes": len(audio)})
+    try:
+        _listen(out, path)
+        _read(out)
     except EXPECTED_ERRORS as e:
         out.update(status="error", error=f"{type(e).__name__}: {e}")
     _append(out)

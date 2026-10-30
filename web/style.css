@@ -183,3 +183,6 @@ details summary { cursor: pointer; margin-top: 8px; }
 .phone-empty { color: var(--muted); font-size: 13px; text-align: center; margin: 24px 8px; }
 .line-key.replan { background: #d67c26; }
 @media (max-width: 1100px) { .phone { display: none !important; } }  /* the demo screen is wide; phones get the panel */
+.phone-rec { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-top: 1px solid var(--border); background: var(--surface); }
+.phone-rec .btn { min-height: 36px; padding: 6px 10px; font-size: 13px; }
+.phone-rec #rec-status { font-size: 11px; color: var(--muted); }

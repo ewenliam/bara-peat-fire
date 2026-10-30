@@ -161,6 +161,16 @@ def test_error_rows_are_retried():
     assert [r["status"] for r in out] == ["ok"] and "wamid.E" in intake.processed_ids()
 
 
+def test_browser_upload_runs_same_steps():
+    fresh()
+    intake.UPLOAD_DIR = intake.ROOT / "uploads"
+    out = intake.process_upload(b"webm audio bytes", ".webm")
+    assert [c[0] for c in CALLS] == ["wav", "transcribe", "extract"], CALLS
+    assert out["source"] == "browser" and out["id"].startswith("web.") and out["status"] == "ok"
+    assert (intake.ROOT / out["media"]["path"]).read_bytes() == b"webm audio bytes"
+    assert stored()[0]["id"] == out["id"]
+
+
 def test_process_pending_reads_inbox():
     fresh()
     intake.INBOX.write_text(json.dumps(row("text", msg_id="wamid.P")) + "\n", encoding="utf-8")

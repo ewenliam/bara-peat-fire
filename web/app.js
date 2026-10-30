@@ -592,3 +592,40 @@ function fieldLayers() {
 }
 
 setInterval(loadField, 10000);
+
+// Record a field report in the browser: the fallback when WhatsApp or the tunnel is down.
+// Same steps on the server (intake.process_upload): Voice Transcribe, Muse Spark, fusion.
+const rec = { media: null, chunks: [] };
+$("rec-btn").onclick = async () => {
+  if (rec.media && rec.media.state === "recording") { rec.media.stop(); return; }
+  let stream;
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  } catch {
+    $("rec-status").textContent = "Microphone not available in this browser.";
+    return;
+  }
+  rec.chunks = [];
+  rec.media = new MediaRecorder(stream);
+  rec.media.ondataavailable = (e) => { if (e.data.size) rec.chunks.push(e.data); };
+  rec.media.onstop = async () => {
+    stream.getTracks().forEach((t) => t.stop());
+    $("rec-btn").textContent = "Record a field report";
+    $("rec-status").textContent = "Transcribing (Muse Voice Transcribe), reading (Muse Spark)...";
+    const blob = new Blob(rec.chunks, { type: rec.media.mimeType || "audio/webm" });
+    const form = new FormData();
+    form.append("audio", blob, blob.type.includes("ogg") ? "note.ogg" : "note.webm");
+    try {
+      const r = await api("/api/field/voice", { method: "POST", body: form });
+      $("rec-status").textContent = r.status === "error" ? `Failed: ${r.error}` : "Received.";
+    } catch (e) {
+      $("rec-status").textContent = e.message;
+    }
+    field.sig = null;
+    loadField();
+    refreshSpend();
+  };
+  rec.media.start();
+  $("rec-btn").textContent = "Stop and send";
+  $("rec-status").textContent = "Recording...";
+};

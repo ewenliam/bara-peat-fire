@@ -11,7 +11,7 @@ from functools import lru_cache
 from pathlib import Path
 
 import pandas as pd
-from fastapi import FastAPI, Form, HTTPException, UploadFile
+from fastapi import Depends, FastAPI, Form, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -20,6 +20,7 @@ from agent import run as run_agent, save_run
 from chat import ask
 from firms import load_years
 from fusion import RECENT_H, fuse_day, recent_reports
+from intake import process_upload
 from imagery import chip_key
 from llm import BudgetExceeded, spend_cap, spent_usd
 from places import crew_bases, locate
@@ -53,6 +54,14 @@ def median_daily_detections(year: int) -> int:
     per_day = load_years([year]).groupby("acq_date").size()
     days = pd.date_range(f"{year}-01-01", f"{year}-12-31")
     return int(per_day.reindex(days, fill_value=0).median())
+
+
+def local_only(request: Request) -> None:
+    """Endpoints that spend Meta API money answer only on this laptop, never through the public
+    tunnel (run_demo.py), so a stranger with the tunnel address cannot use up the budget."""
+    through_tunnel = "cf-ray" in request.headers or "cf-connecting-ip" in request.headers
+    if through_tunnel or not request.client or request.client.host not in ("127.0.0.1", "::1"):
+        raise HTTPException(403, "This action runs only on the demo laptop.")
 
 
 def _r(x, n: int = 1) -> float:
@@ -142,7 +151,7 @@ def briefing(date: str) -> dict:
     return {**saved, "water": _water_images(date, saved)}
 
 
-@app.post("/api/briefing")
+@app.post("/api/briefing", dependencies=[Depends(local_only)])
 def make_briefing(date: str) -> dict:
     tools_for(date)
     try:
@@ -157,7 +166,7 @@ class ChatRequest(BaseModel):
     messages: list[dict]
 
 
-@app.post("/api/chat")
+@app.post("/api/chat", dependencies=[Depends(local_only)])
 def chat(req: ChatRequest) -> dict:
     tools_for(req.date)
     try:
@@ -166,7 +175,7 @@ def chat(req: ChatRequest) -> dict:
         raise HTTPException(402, str(e))
 
 
-@app.post("/api/report")
+@app.post("/api/report", dependencies=[Depends(local_only)])
 async def report(photo: UploadFile, lat: float = Form(...), lon: float = Form(...),
                  date: str = Form(...), note: str = Form("")) -> dict:
     tools_for(date)
@@ -185,7 +194,7 @@ class SelfCheckRequest(BaseModel):
     routes_shown: int = 12
 
 
-@app.post("/api/selfcheck")
+@app.post("/api/selfcheck", dependencies=[Depends(local_only)])
 def selfcheck(req: SelfCheckRequest) -> dict:
     tools_for(req.date)
     if not req.image.startswith("data:image/"):
@@ -199,6 +208,22 @@ def selfcheck(req: SelfCheckRequest) -> dict:
 @app.get("/api/reports")
 def reports(date: str) -> list[dict]:
     return list_reports(date)
+
+
+VOICE_SUFFIX = {"audio/webm": ".webm", "audio/ogg": ".ogg", "audio/mp4": ".m4a", "audio/mpeg": ".mp3", "audio/wav": ".wav"}
+
+
+@app.post("/api/field/voice", dependencies=[Depends(local_only)])
+def field_voice(audio: UploadFile) -> dict:
+    """A voice note recorded in the app: the same Voice Transcribe and Muse Spark steps as WhatsApp."""
+    data = audio.file.read()
+    if not data:
+        raise HTTPException(400, "empty recording")
+    if len(data) > 16 * 1024 * 1024:
+        raise HTTPException(413, "recording larger than 16 MB")
+    suffix = VOICE_SUFFIX.get((audio.content_type or "").split(";")[0].strip(), ".webm")
+    out = process_upload(data, suffix)
+    return {k: out[k] for k in ("id", "status", "error", "transcript")}
 
 
 @app.get("/api/field")
