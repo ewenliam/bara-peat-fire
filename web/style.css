@@ -164,3 +164,22 @@ details summary { cursor: pointer; margin-top: 8px; }
 #tab-briefing h2 { font-size: 23px; }
 .kpi .label { text-transform: uppercase; letter-spacing: .6px; font-size: 11px; }
 .maplibregl-ctrl-group { border-radius: var(--radius) !important; box-shadow: none !important; border: 1px solid var(--rule); }
+
+/* WhatsApp field line: the reporter's phone, on the map (fusion.py decides, the solver re-plans) */
+.phone { position: absolute; top: 112px; right: 16px; width: 300px; max-height: calc(100% - 190px); display: flex; flex-direction: column; background: var(--surface); border: 6px solid var(--rule); border-radius: 22px; overflow: hidden; }
+.phone-head { display: flex; justify-content: space-between; align-items: baseline; padding: 10px 14px 8px; background: var(--rule); color: var(--surface-2); }
+.phone-title { font: 600 15px var(--serif); }
+.phone-sub { font: 11px var(--mono); color: #cfc6b6; }
+.phone-body { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 8px; background: #efe7d8; }
+.phone-foot { font-size: 11px; color: var(--muted); padding: 6px 10px; border-top: 1px solid var(--border); background: var(--surface); }
+.bubble { max-width: 88%; padding: 8px 10px; border-radius: 8px; font-size: 13px; line-height: 1.45; border: 1px solid var(--border); }
+.bubble.sent { align-self: flex-end; background: #dcebd6; border-color: #bcd3b4; }
+.bubble.bara { align-self: flex-start; background: var(--surface-2); }
+.bubble .meta { display: flex; justify-content: space-between; gap: 8px; font: 11px var(--mono); color: var(--muted); margin-bottom: 4px; }
+.bubble .said { font-style: italic; }
+.bubble .facts { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.bubble .fact { font: 11px var(--mono); padding: 2px 5px; border-radius: 2px; background: rgba(31, 27, 23, .07); }
+.bubble .draft { margin-top: 6px; font-size: 11px; color: var(--muted); }
+.phone-empty { color: var(--muted); font-size: 13px; text-align: center; margin: 24px 8px; }
+.line-key.replan { background: #d67c26; }
+@media (max-width: 1100px) { .phone { display: none !important; } }  /* the demo screen is wide; phones get the panel */

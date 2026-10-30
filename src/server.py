@@ -19,6 +19,7 @@ from pydantic import BaseModel
 from agent import run as run_agent, save_run
 from chat import ask
 from firms import load_years
+from fusion import RECENT_H, fuse_day, recent_reports
 from imagery import chip_key
 from llm import BudgetExceeded, spend_cap, spent_usd
 from places import crew_bases, locate
@@ -198,6 +199,30 @@ def selfcheck(req: SelfCheckRequest) -> dict:
 @app.get("/api/reports")
 def reports(date: str) -> list[dict]:
     return list_reports(date)
+
+
+@app.get("/api/field")
+def field(date: str, hours: float = RECENT_H) -> dict:
+    """Live WhatsApp reports from the last `hours`, applied to this day's plan (no API calls).
+
+    During the 2019 replay this places today's reports on the replay day: a demo, said so in the UI.
+    """
+    t = tools_for(date)
+    out = fuse_day(t.table(), t._routes(), recent_reports(hours))
+    table, bases = out["table"], crew_bases().set_index("name")
+
+    def path(base: str, stops: list[str]) -> list[list[float]]:
+        return [[_r(bases.loc[base, "lon"], 4), _r(bases.loc[base, "lat"], 4)]] + \
+            [[_r(table.loc[c, "lon"], 4), _r(table.loc[c, "lat"], 4)] for c in stops]
+
+    for r in out["reports"]:
+        cid = r["decision"]["cluster_id"]
+        r["decision"]["cluster_lat"] = _r(table.loc[cid, "lat"], 4) if cid else None
+        r["decision"]["cluster_lon"] = _r(table.loc[cid, "lon"], 4) if cid else None
+    changed = [{**c, "path_after": path(c["base"], c["after"])} for c in out["route_diff"]]
+    body = {"window_hours": hours, "reports": out["reports"], "route_diff": changed,
+            "risk_covered_before": out["risk_covered_before"], "risk_covered_after": out["risk_covered_after"]}
+    return json.loads(json.dumps(body, default=lambda o: o.item() if hasattr(o, "item") else str(o)))
 
 
 @app.get("/api/replay")

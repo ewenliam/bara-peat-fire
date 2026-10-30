@@ -96,6 +96,7 @@ function render() {
     getPath: (r) => r.path, capRounded: true, jointRounded: true,
   }));
   if (typeof reportLayers === "function") layers.push(...reportLayers());
+  if (typeof fieldLayers === "function") layers.push(...fieldLayers());
   const sel = d.clusters.find((c) => c.id === state.selected);
   if (sel) layers.push(new deck.ScatterplotLayer({
     id: "origin", data: [sel], radiusUnits: "pixels", getRadius: 6, getPosition: (c) => [c.origin_lon, c.origin_lat],
@@ -354,6 +355,8 @@ async function loadDay(date) {
   renderCrews();
   renderChat();
   loadReports();
+  field.sig = null;
+  loadField();
   const first = state.day.routes[0];
   if (first && !loadDay.done) { map.flyTo({ center: [first.lon, first.lat], zoom: 6.4 }); loadDay.done = true; }
 }
@@ -526,3 +529,66 @@ function reportLayers() {
   const q = new URLSearchParams(location.search).get("date");
   loadDay(q || state.meta.default_day);
 })();
+
+// ---------- live WhatsApp field reports (src/fusion.py): phone frame and re-planned routes
+const field = { data: null, sig: null };
+const STATE_LABEL = { active_flames: "flames", smouldering_peat: "smouldering peat", smoke_only: "smoke only",
+  burn_scar: "burn scar", no_fire: "no fire", unclear: "unclear" };
+const DECISION_RGB = { confirmed: TIER_RGB.P1, new_fire: TIER_RGB.P1, smoke_or_scar: TIER_RGB.P2,
+  reported_clear: [47, 110, 70], no_change: TIER_RGB.P3 };
+
+async function loadField() {
+  if (!state.date) return;
+  const f = await api(`/api/field?date=${state.date}`).catch(() => null);
+  if (!f) return;
+  const sig = JSON.stringify([state.date, f.reports.map((r) => r.id), f.route_diff]);
+  if (sig === field.sig) return;
+  field.data = f;
+  field.sig = sig;
+  renderPhone();
+  render();
+}
+
+function phoneMessages(r) {
+  const rep = r.report || {};
+  const time = r.received_at.slice(11, 16);
+  const facts = [STATE_LABEL[rep.fire_state] || rep.fire_state, rep.place_text, rep.area_ha != null ? `${rep.area_ha} ha` : null,
+    ...(rep.needs || []).filter((n) => n !== "none").map((n) => `needs ${n}`)].filter(Boolean);
+  const kind = r.type === "audio" ? "Voice note" : r.type === "text" ? "Message" : r.type;
+  return `<div class="bubble sent"><div class="meta"><span>${esc(kind)}</span><span>${esc(time)}</span></div>
+      <div class="said">"${esc(r.transcript)}"</div>
+      <div class="facts">${facts.map((x) => `<span class="fact">${esc(x)}</span>`).join("")}
+        <span class="fact">${r.grounded ? "every field quoted" : "needs review"}</span></div></div>
+    <div class="bubble bara"><div class="meta"><span>Bara</span><span>${esc(time)}</span></div>
+      ${esc(r.reply)}<div class="draft">Draft reply; sending is not switched on.</div></div>`;
+}
+
+function renderPhone() {
+  const f = field.data;
+  if (!f) return;
+  $("phone").hidden = false;
+  $("phone-body").innerHTML = f.reports.length ? f.reports.map(phoneMessages).join("")
+    : `<p class="phone-empty">No field reports in the last ${f.window_hours} hours. Send a voice note to the Bara test number.</p>`;
+  $("phone-body").scrollTop = $("phone-body").scrollHeight;
+  const moved = f.route_diff.length ? ` ${f.route_diff.length} crew route(s) re-planned; risk covered ${fmt(f.risk_covered_before, 1)} to ${fmt(f.risk_covered_after, 1)}.` : "";
+  $("phone-foot").textContent = `Live reports from the last ${f.window_hours} h, placed on the ${state.date} replay day for this demo.${moved}`;
+}
+
+function fieldLayers() {
+  const f = field.data;
+  if (!f) return [];
+  const pins = f.reports.filter((r) => r.location.status === "located");
+  const links = pins.filter((r) => r.decision.cluster_lat != null)
+    .map((r) => ({ from: [r.location.lon, r.location.lat], to: [r.decision.cluster_lon, r.decision.cluster_lat] }));
+  return [
+    new deck.PathLayer({ id: "field-replan", data: f.route_diff, widthUnits: "pixels", getWidth: 5,
+      getColor: [214, 124, 38, 230], getPath: (c) => c.path_after, capRounded: true, jointRounded: true }),
+    new deck.LineLayer({ id: "field-links", data: links, getSourcePosition: (l) => l.from, getTargetPosition: (l) => l.to,
+      getColor: [...INK, 160], getWidth: 1.5 }),
+    new deck.ScatterplotLayer({ id: "field-pins", data: pins, radiusUnits: "pixels", getRadius: 9,
+      getPosition: (r) => [r.location.lon, r.location.lat], getFillColor: (r) => DECISION_RGB[r.decision.kind] || TIER_RGB.P3,
+      stroked: true, getLineColor: INK, lineWidthMinPixels: 2 }),
+  ];
+}
+
+setInterval(loadField, 10000);
