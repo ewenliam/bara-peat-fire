@@ -7,13 +7,17 @@ RAW_DIR = Path(__file__).resolve().parents[1] / "data" / "raw"
 URL = "https://firms.modaps.eosdis.nasa.gov/data/country/{product}/{year}/{product}_{year}_Indonesia.csv"
 # FIRMS archive folder per satellite; NOAA-20 is filed as "jpss1"
 PRODUCTS = {"snpp": "viirs-snpp", "noaa20": "viirs-jpss1"}
+# Satellite per year when none is asked for: the live year comes from NOAA-20 (live.py), since S-NPP,
+# the training satellite, is being retired. Every other year is S-NPP, as in training and testing.
+YEAR_SENSOR = {2026: "noaa20"}
+LAST_YEAR = max(YEAR_SENSOR)
 
 # Sumatra + Kalimantan (Indonesian side), the main peat fire regions.
 REGION_BBOX = {"lon_min": 95.0, "lon_max": 119.5, "lat_min": -6.5, "lat_max": 6.0}
 
 
 def load_years(years: list[int], bbox: dict[str, float] = REGION_BBOX,
-               sensor: str = "snpp") -> pd.DataFrame:
+               sensor: str | None = None) -> pd.DataFrame:
     """Return vegetation-fire detections for the given years inside bbox, from one satellite.
 
     Filters:
@@ -23,7 +27,7 @@ def load_years(years: list[int], bbox: dict[str, float] = REGION_BBOX,
     """
     frames = []
     for year in years:
-        product = PRODUCTS[sensor]
+        product = PRODUCTS[sensor or YEAR_SENSOR.get(year, "snpp")]
         path = RAW_DIR / f"{product}_{year}_Indonesia.csv"
         if not path.exists():
             raise FileNotFoundError(f"{path} missing; download from {URL.format(product=product, year=year)}")

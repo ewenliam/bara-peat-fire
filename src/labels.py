@@ -19,7 +19,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from firms import load_years
+from firms import LAST_YEAR, load_years
 
 ROOT = Path(__file__).resolve().parents[1]
 RES = 0.01        # grid size in degrees (~1.1 km)
@@ -84,7 +84,7 @@ def build_samples(years: list[int], neg_frac: float, seed: int = 0) -> tuple[pd.
     rng = np.random.default_rng(seed)
     # Load one extra year before (window history) and after (labels for Dec 31).
     load = sorted(set(years) | {y - 1 for y in years} | {y + 1 for y in years})
-    load = [y for y in load if 2012 <= y <= 2025]
+    load = [y for y in load if 2012 <= y <= LAST_YEAR]
     df = load_years(load)
     df["key"] = to_keys(np.floor(df["longitude"] / RES).astype(int).to_numpy(),
                         np.floor(df["latitude"] / RES).astype(int).to_numpy())
@@ -94,7 +94,9 @@ def build_samples(years: list[int], neg_frac: float, seed: int = 0) -> tuple[pd.
     dil = offsets(RADIUS)
     last_seen: dict[int, pd.Timestamp] = {}
     rows, stats = [], {"next_day_active": 0, "next_day_covered": 0, "candidates": 0, "positives": 0}
-    all_days = pd.date_range(f"{min(load)}-01-01", f"{max(years)}-12-31", freq="D")
+    # the live year stops at its last day of data instead of Dec 31 (earlier years are unchanged)
+    all_days = pd.date_range(f"{min(load)}-01-01", min(pd.Timestamp(f"{max(years)}-12-31"), df["acq_date"].max()),
+                             freq="D")
 
     for day in all_days:
         today_keys = dc.keys(day)

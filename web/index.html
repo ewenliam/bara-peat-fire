@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
 <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
-<link href="/style.css?v=field-briefing-4" rel="stylesheet">
+<link href="/style.css?v=today-6" rel="stylesheet">
 </head>
 <body>
 <header class="topbar">
@@ -18,15 +18,24 @@
     <img class="brand-mark" src="/brand/bara-mark-ink.png" alt="" aria-hidden="true">
     <div>
       <h1 class="brand-name"><img src="/brand/bara-wordmark-ink.png" alt="Bara"></h1>
-      <div class="brand-sub">Peat fire forecast and crew dispatch, Sumatra and Kalimantan</div>
+      <div class="brand-sub">Peat fire forecast and crew dispatch</div>
     </div>
   </div>
+  <label class="region"><span class="sr-only">Region</span>
+    <select id="region" aria-label="Region">
+      <option value="id-sumatra-kalimantan" selected>Indonesia: Sumatra and Kalimantan</option>
+      <option disabled>Brazil: Amazon and Cerrado (in development)</option>
+      <option disabled>South Africa: savanna (in development)</option>
+      <option disabled>Canada: boreal peat (in development)</option>
+    </select>
+  </label>
   <div class="day-controls" role="group" aria-label="Forecast date">
     <button class="icon-btn" id="prev-day" aria-label="Previous day"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
-    <label class="date-field"><span>Forecast made on</span><input type="date" id="date" min="2019-01-08" max="2019-12-30"></label>
+    <label class="date-field"><span id="date-label">Showing</span><input type="date" id="date" min="2019-01-08"></label>
     <button class="icon-btn" id="next-day" aria-label="Next day"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
   </div>
-  <button class="btn ghost replay-btn" id="replay-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5v14l11-7z"/></svg>Replay 2019 season</button>
+  <button class="btn ghost" id="today-btn" hidden>Back to today</button>
+  <button class="btn ghost replay-btn" id="replay-btn" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5v14l11-7z"/></svg>Replay 2019 season</button>
   <div class="spend" id="spend" title="Logged Meta API spend against the hard cap">Meta API <b>$0.00</b></div>
 </header>
 
@@ -35,15 +44,16 @@
     <div id="map"></div>
     <div class="kpis" id="kpis"></div>
     <div class="legend">
-      <div class="legend-row"><span class="dot p1"></span>P1 brigade now</div>
-      <div class="legend-row"><span class="dot p2"></span>P2 village fire watch</div>
-      <div class="legend-row"><span class="dot p3"></span>P3 monitor</div>
+      <div class="legend-row"><span class="heat-key"></span>Chance of fire tomorrow (forecast)</div>
+      <div class="legend-row"><span class="dot p1"></span>High risk</div>
+      <div class="legend-row"><span class="dot p2"></span>Medium risk</div>
+      <div class="legend-row"><span class="dot p3"></span>Low risk</div>
       <div class="legend-row"><span class="line-key"></span>Crew route, numbered stops</div>
-      <div class="legend-row"><span class="ring new"></span>New-fire watch (11 km)</div>
-      <div class="legend-row"><span class="line-key replan"></span>Re-planned after a field report</div>
+      <div class="legend-row"><span class="ring new"></span>Fire could start here (11 km)</div>
+      <div class="legend-row"><span class="line-key replan"></span>Changed by a field report</div>
       <div class="legend-row toggles">
-        <label><input type="checkbox" id="show-p3"> Show P3</label>
-        <label><input type="checkbox" id="show-truth"> What burned next day</label>
+        <label><input type="checkbox" id="show-p3"> Show small fires</label>
+        <label id="truth-toggle"><input type="checkbox" id="show-truth"> What burned the next day</label>
       </div>
     </div>
     <aside class="phone" id="phone" aria-label="WhatsApp field line" hidden>
@@ -52,6 +62,7 @@
       <div class="phone-foot" id="phone-foot"></div>
       <div class="phone-rec"><button class="btn ghost" id="rec-btn">Record a field report</button><span id="rec-status" role="status"></span></div>
     </aside>
+    <div class="season-banner" id="season-banner" hidden></div>
     <div class="loading" id="loading" hidden>Running Detect, Forecast, Triage, Dispatch...</div>
     <div class="replay-hud" id="replay-hud" hidden>
       <div class="hud-top">
@@ -68,14 +79,16 @@
 
   <aside class="panel">
     <nav class="tabs" role="tablist">
-      <button role="tab" data-tab="briefing" class="active">Briefing</button>
-      <button role="tab" data-tab="crews">Crews</button>
-      <button role="tab" data-tab="ask">Ask Bara</button>
+      <button role="tab" data-tab="today" class="active">Today</button>
       <button role="tab" data-tab="reports">Field reports</button>
-      <button role="tab" data-tab="evidence">Evidence</button>
+      <button role="tab" data-tab="ask">Ask Bara</button>
+      <button role="tab" data-tab="evidence">Does it work?</button>
     </nav>
-    <div class="tab-body" id="tab-briefing"></div>
-    <div class="tab-body" id="tab-crews" hidden></div>
+    <div class="tab-body" id="tab-today">
+      <div id="today-summary"></div>
+      <details class="more"><summary>Written briefing (Muse Spark)</summary><div id="tab-briefing"></div></details>
+      <details class="more"><summary>Crew details: water sources (SAM 3.1) and map check</summary><div id="tab-crews"></div></details>
+    </div>
     <div class="tab-body" id="tab-ask" hidden></div>
     <div class="tab-body" id="tab-reports" hidden></div>
     <div class="tab-body" id="tab-evidence" hidden></div>
@@ -84,6 +97,6 @@
 
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script src="https://unpkg.com/deck.gl@9.0.0/dist.min.js"></script>
-<script src="/app.js?v=field-briefing-4"></script>
+<script src="/app.js?v=today-6"></script>
 </body>
 </html>

@@ -33,7 +33,28 @@ from whatsapp_routes import router as whatsapp_router
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "outputs"
 WEB = ROOT / "web"
-FIRST_DAY, LAST_DAY = "2019-01-08", "2019-12-30"
+# Days the app can show: two past seasons, and the live year up to its latest built day (src/live.py)
+SEASONS = {
+    "2019": ("2019-01-08", "2019-12-30", "Practice season (2019): the year the model was tuned on"),
+    "2023": ("2023-01-08", "2023-12-30", "Final exam (2023): held out, tested once"),
+}
+LIVE_FILE = ROOT / "data" / "processed" / "live_2026.json"
+
+
+def live_info() -> dict | None:
+    return json.loads(LIVE_FILE.read_text(encoding="utf-8")) if LIVE_FILE.exists() else None
+
+
+def season_of(day: str) -> dict:
+    live = live_info()
+    if live and "2026-01-08" <= day <= live["live_day"]:
+        is_live = day == live["live_day"]
+        return {"mode": "live" if is_live else "recent",
+                "label": "Live" if is_live else "Earlier this season (2026)", "live": live}
+    for first, last, label in SEASONS.values():
+        if first <= day <= last:
+            return {"mode": "past", "label": label, "live": live}
+    raise HTTPException(400, f"no data for {day}")
 
 app = FastAPI(title="Bara")
 app.include_router(whatsapp_router)  # /webhook; before the static mount at "/" so it wins
@@ -41,8 +62,7 @@ app.include_router(whatsapp_router)  # /webhook; before the static mount at "/" 
 
 @lru_cache(maxsize=12)
 def tools_for(day: str) -> FireTools:
-    if not FIRST_DAY <= day <= LAST_DAY:
-        raise HTTPException(400, f"replay covers {FIRST_DAY} to {LAST_DAY}")
+    season_of(day)  # 400 if the day has no data
     t = FireTools(day)
     t.table()
     return t
@@ -50,9 +70,9 @@ def tools_for(day: str) -> FireTools:
 
 @lru_cache(maxsize=4)
 def median_daily_detections(year: int) -> int:
-    """Median detections per day over the whole year, so a crisis day can be read in context."""
+    """Median detections per day over the year so far, so a crisis day can be read in context."""
     per_day = load_years([year]).groupby("acq_date").size()
-    days = pd.date_range(f"{year}-01-01", f"{year}-12-31")
+    days = pd.date_range(f"{year}-01-01", min(pd.Timestamp(f"{year}-12-31"), per_day.index.max()))  # live year: to date
     return int(per_day.reindex(days, fill_value=0).median())
 
 
@@ -70,7 +90,10 @@ def _r(x, n: int = 1) -> float:
 
 @app.get("/api/meta")
 def meta() -> dict:
-    return {"first_day": FIRST_DAY, "last_day": LAST_DAY, "default_day": "2019-09-15",
+    live = live_info()
+    return {"first_day": "2019-01-08", "last_day": live["live_day"] if live else "2023-12-30",
+            "default_day": live["live_day"] if live else "2019-09-15", "live": live,
+            "seasons": {k: {"first": a, "last": b, "label": c} for k, (a, b, c) in SEASONS.items()},
             "spent_usd": round(spent_usd(), 4), "cap_usd": spend_cap()}
 
 
@@ -82,6 +105,8 @@ def day(date: str) -> dict:
     detect = t.detect_clusters(top_n=1)
     spread = t.forecast_spread(top_n=1)
     new_fires = t.forecast_new_fires(top_n=10)
+    t._score_cells()  # per-cell spread forecast, drawn as tomorrow's chance of fire
+    likely = t.cells[t.cells["p"] >= 0.05].nlargest(6000, "p")
 
     shown = table[(table["tier"] != "P3") | (table["n_today"] > 0)]
     loc = locate(shown["lat"].to_numpy(), shown["lon"].to_numpy())
@@ -108,13 +133,14 @@ def day(date: str) -> dict:
     visited = [s["cluster_id"] for r in routes for s in r["stops"]]
     counts = table["tier"].value_counts()
     return {
-        "date": date, "forecast_for": spread["forecast_for"],
+        "date": date, "forecast_for": spread["forecast_for"], "season": season_of(date),
         "kpis": {
             "detections_today": detect["detections_today"],
             "detections_median_day": median_daily_detections(int(date[:4])),
             "clusters_active_today": detect["clusters_active_today"],
             "p1": int(counts.get("P1", 0)), "p2": int(counts.get("P2", 0)),
             "expected_new_cells": spread["expected_new_cells_total"],
+            "likely_cells": int((t.cells["p"] >= t.threshold).sum()),
             "crew_cover": _r(sum(r["risk_covered"] for r in routes) / max(p12["risk"].sum(), 1e-9), 3),
             "next_day_cells_total": int(table["actual_new_cells"].sum()),
             "next_day_cells_reached": int(table.loc[visited, "actual_new_cells"].sum()),
@@ -124,6 +150,8 @@ def day(date: str) -> dict:
         "bases": [{"name": n, "province": b["province"], "lat": _r(b["lat"], 4), "lon": _r(b["lon"], 4)}
                   for n, b in bases.iterrows()],
         "new_fires": new_fires["cells"],
+        "forecast_cells": [[_r(x, 3), _r(y, 3), _r(q, 2)] for x, y, q in zip(likely["lon"], likely["lat"], likely["p"])],
+        "forecast_threshold": _r(t.threshold, 3),
     }
 
 

@@ -37,6 +37,7 @@ map.addControl(overlay);
 
 function tooltip({ object, layer }) {
   if (!object || !layer) return null;
+  if (layer.id === "forecast") return { text: `Chance of fire here tomorrow: ${Math.round(object[2] * 100)}%` };
   if (layer.id === "clusters") {
     const c = object;
     const truth = $("show-truth").checked ? `<br>Burned next day: <b>${c.next_day_cells}</b> cells` : "";
@@ -55,6 +56,11 @@ function render() {
   const labels = [];
   d.routes.forEach((r) => r.stops.forEach((s, i) => labels.push({ ...s, text: `${i + 1} ${s.cluster_id}` })));
   const layers = [
+    new deck.ScatterplotLayer({  // tomorrow's forecast: every 1 km cell with at least a 5% chance
+      id: "forecast", data: d.forecast_cells || [], pickable: true, radiusUnits: "meters",
+      getPosition: (c) => [c[0], c[1]], getRadius: 650, radiusMinPixels: 3, stroked: false,
+      getFillColor: (c) => [...TIER_RGB.P1, Math.round(40 + 200 * Math.min(c[2] / 0.6, 1))],
+    }),
     new deck.ScatterplotLayer({
       id: "clusters", data: clusters, pickable: true, radiusUnits: "meters",
       getPosition: (c) => [c.lon, c.lat],
@@ -108,16 +114,91 @@ function render() {
 // ---------- KPIs
 function renderKpis() {
   const k = state.day.kpis;
-  const items = [
-    ["Hotspots today", fmt(k.detections_today), `NASA VIIRS; median day in ${state.day.date.slice(0, 4)}: ${fmt(k.detections_median_day)}`],
-    ["Fire clusters", fmt(k.clusters_active_today), "hotspots grouped by distance and time"],
-    ["P1 brigade now", fmt(k.p1), "peat-weighted risk 5+", "p1"],
-    ["P2 village watch", fmt(k.p2), "risk 1 to 5", "p2"],
-    ["Expected new cells", fmt(k.expected_new_cells), `tomorrow, ${state.day.forecast_for}`],
-    ["Crew coverage", `${Math.round(k.crew_cover * 100)}%`, "of P1+P2 risk visited"],
+  const items = [  // plain words; the technical names stay in the tooltips and the README
+    ["Active fires", fmt(k.clusters_active_today), `places burning on ${niceDate(state.day.date)} (${fmt(k.detections_today)} detections)`],
+    ["Need a crew now", fmt(k.p1), "high risk of spreading", "p1"],
+    ["Village watch", fmt(k.p2), "medium risk", "p2"],
+    ["Expected new fire", `${fmt(k.expected_new_cells)} spots`, `1 km areas likely to burn on ${niceDate(state.day.forecast_for)}`],
+    ["Crews reach", `${Math.round(k.crew_cover * 100)}%`, "of the high and medium risk today"],
   ];
   $("kpis").innerHTML = items.map(([l, v, s, c]) => `<div class="kpi ${c || ""}"><div class="label">${l}</div><div class="value">${v}</div><div class="sub">${s}</div></div>`).join("");
 }
+
+
+// ---------- Today: where should crews go, and why (plain words; the numbers stay in the cards)
+const RISK = { P1: "High risk", P2: "Medium risk", P3: "Low risk" };  // a crew goes to every listed stop
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const niceDate = (s) => `${Number(s.slice(8, 10))} ${MONTHS[Number(s.slice(5, 7)) - 1]} ${s.slice(0, 4)}`;
+
+function reasons(c) {
+  const bits = [];
+  if (c.peat_share >= 0.5) bits.push(c.peat_share >= 0.9 ? "deep peat" : "mostly peat");
+  if (c.days_since_10mm >= 10) bits.push(`${c.days_since_10mm} days without heavy rain`);
+  if (c.detections_today) bits.push(`${fmt(c.detections_today)} satellite detection${c.detections_today === 1 ? "" : "s"}`);
+  if (c.tier === "P1") bits.push("likely to spread");
+  return bits.join(", ");
+}
+
+function renderToday() {
+  const d = state.day, k = d.kpis, s = d.season;
+  const live = s.mode === "live";
+  const reports = (field.data && field.data.reports) || [];
+  const byCluster = {};
+  reports.forEach((r) => { if (r.decision.cluster_id) (byCluster[r.decision.cluster_id] ||= []).push(r); });
+  // the plan after field reports: crews whose stops a report changed use the re-planned stops
+  const diff = (field.data && field.data.route_diff) || [];
+  const routes = d.routes.map((r) => {
+    const c = diff.find((x) => x.base === r.base);
+    return c ? { ...r, changed: true, stops: c.after.map((id) => ({ cluster_id: id })) } : r;
+  });
+  const info = (id) => {
+    const rep = (byCluster[id] || []).slice(-1)[0];
+    const c = d.clusters.find((x) => x.id === id);
+    if (c) return rep && rep.decision.tier_after ? { ...c, tier: rep.decision.tier_after } : c;
+    return rep ? { place: rep.location.place, tier: rep.decision.tier_after, fromReport: true } : {};
+  };
+  const nStops = routes.reduce((n, r) => n + r.stops.length, 0);
+  const visited = new Set(routes.flatMap((r) => r.stops.map((x) => x.cluster_id)));
+  const watch = d.clusters.filter((c) => c.tier === "P2" && !visited.has(c.id)).length;
+  const busiest = [...routes].sort((a, b) => b.risk_covered - a.risk_covered)[0];
+  const ratio = k.detections_median_day ? k.detections_today / k.detections_median_day : 0;
+  const when = live ? `Today, ${niceDate(d.forecast_for)}` : niceDate(d.date);
+  const eyebrow = live
+    ? `Live · satellite detections up to ${niceDate(d.date)} (VIIRS NOAA-20) · built ${esc(s.live.built_utc)} UTC`
+    : `${esc(s.label)} · not today`;
+  const lead = nStops
+    ? `${ratio >= 3 ? "Fires are spreading" : ratio >= 1.5 ? "Fire activity is high" : "Fire activity is low"}${busiest ? ` around ${esc(busiest.province)}` : ""}. Send crews to these ${nStops} places${live ? " today" : ""}.`
+    : "No place needs a crew.";
+  const crews = routes.map((r) => `<h3>${esc(r.base)} crew${r.changed ? ' <span class="note">· changed by a field report</span>' : ""}</h3><ol class="todo">${r.stops.map((st) => {
+    const c = info(st.cluster_id);
+    const notes = (byCluster[st.cluster_id] || []).map((rep) =>
+      `<div class="note">WhatsApp ${esc(rep.received_at.slice(11, 16))}: ${esc(STATE_LABEL[rep.report.fire_state] || "")}${rep.report.needs && rep.report.needs.length ? `, needs ${esc(rep.report.needs.join(", "))}` : ""}</div>`).join("");
+    return `<li class="clickable" data-id="${esc(st.cluster_id)}"><div><b>Near ${esc(c.place || "?")}</b>${c.province ? `, ${esc(c.province)}` : ""} <span class="act ${c.tier}">${RISK[c.tier] || ""}</span></div>
+      <div class="muted">${esc(c.fromReport ? "reported from the ground" : reasons(c))}</div>${notes}</li>`;
+  }).join("")}</ol>`).join("");
+  $("today-summary").innerHTML = `
+    <p class="eyebrow">${eyebrow}</p>
+    <h2>${lead}</h2>
+    <p class="muted">${fmt(k.detections_today)} fire detections on ${niceDate(d.date)} across Sumatra and Kalimantan; a typical day in ${d.date.slice(0, 4)} has ${fmt(k.detections_median_day)}.${live ? ` Forecast for ${niceDate(d.forecast_for)}.` : ""}</p>
+    ${crews}
+    ${watch ? `<p class="muted">${watch} more medium-risk places have no crew today: ask those villages to watch for fire (ochre dots on the map).</p>` : ""}
+    <p class="muted small">How Bara decides: it forecasts where fire will spread next from satellite detections, peat and recent rain, then gives each crew the stops that cover the most risk in a 10-hour day. Checking a fire is not putting it out.</p>`;
+  $("today-summary").querySelectorAll("li[data-id]").forEach((li) => (li.onclick = () => selectCluster(li.dataset.id)));
+}
+
+function renderSeason() {
+  const s = state.day.season, live = state.meta.live;
+  const banner = $("season-banner");
+  banner.hidden = s.mode === "live";
+  if (!banner.hidden) {
+    banner.innerHTML = `<span><b>${esc(s.label)}</b>: ${niceDate(state.day.date)} is not today.</span>${live ? `<button class="btn ghost" id="banner-today">Go to today</button>` : ""}`;
+    if ($("banner-today")) $("banner-today").onclick = () => loadDay(live.live_day);
+  }
+  $("today-btn").hidden = !live || s.mode === "live";
+  $("date-label").textContent = s.mode === "live" ? "Satellite day" : "Showing a past day";
+  $("truth-toggle").hidden = s.mode === "live";  // tomorrow has not happened yet
+}
+$("today-btn").onclick = () => state.meta.live && loadDay(state.meta.live.live_day);
 
 // ---------- tabs
 document.querySelectorAll(".tabs button").forEach((b) => b.addEventListener("click", () => showTab(b.dataset.tab)));
@@ -254,6 +335,9 @@ async function renderEvidence() {
     <p class="muted">A simple logistic regression on the same inputs nearly matches (${x.forecast["Logistic regression (all)"].AP.toFixed(3)}): the gain comes from the peat and rain inputs more than the model. Fires in cells with no recent detection stay hard (average precision ${x.forecast["LightGBM + peat + rain"].AP_new.toFixed(3)}). The same result holds with NOAA-20 detections as the truth (${x.H1_noaa20.model_AP.toFixed(3)} vs ${x.H1_noaa20.baseline_AP.toFixed(3)}). Reaching a fire is checking it, not putting it out.</p>`;
   })() : `<p class="muted">The 2023 held-out results are not available.</p>`;
   $("tab-evidence").innerHTML = `${held}
+    <h2>Try it on past seasons</h2>
+    <p class="muted">Open a past day to see what Bara would have planned, and switch on "What burned the next day" to check it.</p>
+    <p><button class="btn ghost" id="ev-2023">Open 15 Sep 2023 (final exam)</button> <button class="btn ghost" id="ev-2019">Open 15 Sep 2019 (practice)</button> <button class="btn ghost" id="ev-replay">Replay the 2019 season</button></p>
     <h2>Validation season: 2019</h2>
     <p class="muted">2019 was used for tuning, so these numbers are optimistic. Replay of ${r.days} days (${r.start} to ${r.end}). Each day's plan uses only that day's data and is scored on where new fire actually appeared the next day.</p>
     <h3>Next-day fire cells reached by crews, 2019</h3>
@@ -375,12 +459,15 @@ async function loadDay(date) {
   render();
   renderBriefing();
   renderCrews();
+  renderToday();
+  renderSeason();
   renderChat();
   loadReports();
   field.sig = null;
   loadField();
   const first = state.day.routes[0];
-  if (first && !loadDay.done) { map.flyTo({ center: [first.lon, first.lat], zoom: 6.4 }); loadDay.done = true; }
+  // keep the fires clear of the number strip (top) and the phone frame (right)
+  if (first && !loadDay.done) { map.flyTo({ center: [first.lon, first.lat], zoom: 6.4, padding: { top: 110, right: 330, bottom: 0, left: 0 } }); loadDay.done = true; }
 }
 
 function shiftDay(n) {
@@ -392,6 +479,7 @@ function shiftDay(n) {
 
 async function refreshSpend() {
   state.meta = await api("/api/meta");
+  $("date").max = state.meta.last_day;
   $("spend").innerHTML = `Meta API <b>$${state.meta.spent_usd.toFixed(2)}</b> of $${state.meta.cap_usd.toFixed(0)}`;
 }
 
@@ -400,7 +488,12 @@ $("next-day").onclick = () => shiftDay(1);
 $("date").onchange = (e) => e.target.value && loadDay(e.target.value);
 $("show-p3").onchange = render;
 $("show-truth").onchange = render;
-document.querySelector('[data-tab="evidence"]').addEventListener("click", renderEvidence);
+document.querySelector('[data-tab="evidence"]').addEventListener("click", async () => {
+  await renderEvidence();
+  $("ev-2023").onclick = () => { loadDay("2023-09-15"); showTab("today"); };
+  $("ev-2019").onclick = () => { loadDay("2019-09-15"); showTab("today"); };
+  $("ev-replay").onclick = startReplay;
+});
 // ---------- Ask Bara (what-if chat)
 const SUGGESTIONS = [
   "What if Palangkaraya had 2 crews?",
@@ -569,6 +662,7 @@ async function loadField() {
   field.sig = sig;
   renderPhone();
   render();
+  if (state.day) renderToday();
 }
 
 function phoneMessages(r) {
@@ -593,7 +687,9 @@ function renderPhone() {
     : `<p class="phone-empty">No field reports in the last ${f.window_hours} hours. Send a voice note to the Bara test number.</p>`;
   $("phone-body").scrollTop = $("phone-body").scrollHeight;
   const moved = f.route_diff.length ? ` ${f.route_diff.length} crew route(s) re-planned; risk covered ${fmt(f.risk_covered_before, 1)} to ${fmt(f.risk_covered_after, 1)}.` : "";
-  $("phone-foot").textContent = `Live reports from the last ${f.window_hours} h, placed on the ${state.date} replay day for this demo.${moved}`;
+  const live = state.day && state.day.season.mode === "live";
+  $("phone-foot").textContent = live ? `Reports from the last ${f.window_hours} h.${moved}`
+    : `Reports from the last ${f.window_hours} h, shown on this past day for illustration.${moved}`;
 }
 
 function fieldLayers() {

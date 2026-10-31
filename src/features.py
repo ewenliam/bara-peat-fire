@@ -29,6 +29,8 @@ CHIRPS = {
     "p05": ROOT / "data" / "raw" / "chirps_p05" / "chirps_p05_{year}_region.nc",
 }
 RAIN_LAG_DAYS = 2
+# Live year: CHIRPS final + preliminary + IMERG Early, built by live.py (sources listed next to it)
+LIVE_RAIN = {2026: ROOT / "data" / "raw" / "chirps" / "live_2026_p25.nc"}
 CEMS_DIR = ROOT / "data" / "raw" / "cems_fire"
 DANGER_VARS = {"drtcode": "dc"}  # only the Drought Code fits the EWDS request limits (drought.py)
 
@@ -45,7 +47,9 @@ def rain_cube(first: pd.Timestamp, last: pd.Timestamp, source: str = "p25",
     b = REGION_BBOX
     parts = []
     for year in years:
-        with xr.open_dataset(str(CHIRPS[source]).format(year=year)) as ds:
+        live = LIVE_RAIN.get(year) if source == "p25" else None
+        path = live if live is not None and live.exists() else str(CHIRPS[source]).format(year=year)
+        with xr.open_dataset(path) as ds:
             parts.append(ds["precip"].sel(
                 latitude=slice(b["lat_min"] - 0.5, b["lat_max"] + 0.5),
                 longitude=slice(b["lon_min"] - 0.5, b["lon_max"] + 0.5),

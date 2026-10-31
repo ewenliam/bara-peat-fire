@@ -66,9 +66,13 @@ def neighbour_sum(a: np.ndarray) -> np.ndarray:
 
 
 def build(years: list[int], neg_frac: float, source: str = "p25", lag: int = RAIN_LAG_DAYS,
-          seed: int = 0) -> pd.DataFrame:
+          seed: int = 0, end: pd.Timestamp | None = None) -> pd.DataFrame:
+    """end: last day with data (live year); rows stop there and the day after counts as no detections."""
     rng = np.random.default_rng(seed)
-    hist_days = pd.date_range("2012-01-20", f"{max(years) + 1}-01-07", freq="D")
+    last = pd.Timestamp(f"{max(years) + 1}-01-07")
+    if end is not None:
+        last = min(last, end + pd.Timedelta(days=1))
+    hist_days = pd.date_range("2012-01-20", last, freq="D")
     counts = daily_counts(hist_days)
     year_of = hist_days.year.to_numpy()
 
@@ -79,7 +83,7 @@ def build(years: list[int], neg_frac: float, source: str = "p25", lag: int = RAI
 
     frames = []
     for year in years:
-        idx = np.nonzero(year_of == year)[0]
+        idx = np.nonzero((year_of == year) & ((hist_days <= end) if end is not None else True))[0]
         prior = counts[year_of < year].sum(axis=0)          # fire history before this year
         n_prior_years = max(year - 2012, 1)
         start = idx[0] - QUIET_DAYS - 365
