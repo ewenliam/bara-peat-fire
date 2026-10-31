@@ -1,0 +1,60 @@
+{
+  "steps": 35,
+  "base": {
+    "label": "base",
+    "exact_match": 0.0,
+    "unterminated": 100,
+    "prompt_tokens": 37454,
+    "sampled_tokens": 60000,
+    "field_accuracy": {
+      "fire_state": 0.0,
+      "place_text": 0.0,
+      "lat": 0.0,
+      "lon": 0.0,
+      "area_ha": 0.0,
+      "smoke": 0.0,
+      "access": 0.0,
+      "people_at_risk": 0.0,
+      "crew_on_site": 0.0,
+      "needs": 0.0,
+      "quotes": 0.0
+    }
+  },
+  "tuned": {
+    "label": "tuned",
+    "exact_match": 0.29,
+    "unterminated": 0,
+    "prompt_tokens": 37454,
+    "sampled_tokens": 12488,
+    "field_accuracy": {
+      "fire_state": 1.0,
+      "place_text": 1.0,
+      "lat": 1.0,
+      "lon": 1.0,
+      "area_ha": 1.0,
+      "smoke": 1.0,
+      "access": 0.99,
+      "people_at_risk": 1.0,
+      "crew_on_site": 1.0,
+      "needs": 0.96,
+      "quotes": 0.29
+    }
+  },
+  "promoted_model": null,
+  "exact_match_delta": 0.29,
+  "paired": {
+    "only_tuned_correct": 29,
+    "only_base_correct": 0,
+    "p_value": 3.725290298461914e-09
+  },
+  "session": "ts-a1ff3725df414f8f82c3ddeba5582e9d",
+  "log": "C:\\Users\\ewenl\\gambut-watch\\data\\glimmer\\runs\\e2-all-ep1",
+  "cost": {
+    "training": "$0 (promotional)",
+    "evaluation_sampling": {
+      "prompt_tokens": 74908,
+      "sampled_tokens": 72488,
+      "note": "billed separately from training at published per-token rates"
+    }
+  }
+}

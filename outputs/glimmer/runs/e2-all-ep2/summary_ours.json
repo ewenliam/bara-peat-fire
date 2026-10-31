@@ -1,0 +1,45 @@
+{
+  "run_id": "e2-all-ep2",
+  "eval_rows": 100,
+  "caveat": "Synthetic rows are kept only when Muse Spark gets them right, so Spark is 100% here by construction; this compares Glimmer base vs tuned. Real voice notes are the fair test for Spark.",
+  "base": {
+    "n": 100,
+    "valid_json": 0.0,
+    "all_fields": 0.0,
+    "grounded": 0.0,
+    "per_field": {
+      "fire_state": 0.0,
+      "place": 0.0,
+      "area_ha": 0.0,
+      "smoke": 0.0,
+      "access": 0.0,
+      "people_at_risk": 0.0,
+      "crew_on_site": 0.0,
+      "needs": 0.0
+    },
+    "truncated": 100
+  },
+  "tuned": {
+    "n": 100,
+    "valid_json": 1.0,
+    "all_fields": 0.96,
+    "grounded": 1.0,
+    "per_field": {
+      "fire_state": 0.97,
+      "place": 1.0,
+      "area_ha": 1.0,
+      "smoke": 1.0,
+      "access": 1.0,
+      "people_at_risk": 0.99,
+      "crew_on_site": 1.0,
+      "needs": 1.0
+    },
+    "truncated": 0
+  },
+  "steps": 70,
+  "eval_tokens": {
+    "prompt_tokens": 74908,
+    "sampled_tokens": 72513,
+    "note": "billed separately from training at published per-token rates"
+  }
+}

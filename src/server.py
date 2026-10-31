@@ -226,6 +226,21 @@ def field_voice(audio: UploadFile) -> dict:
     return {k: out[k] for k in ("id", "status", "error", "transcript")}
 
 
+@app.get("/api/test2023")
+def test2023() -> dict:
+    """The one pre-registered 2023 held-out run (src/test_2023.py), read from its committed results file."""
+    path = OUT / "test_2023_results.json"
+    if not path.exists():
+        raise HTTPException(404, "the 2023 test has not been run")
+    d = json.loads(path.read_text(encoding="utf-8"))
+    ap = lambda block: {name: {"AP": _r(m["AP"], 3), "AP_new": _r(m["AP_new"], 3) if "AP_new" in m else None}  # noqa: E731
+                        for name, m in d[block]["metrics"].items()}
+    return {"started_utc": d["started_utc"], "commit": d["git"]["commit"][:7],
+            "H1": d["forecast"]["H1"], "H1_noaa20": d["sensor_noaa20"]["H1"], "H2": d["dispatch"],
+            "forecast": ap("forecast"), "new_fire": ap("ignition"),
+            "rows": d["forecast"]["rows"], "positives": d["forecast"]["positives"]}
+
+
 @app.get("/api/field")
 def field(date: str, hours: float = RECENT_H) -> dict:
     """Live WhatsApp reports from the last `hours`, applied to this day's plan (no API calls).

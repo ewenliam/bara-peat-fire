@@ -228,13 +228,35 @@ function renderCrews() {
 
 async function renderEvidence() {
   if (!state.replay) state.replay = await api("/api/replay");
+  if (state.test2023 === undefined) state.test2023 = await api("/api/test2023").catch(() => null);
   const r = state.replay, t = r.totals;
   const max = t.oracle.cells;
   const row = (name, v, cls = "") => `<div class="bar-row"><span>${name}</span><div class="bar ${cls}" style="width:${(v / max) * 100}%"></div><span class="v">${fmt(v)}</span></div>`;
-  $("tab-evidence").innerHTML = `
-    <h2>Does the plan reach tomorrow's fires?</h2>
-    <p class="muted">Replay of ${r.days} days (${r.start} to ${r.end}). Each day's plan uses only that day's data and is scored on where new fire actually appeared the next day.</p>
-    <h3>Next-day fire cells reached by crews</h3>
+  const x = state.test2023;
+  const held = x ? (() => {
+    const h1 = x.H1, h2 = x.H2, ci = h1.diff_CI95.map((v) => v.toFixed(3)).join(" to ");
+    const apMax = Math.max(...Object.values(x.forecast).map((m) => m.AP));
+    const apRow = (name, cls = "") => `<div class="bar-row"><span>${esc(name)}</span><div class="bar ${cls}" style="width:${(x.forecast[name].AP / apMax) * 100}%"></div><span class="v">${x.forecast[name].AP.toFixed(3)}</span></div>`;
+    return `
+    <h2>Held-out test: the 2023 season</h2>
+    <p class="muted">Pre-registered on Oct 28 (PREREGISTRATION_2023.md), run once on ${esc(x.started_utc.slice(0, 10))} with frozen models and 2019 thresholds; results committed in c72fe55. Nothing was tuned on 2023.</p>
+    <div class="check"><span class="badge ok">H1 SUPPORTED</span><span>Forecast average precision <b>${h1.model_AP.toFixed(3)}</b> vs <b>${h1.baseline_AP.toFixed(3)}</b> for yesterday's fires (3x3); 95% interval of the gap ${ci} (${h1.n_boot} day-bootstrap samples).</span></div>
+    <div class="check"><span class="badge ok">H2 SUPPORTED</span><span>Jul 1 to Oct 31, 2023: crews reach <b>${fmt(h2.solver_reached)}</b> next-day fire cells vs <b>${fmt(h2.biggest_today_reached)}</b> for biggest fire first (+${Math.round((h2.solver_reached / h2.biggest_today_reached - 1) * 1000) / 10}%), with ${fmt(h2.solver_visits)} visits instead of ${fmt(h2.biggest_today_visits)}.</span></div>
+    <h3>Forecast, 2023 (average precision)</h3>
+    <div class="bars">
+      ${apRow("LightGBM + peat + rain")}
+      ${apRow("Logistic regression (all)")}
+      ${apRow("Yesterday's fires (3x3)", "base")}
+      ${apRow("Yesterday's fires (cell)", "base")}
+      ${apRow("Dryness only (-rain 30d)", "base")}
+    </div>
+    <h3>What the 2023 test does not show</h3>
+    <p class="muted">A simple logistic regression on the same inputs nearly matches (${x.forecast["Logistic regression (all)"].AP.toFixed(3)}): the gain comes from the peat and rain inputs more than the model. Fires in cells with no recent detection stay hard (average precision ${x.forecast["LightGBM + peat + rain"].AP_new.toFixed(3)}). The same result holds with NOAA-20 detections as the truth (${x.H1_noaa20.model_AP.toFixed(3)} vs ${x.H1_noaa20.baseline_AP.toFixed(3)}). Reaching a fire is checking it, not putting it out.</p>`;
+  })() : `<p class="muted">The 2023 held-out results are not available.</p>`;
+  $("tab-evidence").innerHTML = `${held}
+    <h2>Validation season: 2019</h2>
+    <p class="muted">2019 was used for tuning, so these numbers are optimistic. Replay of ${r.days} days (${r.start} to ${r.end}). Each day's plan uses only that day's data and is scored on where new fire actually appeared the next day.</p>
+    <h3>Next-day fire cells reached by crews, 2019</h3>
     <div class="bars">
       ${row("Bara (forecast + solver)", t.solver.cells)}
       ${row("Forecast + greedy", t.greedy.cells)}
@@ -245,8 +267,8 @@ async function renderEvidence() {
     <p class="muted">Bara reaches ${Math.round((t.solver.cells / t.biggest_today.cells - 1) * 100)}% more next-day fire cells than sending crews to the biggest fire first, with fewer visits (${fmt(t.solver.visits)} vs ${fmt(t.biggest_today.visits)}).</p>
     <h3>Triage</h3>
     <p>P1 holds ${(r.triage.p1_cluster_share * 100).toFixed(1)}% of clusters but ${(r.triage.p1_cells_share * 100).toFixed(1)}% of next-day fire cells (ranking by today's hotspots: ${(r.triage.p1_cells_share_persistence * 100).toFixed(1)}%).</p>
-    <h3>Forecast model (2019 validation)</h3>
-    <p>Average precision 0.308 vs 0.207 for the best "yesterday's fires" baseline. 2019 was also the tuning year; the held-out 2023 season is the real test.</p>`;
+    <h3>Forecast model, 2019</h3>
+    <p>Average precision 0.308 vs 0.207 for the best "yesterday's fires" baseline (validation year).</p>`;
 }
 
 // ---------- season replay player

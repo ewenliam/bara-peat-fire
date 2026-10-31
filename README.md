@@ -74,6 +74,56 @@ from any recent fire are outside this set: candidates covered 72.9% of next-day 
 .venv/Scripts/python src/features.py samples_train
 ```
 
+## Held-out test: the 2023 season (pre-registered, run once)
+
+The test was fixed before any 2023 data was touched: models frozen with SHA-256 hashes, thresholds
+taken from 2019, two hypotheses and every metric written down in
+[`PREREGISTRATION_2023.md`](PREREGISTRATION_2023.md) (committed Oct 28). It ran once on Oct 31
+(`src/test_2023.py`); the results were committed unchanged in `c72fe55`
+([`outputs/test_2023_log.md`](outputs/test_2023_log.md),
+[`outputs/test_2023_results.json`](outputs/test_2023_results.json)). Nothing was tuned on 2023.
+
+**H1, supported.** On all 7,082,796 candidate cell-days of 2023 (50,816 burn the next day), the
+forecast's average precision is **0.162** against **0.099** for "yesterday's fires" (3x3). The 95%
+interval of the gap, from 1,000 day-bootstrap resamples, is 0.054 to 0.071.
+
+**H2, supported.** In a replay of Jul 1 to Oct 31, 2023 (123 days, one crew per provincial capital),
+crews following the forecast and the exact solver reach **4,081** next-day fire cells against
+**3,713** when they go to the biggest fire first: 9.9% more, with 1,122 visits instead of 1,974.
+
+| Forecast, 2023 | AP | AP (new cells) |
+|---|---|---|
+| Yesterday's fires (cell) | 0.081 | 0.004 |
+| Yesterday's fires (3x3) | 0.099 | 0.021 |
+| Last 7 days (5x5) | 0.059 | 0.014 |
+| Dryness only (-rain 30d) | 0.011 | 0.006 |
+| Logistic regression (all inputs) | 0.155 | 0.028 |
+| **LightGBM + peat + rain** | **0.162** | **0.032** |
+
+| Dispatch, Jul-Oct 2023 | Visits | New fire cells reached | Share of oracle (peat-weighted) |
+|---|---|---|---|
+| Bara (forecast + exact solver) | 1,122 | 4,081 | 62.0% |
+| Forecast + greedy | 1,060 | 3,853 | 58.2% |
+| Biggest fire first | 1,974 | 3,713 | 54.1% |
+| Nearest fire first | 2,847 | 1,110 | 15.6% |
+| Oracle (knows tomorrow) | 1,837 | 7,189 | 100.0% |
+
+What the test does not show, stated as plainly as the wins:
+
+- **The inputs matter more than the model.** A logistic regression on the same inputs nearly
+  matches LightGBM (0.155 vs 0.162).
+- **New fires stay hard.** In cells with no recent detection, average precision is 0.032 for the
+  spread model and 0.057 for the separate new-fire model.
+- **Triage gains are small at the top.** P1 clusters hold 17.0% of next-day fire cells with the
+  forecast and 16.3% when ranked by today's hotspots; the gain shows at P2 (21.2% vs 17.2%).
+- **Coverage.** The model scores candidate cells near recent fire: 58.6% of 2023's next-day fire
+  cells were candidates (72.9% in 2019). Fires far from any recent detection are outside its view.
+- **2023 is harder than 2019** for every method (2019 validation AP 0.308 vs 0.207); the gap to the
+  baseline is larger in 2023.
+- **One satellite is not the whole story, but the ranking holds** with NOAA-20 detections as the
+  truth instead of S-NPP: 0.148 vs 0.091.
+- Reaching a fire means a crew checks it; it does not mean the fire is put out.
+
 ## Forecast results (2019 validation)
 
 Scored on all 9.1M candidate cell-days in 2019 (113,469 burn the next day). 2019 was also used
@@ -329,5 +379,5 @@ includes the island of every stop. The review is advisory: a person decides.
 
 ## Evaluation plan
 
-Train on 2012-2018 and 2020-2022, tune on 2019, test once on the held-out 2023 El Nino season
-against "yesterday's fires" and drought-index baselines.
+Train on 2012-2018 and 2020-2022, tune on 2019, test once on the held-out 2023 season against
+"yesterday's fires" and rain-based dryness baselines. Done on Oct 31; see "Held-out test" above.
