@@ -12,7 +12,7 @@ Research behind this plan: `C:\Users\ewenl\reports\Bara global impact upgrade pl
 1. **Proof at scale first.** A pre-registered 2023 held-out test, a 2023 dispatch replay, a live NOAA-20/21 run, and a season-wide grounding pass rate. Never cut.
 2. **WhatsApp field loop is the headline.** Voice note or photo in, structured report out, hotspot state changes, the solver re-plans, the crew phone gets the new route. Meta models are on the decision path: remove them and a crew goes somewhere different.
 3. **English first.** Demo voice notes are in English. Indonesian and regional languages are a later step.
-4. **API models only in the core.** Open weights (Omnilingual ASR, Muse Glimmer) are a stretch goal. Glimmer's smallest build (~17 GB) does not fit this laptop (8 GB VRAM, 15.3 GB RAM).
+4. **API models only in the core.** Open weights (Omnilingual ASR, Muse Glimmer) are a stretch goal. Glimmer's smallest build (~17 GB) does not fit this laptop (8 GB VRAM, 15.3 GB RAM). Update Oct 31: Glimmer fine-tuning on Fireworks is free until Nov 30, so a time-boxed Glimmer report reader is now planned (see its section).
 5. **Dropped:** DINOv3 (gated access not available).
 
 ## Hackathon rules that shape the build (read Oct 28)
@@ -36,6 +36,41 @@ Research behind this plan: `C:\Users\ewenl\reports\Bara global impact upgrade pl
 | Writing code modules (Claude supervises) | Muse Spark 1.3 Standard (Contributor tier not confirmed; the first module cost $0.05, so the saving is negligible) | Never put `.env` values in a prompt. Prompts and replies are kept in `logs/builds/` |
 | Hard one-off tasks only | Muse Wonder | After Spark fails twice on the same task |
 
+## Muse Glimmer report reader (decided Oct 31, time-boxed)
+
+Why: Meta's workshop (Oct 30, Fireworks) showed Muse Glimmer 30B LoRA SFT is free on Fireworks for jobs
+started before 2026-12-01T00:00:00-08:00 (source: fw-ai/cookbook `training/examples/muse_glimmer/README.md`,
+commit 57968a2, which cites docs.fireworks.ai/fine-tuning/models). Training runs on Fireworks, so the
+8 GB laptop limit no longer blocks open weights. Goal: a specialised open-weight model that turns a
+field transcript into our `FieldReport` JSON, measured against Muse Spark on real voice notes.
+
+Not free (cookbook): inference, deployments, RL, DPO. Muse public serverless inference was retired
+2026-09-25, so the base vs tuned evaluation samples in-session and is billed per token; serving a tuned
+model inside Bara needs a paid deployment. Prices: separately priced, not yet looked up (check
+fireworks.ai/pricing or the starter's read-only `plan` command before any paid step).
+
+| Piece | Who | Detail |
+|---|---|---|
+| Scenario sampler | Claude | Seeded: an unambiguous Sumatra/Kalimantan village from the gazetteer, fire state (all six, including unclear and no_fire), area or none, smoke, access words (motorbike, klotok, walk...), people, crew, needs. Excludes every place used in the real eval scripts. |
+| Transcripts | Muse Spark (low effort) | Writes a spoken voice note from the sampled facts only: filler, repeats, lower case, no new facts. |
+| Labels | Muse Spark + our checks | `extract()` on each transcript; keep the row only if every field equals the sampled facts and `check_grounding` passes. Disagreements go to a review file, never into training. Target 400 kept rows. |
+| Training row | Claude | Cookbook chat JSONL: system = `field_report.SYSTEM_PROMPT`, user = `build_messages()` user text, assistant = the report JSON. Max 2,048 tokens per row. |
+| Training | Fireworks cookbook (Apache 2.0) | Serverless Training API, `muse-glimmer-30b`, LoRA rank 8, 1 epoch, starter defaults. A thin wrapper of ours replaces the random 40-row holdout with our fixed eval sets. |
+| Grader | Claude, deterministic | Per field: fire_state, place (normalised key), area_ha, smoke, access, people_at_risk, crew_on_site, needs (as a set); plus valid JSON rate and `check_grounding` pass rate. Same grader for every model. The starter's exact-match score is not used (quotes never match exactly). |
+
+Eval sets (never in training): E1 = the 20 to 50 real voice notes recorded on Nov 1 from scripts with known
+facts, transcribed once by Voice Transcribe; E2 = 40 verified synthetic rows with places not in training.
+Compare on both: Muse Spark (`extract`, low effort), Glimmer base, Glimmer tuned.
+
+Gates: G0 you create a Fireworks key (FIREWORKS_API_KEY in `.env`) and we run the read-only `plan`;
+G1 at least 300 verified rows by Nov 1 18:00 Warsaw; G2 training finished and graded by Nov 2 18:00
+Warsaw. Missing a gate drops the experiment and the README says so. Results are reported whichever way
+they go. The live app keeps Muse Spark unless a deployment price is acceptable to you.
+
+Budget: data generation about 500 Spark transcript calls plus 500 extractions, estimated under $5 of the
+Meta budget ($0.003 to $0.007 per extraction measured on Oct 29; the transcript call is not measured yet).
+Fireworks: $0 training, eval sampling separately priced.
+
 ## Rules for every day
 
 - Meta API budget is $150 total. Spend logged so far: $0.77 on Oct 28 (`python src/llm.py`). Split: builder up to $50, app runs and evals up to $50, $50 reserve. Raise the code cap (now $20) only when needed.
@@ -52,9 +87,9 @@ Research behind this plan: `C:\Users\ewenl\reports\Bara global impact upgrade pl
 | **Wed Oct 28** | (you, done) Read the rules. (you, done) Theme: Build for Your World. (you) Create the WhatsApp Cloud API test number and add your phone as a recipient. Write and commit the 2023 pre-registration (metrics, baselines, threshold chosen on 2019). Queue 2023 FIRMS (S-NPP and NOAA-20) and CHIRPS. Expose the webhook through a public HTTPS tunnel and pass the GET challenge. (done) Webhook routes in `src/whatsapp_routes.py`, signature check built by Muse Spark (`src/whatsapp_webhook.py`). (you) cloudflared tunnel and Meta Configuration. | Prereg committed; downloads queued; webhook verified |
 | **Thu Oct 29** | Intake (Muse Spark builder tasks): media download (spec after a real voice note and photo payload are in the inbox), ffmpeg OGG to WAV (Voice Transcribe accepts only mono 16-bit PCM WAV at 16 or 24 kHz; install ffmpeg first), Voice Transcribe (`muse-voice-transcribe-1.0`, place names as `keywords`), Muse Spark extraction (spec and tests ready: `specs/field_report.md`; schema and grounding checks are Claude-owned in `src/report_schema.py`). | An English voice note from your phone becomes a validated JSON row |
 | **Fri Oct 30** | Fusion and re-plan: match report to hotspot and cell, state machine (unverified, confirmed, smouldering, dismissed), tier change, solver rerun, route diff, reply to the crew number, map update in the UI, follow-up question when location is missing. | Phone to map to crew phone works twice in a row |
-| **Sat Oct 31** | Proof: run the 2023 test once; 2023 dispatch replay; season grounding batch. Drought Code: decided Oct 28, not in the headline model. All years arrived, but the pre-registration froze the 2023 models without it; adding it would mean the test no longer checks the committed model. At most one exploratory ablation after the test, labelled as such. | Results table frozen |
-| **Sun Nov 1** | S-NPP delivery ends 13:00 UTC. Live daily run on NOAA-20/21 with timestamps (needs `FIRMS_MAP_KEY`). Record 20 to 50 scripted English voice notes; score transcription and extraction. | Live plan renders; field-loop eval table |
-| **Mon Nov 2** | README: results, portability table (data swaps per region), users, impact chain, limitations, "who built what" table, how to rebuild `data/`. Feature freeze at midnight. | README complete |
+| **Sat Oct 31** | Glimmer: scenario sampler, transcript generator, grader; you create the Fireworks key (G0). Proof: run the 2023 test once; 2023 dispatch replay; season grounding batch. Drought Code: decided Oct 28, not in the headline model. All years arrived, but the pre-registration froze the 2023 models without it; adding it would mean the test no longer checks the committed model. At most one exploratory ablation after the test, labelled as such. | Results table frozen |
+| **Sun Nov 1** | S-NPP delivery ends 13:00 UTC. Live daily run on NOAA-20/21 with timestamps (needs `FIRMS_MAP_KEY`). Record 20 to 50 scripted English voice notes; score transcription and extraction, including an effort sweep (minimal, low, medium) with the deterministic grader. Glimmer: generate and verify training rows (G1), launch training. | Live plan renders; field-loop eval table |
+| **Mon Nov 2** | Glimmer graded on E1 and E2 (G2) or dropped. README: results, portability table (data swaps per region), users, impact chain, limitations, "who built what" table, how to rebuild `data/`. Feature freeze at midnight. | README complete |
 | **Tue Nov 3** | Script and record the 3-minute video plus a 60-second backup capture; rehearse "what breaks first". | Final video under 3:00 |
 | **Wed Nov 4** | Buffer for blocking bugs only. Make the repo public. Submit before noon Warsaw time. | Submitted |
 
