@@ -1,31 +1,23 @@
 {
- "built_from_live_day": "2026-10-31",
+ "built_from_live_day": "2026-11-01",
  "model": "lgbm_spread_y_2019_2019.txt",
  "top_k": 200,
  "note": "Exploratory: not pre-registered. Inputs are NOAA-20 and live rain; the model was trained on S-NPP.",
+ "n_boot": 200,
  "season": {
   "from": "2026-01-02",
-  "to": "2026-10-30",
-  "days": 292,
-  "cells": 10946023,
-  "burned_next_day": 166861,
-  "ap_model": 0.2877695687502513,
-  "ap_yesterday": 0.19460389564926014,
+  "to": "2026-10-31",
+  "days": 293,
+  "cells": 10976894,
+  "burned_next_day": 167056,
+  "ap_model": 0.2876442823974578,
+  "ap_yesterday": 0.19450520454746362,
   "ap_gap_ci95": [
-   0.08335520542079992,
-   0.10251364564769302
+   0.08467587689735316,
+   0.10487616660182678
   ]
  },
  "recent": [
-  {
-   "date": "2026-10-17",
-   "cells": 90458,
-   "burned_next_day": 2909,
-   "ap_model": 0.4299,
-   "ap_yesterday": 0.3201,
-   "top_model": 0.815,
-   "top_yesterday": 0.715
-  },
   {
    "date": "2026-10-18",
    "cells": 96637,
@@ -142,6 +134,15 @@
    "ap_yesterday": 0.0959,
    "top_model": 0.1,
    "top_yesterday": 0.09
+  },
+  {
+   "date": "2026-10-31",
+   "cells": 30871,
+   "burned_next_day": 195,
+   "ap_model": 0.2048,
+   "ap_yesterday": 0.1268,
+   "top_model": 0.245,
+   "top_yesterday": 0.185
   }
  ]
 }

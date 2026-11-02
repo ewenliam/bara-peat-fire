@@ -31,6 +31,7 @@ GOOD = {"report": {"fire_state": "smouldering_peat"}, "error": None, "grounding_
 
 def fresh() -> None:
     d = Path(tempfile.mkdtemp())
+    intake.REPLY = None  # never send WhatsApp replies from tests
     intake.REPORTS = d / "reports.jsonl"
     intake.INBOX = d / "inbox.jsonl"
     intake.ROOT = d

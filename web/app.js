@@ -162,7 +162,10 @@ function renderToday() {
   const watch = d.clusters.filter((c) => c.tier === "P2" && !visited.has(c.id)).length;
   const busiest = [...routes].sort((a, b) => b.risk_covered - a.risk_covered)[0];
   const ratio = k.detections_median_day ? k.detections_today / k.detections_median_day : 0;
-  const when = live ? `Today, ${niceDate(d.forecast_for)}` : niceDate(d.date);
+  const last = live && state.scorecard ? state.scorecard.recent.slice(-1)[0] : null;
+  const check = last
+    ? `<p class="check"><span class="badge ok">CHECKED</span><span>The forecast made on ${niceDate(last.date)}: <b>${Math.round(last.top_model * state.scorecard.top_k)}</b> of the ${state.scorecard.top_k} spots Bara rated highest burned the next day, against ${Math.round(last.top_yesterday * state.scorecard.top_k)} of ${state.scorecard.top_k} for the spots where fire burned the day before. Season so far: see "Does it work?".</span></p>`
+    : "";
   const eyebrow = live
     ? `Live · satellite detections up to ${niceDate(d.date)} (VIIRS NOAA-20) · built ${esc(s.live.built_utc)} UTC`
     : `${esc(s.label)} · not today`;
@@ -180,6 +183,7 @@ function renderToday() {
     <p class="eyebrow">${eyebrow}</p>
     <h2>${lead}</h2>
     <p class="muted">${fmt(k.detections_today)} fire detections on ${niceDate(d.date)} across Sumatra and Kalimantan; a typical day in ${d.date.slice(0, 4)} has ${fmt(k.detections_median_day)}.${live ? ` Forecast for ${niceDate(d.forecast_for)}.` : ""}</p>
+    ${check}
     ${crews}
     ${watch ? `<p class="muted">${watch} more medium-risk places have no crew today: ask those villages to watch for fire (ochre dots on the map).</p>` : ""}
     <p class="muted small">How Bara decides: it forecasts where fire will spread next from satellite detections, peat and recent rain, then gives each crew the stops that cover the most risk in a 10-hour day. Checking a fire is not putting it out.</p>`;
@@ -310,7 +314,19 @@ function renderCrews() {
 async function renderEvidence() {
   if (!state.replay) state.replay = await api("/api/replay");
   if (state.test2023 === undefined) state.test2023 = await api("/api/test2023").catch(() => null);
+  if (state.scorecard === undefined) state.scorecard = await api("/api/scorecard").catch(() => null);
   const r = state.replay, t = r.totals;
+  const sc = state.scorecard;
+  const live = sc ? (() => {
+    const s = sc.season, ci = s.ap_gap_ci95.map((v) => v.toFixed(3)).join(" to ");
+    const days = sc.recent.map((x) => `<tr><td>${niceDate(x.date)}</td><td class="num">${fmt(x.burned_next_day)}</td><td class="num"><b>${Math.round(x.top_model * sc.top_k)}</b></td><td class="num">${Math.round(x.top_yesterday * sc.top_k)}</td></tr>`).join("");
+    return `
+    <h2>Live this year: the 2026 season so far</h2>
+    <p class="muted">The same frozen forecast, scored every day from ${niceDate(s.from)} to ${niceDate(s.to)} (${s.days} days) against what burned the next day. Exploratory, not pre-registered: the satellite is NOAA-20 and the rain is near-real-time.</p>
+    <div class="check"><span class="badge ok">AHEAD</span><span>Forecast average precision <b>${s.ap_model.toFixed(3)}</b> vs <b>${s.ap_yesterday.toFixed(3)}</b> for yesterday's fires (3x3); 95% interval of the gap ${ci} (${sc.n_boot} day-bootstrap samples).</span></div>
+    <h3>The last ${sc.recent.length} days: of the ${sc.top_k} spots each method rated highest, how many burned the next day</h3>
+    <table class="score"><thead><tr><th>Day</th><th class="num">Cells burned next day</th><th class="num">Bara</th><th class="num">Yesterday's fires</th></tr></thead><tbody>${days}</tbody></table>`;
+  })() : "";
   const max = t.oracle.cells;
   const row = (name, v, cls = "") => `<div class="bar-row"><span>${name}</span><div class="bar ${cls}" style="width:${(v / max) * 100}%"></div><span class="v">${fmt(v)}</span></div>`;
   const x = state.test2023;
@@ -334,7 +350,7 @@ async function renderEvidence() {
     <h3>What the 2023 test does not show</h3>
     <p class="muted">A simple logistic regression on the same inputs nearly matches (${x.forecast["Logistic regression (all)"].AP.toFixed(3)}): the gain comes from the peat and rain inputs more than the model. Fires in cells with no recent detection stay hard (average precision ${x.forecast["LightGBM + peat + rain"].AP_new.toFixed(3)}). The same result holds with NOAA-20 detections as the truth (${x.H1_noaa20.model_AP.toFixed(3)} vs ${x.H1_noaa20.baseline_AP.toFixed(3)}). Reaching a fire is checking it, not putting it out.</p>`;
   })() : `<p class="muted">The 2023 held-out results are not available.</p>`;
-  $("tab-evidence").innerHTML = `${held}
+  $("tab-evidence").innerHTML = `${held}${live}
     <h2>Try it on past seasons</h2>
     <p class="muted">Open a past day to see what Bara would have planned, and switch on "What burned the next day" to check it.</p>
     <p><button class="btn ghost" id="ev-2023">Open 15 Sep 2023 (final exam)</button> <button class="btn ghost" id="ev-2019">Open 15 Sep 2019 (practice)</button> <button class="btn ghost" id="ev-replay">Replay the 2019 season</button></p>
@@ -455,6 +471,7 @@ async function loadDay(date) {
     $("loading").hidden = true;
   }
   state.briefing = await api(`/api/briefing?date=${date}`).catch(() => null);
+  if (state.scorecard === undefined) state.scorecard = await api("/api/scorecard").catch(() => null);
   renderKpis();
   render();
   renderBriefing();
@@ -676,7 +693,9 @@ function phoneMessages(r) {
       <div class="facts">${facts.map((x) => `<span class="fact">${esc(x)}</span>`).join("")}
         <span class="fact">${r.grounded ? "every field quoted" : "needs review"}</span></div></div>
     <div class="bubble bara"><div class="meta"><span>Bara</span><span>${esc(time)}</span></div>
-      ${esc(r.reply)}<div class="draft">Draft reply; sending is not switched on.</div></div>`;
+      ${esc(r.reply)}<div class="draft">${r.sent && r.sent.status === "sent" ? `Sent on WhatsApp ${esc(r.sent.sent_at.slice(11, 16))}`
+        : r.sent ? `Not sent: ${esc(r.sent.error || "")}` : r.type === "audio" && r.id.startsWith("web.") ? "Recorded in the app; no reply needed."
+        : "Reply not sent yet."}</div></div>`;
 }
 
 function renderPhone() {

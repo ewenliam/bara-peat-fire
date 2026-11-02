@@ -21,6 +21,7 @@ from chat import ask
 from firms import load_years
 from fusion import RECENT_H, fuse_day, recent_reports
 from intake import process_upload
+from replies import sent as sent_replies
 from imagery import chip_key
 from llm import BudgetExceeded, spend_cap, spent_usd
 from places import crew_bases, locate
@@ -269,6 +270,15 @@ def test2023() -> dict:
             "rows": d["forecast"]["rows"], "positives": d["forecast"]["positives"]}
 
 
+@app.get("/api/scorecard")
+def scorecard() -> dict:
+    """The exploratory 2026 live scorecard (src/scorecard.py): the frozen forecast scored on each past day."""
+    path = OUT / "live_scorecard.json"
+    if not path.exists():
+        raise HTTPException(404, "the live scorecard has not been built")
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
 @app.get("/api/field")
 def field(date: str, hours: float = RECENT_H) -> dict:
     """Live WhatsApp reports from the last `hours`, applied to this day's plan (no API calls).
@@ -283,7 +293,9 @@ def field(date: str, hours: float = RECENT_H) -> dict:
         return [[_r(bases.loc[base, "lon"], 4), _r(bases.loc[base, "lat"], 4)]] + \
             [[_r(table.loc[c, "lon"], 4), _r(table.loc[c, "lat"], 4)] for c in stops]
 
+    replied = sent_replies()
     for r in out["reports"]:
+        r["sent"] = replied.get(r["id"])  # the WhatsApp reply actually sent, if any
         cid = r["decision"]["cluster_id"]
         r["decision"]["cluster_lat"] = _r(table.loc[cid, "lat"], 4) if cid else None
         r["decision"]["cluster_lon"] = _r(table.loc[cid, "lon"], 4) if cid else None

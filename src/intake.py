@@ -155,10 +155,22 @@ def process_upload(audio: bytes, suffix: str) -> dict:
     return out
 
 
+def _send_replies(rows: list[dict], results: list[dict]) -> None:
+    from replies import send_for  # loads the forecast tables, so only when a reply is due
+    send_for(rows, results)
+
+
+REPLY = _send_replies  # replaced in tests so they send nothing
+
+
 def process_rows(rows: list[dict]) -> list[dict]:
-    """Process rows that have no report yet; called by the webhook after it stores messages."""
+    """Process rows that have no report yet, then reply on WhatsApp; called by the webhook."""
     done = processed_ids()
-    return [process(row) for row in rows if row["id"] not in done]
+    todo = [row for row in rows if row["id"] not in done]
+    results = [process(row) for row in todo]
+    if REPLY and results:
+        REPLY(todo, results)
+    return results
 
 
 def process_pending() -> list[dict]:

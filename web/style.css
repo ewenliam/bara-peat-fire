@@ -216,3 +216,7 @@ details.more summary { font: 600 13px var(--font); padding: 4px 0; }
 .kpis { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
 .phone { top: 112px; }
 .season-banner { top: 108px; }
+table.score { width: 100%; border-collapse: collapse; font-size: 13px; margin: 8px 0 16px; }
+table.score th, table.score td { padding: 4px 6px; border-bottom: 1px solid var(--border); text-align: left; }
+table.score th { color: var(--muted); font-weight: 500; }
+table.score .num { text-align: right; font-variant-numeric: tabular-nums; }
