@@ -1,0 +1,147 @@
+{
+ "built_from_live_day": "2026-10-31",
+ "model": "lgbm_spread_y_2019_2019.txt",
+ "top_k": 200,
+ "note": "Exploratory: not pre-registered. Inputs are NOAA-20 and live rain; the model was trained on S-NPP.",
+ "season": {
+  "from": "2026-01-02",
+  "to": "2026-10-30",
+  "days": 292,
+  "cells": 10946023,
+  "burned_next_day": 166861,
+  "ap_model": 0.2877695687502513,
+  "ap_yesterday": 0.19460389564926014,
+  "ap_gap_ci95": [
+   0.08335520542079992,
+   0.10251364564769302
+  ]
+ },
+ "recent": [
+  {
+   "date": "2026-10-17",
+   "cells": 90458,
+   "burned_next_day": 2909,
+   "ap_model": 0.4299,
+   "ap_yesterday": 0.3201,
+   "top_model": 0.815,
+   "top_yesterday": 0.715
+  },
+  {
+   "date": "2026-10-18",
+   "cells": 96637,
+   "burned_next_day": 881,
+   "ap_model": 0.1619,
+   "ap_yesterday": 0.1381,
+   "top_model": 0.365,
+   "top_yesterday": 0.31
+  },
+  {
+   "date": "2026-10-19",
+   "cells": 95833,
+   "burned_next_day": 1758,
+   "ap_model": 0.2267,
+   "ap_yesterday": 0.1375,
+   "top_model": 0.64,
+   "top_yesterday": 0.485
+  },
+  {
+   "date": "2026-10-20",
+   "cells": 91522,
+   "burned_next_day": 2168,
+   "ap_model": 0.3426,
+   "ap_yesterday": 0.213,
+   "top_model": 0.73,
+   "top_yesterday": 0.61
+  },
+  {
+   "date": "2026-10-21",
+   "cells": 86568,
+   "burned_next_day": 4349,
+   "ap_model": 0.4349,
+   "ap_yesterday": 0.2849,
+   "top_model": 0.885,
+   "top_yesterday": 0.765
+  },
+  {
+   "date": "2026-10-22",
+   "cells": 91379,
+   "burned_next_day": 3072,
+   "ap_model": 0.4859,
+   "ap_yesterday": 0.4034,
+   "top_model": 0.885,
+   "top_yesterday": 0.855
+  },
+  {
+   "date": "2026-10-23",
+   "cells": 96173,
+   "burned_next_day": 1072,
+   "ap_model": 0.1729,
+   "ap_yesterday": 0.1664,
+   "top_model": 0.365,
+   "top_yesterday": 0.385
+  },
+  {
+   "date": "2026-10-24",
+   "cells": 93808,
+   "burned_next_day": 232,
+   "ap_model": 0.0287,
+   "ap_yesterday": 0.0176,
+   "top_model": 0.07,
+   "top_yesterday": 0.045
+  },
+  {
+   "date": "2026-10-25",
+   "cells": 84540,
+   "burned_next_day": 350,
+   "ap_model": 0.0223,
+   "ap_yesterday": 0.0188,
+   "top_model": 0.035,
+   "top_yesterday": 0.02
+  },
+  {
+   "date": "2026-10-26",
+   "cells": 85035,
+   "burned_next_day": 162,
+   "ap_model": 0.0488,
+   "ap_yesterday": 0.0583,
+   "top_model": 0.115,
+   "top_yesterday": 0.135
+  },
+  {
+   "date": "2026-10-27",
+   "cells": 79596,
+   "burned_next_day": 158,
+   "ap_model": 0.125,
+   "ap_yesterday": 0.1493,
+   "top_model": 0.2,
+   "top_yesterday": 0.235
+  },
+  {
+   "date": "2026-10-28",
+   "cells": 71907,
+   "burned_next_day": 412,
+   "ap_model": 0.0745,
+   "ap_yesterday": 0.0283,
+   "top_model": 0.19,
+   "top_yesterday": 0.14
+  },
+  {
+   "date": "2026-10-29",
+   "cells": 54458,
+   "burned_next_day": 354,
+   "ap_model": 0.1994,
+   "ap_yesterday": 0.0903,
+   "top_model": 0.365,
+   "top_yesterday": 0.25
+  },
+  {
+   "date": "2026-10-30",
+   "cells": 37811,
+   "burned_next_day": 98,
+   "ap_model": 0.0708,
+   "ap_yesterday": 0.0959,
+   "top_model": 0.1,
+   "top_yesterday": 0.09
+  }
+ ]
+}
