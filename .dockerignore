@@ -1,0 +1,10 @@
+.git
+.venv
+.env
+.claude
+data
+cache
+logs
+docs/video_cards
+__pycache__
+*.pyc

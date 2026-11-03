@@ -7,6 +7,7 @@ Everything served under /api/day is computed by our own code (no LLM). Muse Spar
 are only called by the POST endpoints, and every call goes through the cost ledger and cap.
 """
 import json
+import os
 from functools import lru_cache
 from pathlib import Path
 
@@ -23,7 +24,7 @@ from fusion import RECENT_H, fuse_day, recent_reports
 from intake import process_upload
 from replies import sent as sent_replies
 from imagery import chip_key
-from llm import BudgetExceeded, spend_cap, spent_usd
+from llm import BudgetExceeded, recent_calls, spend_cap, spent_usd
 from places import crew_bases, locate
 from reports import list_reports, submit as submit_report
 from selfcheck import review
@@ -46,6 +47,11 @@ def live_info() -> dict | None:
     return json.loads(LIVE_FILE.read_text(encoding="utf-8")) if LIVE_FILE.exists() else None
 
 
+def has_tables(year: str) -> bool:
+    """A past season's tables are optional: the demo data pack (get_demo_data.py) holds only 2026."""
+    return (ROOT / "data" / "processed" / f"samples_{year}_{year}_feat.parquet").exists()
+
+
 def season_of(day: str) -> dict:
     live = live_info()
     if live and "2026-01-08" <= day <= live["live_day"]:
@@ -54,6 +60,8 @@ def season_of(day: str) -> dict:
                 "label": "Live" if is_live else "Earlier this season (2026)", "live": live}
     for first, last, label in SEASONS.values():
         if first <= day <= last:
+            if not has_tables(day[:4]):
+                raise HTTPException(400, f"the {day[:4]} season's tables are not installed; see the README")
             return {"mode": "past", "label": label, "live": live}
     raise HTTPException(400, f"no data for {day}")
 
@@ -77,11 +85,17 @@ def median_daily_detections(year: int) -> int:
     return int(per_day.reindex(days, fill_value=0).median())
 
 
+def is_public() -> bool:
+    return bool(os.environ.get("VERCEL") or os.environ.get("BARA_PUBLIC"))
+
+
 def local_only(request: Request) -> None:
     """Endpoints that spend Meta API money answer only on this laptop, never through the public
-    tunnel (run_demo.py), so a stranger with the tunnel address cannot use up the budget."""
+    tunnel (run_demo.py), so a stranger with the tunnel address cannot use up the budget. A public
+    deployment (Vercel sets VERCEL; BARA_PUBLIC for any other host) refuses them outright, since its
+    proxy may present requests as coming from 127.0.0.1."""
     through_tunnel = "cf-ray" in request.headers or "cf-connecting-ip" in request.headers
-    if through_tunnel or not request.client or request.client.host not in ("127.0.0.1", "::1"):
+    if is_public() or through_tunnel or not request.client or request.client.host not in ("127.0.0.1", "::1"):
         raise HTTPException(403, "This action runs only on the demo laptop.")
 
 
@@ -92,10 +106,17 @@ def _r(x, n: int = 1) -> float:
 @app.get("/api/meta")
 def meta() -> dict:
     live = live_info()
-    return {"first_day": "2019-01-08", "last_day": live["live_day"] if live else "2023-12-30",
+    firsts = [first for first, _, _ in SEASONS.values() if has_tables(first[:4])] + (["2026-01-08"] if live else [])
+    return {"first_day": min(firsts, default="2019-01-08"), "last_day": live["live_day"] if live else "2023-12-30",
             "default_day": live["live_day"] if live else "2019-09-15", "live": live,
             "seasons": {k: {"first": a, "last": b, "label": c} for k, (a, b, c) in SEASONS.items()},
-            "spent_usd": round(spent_usd(), 4), "cap_usd": spend_cap()}
+            "spent_usd": round(spent_usd(), 4), "cap_usd": spend_cap(), "public": is_public()}
+
+
+@app.get("/api/calls")
+def calls() -> dict:
+    """Recent Meta model calls for the live panel; none on a public deployment, which makes none."""
+    return {"calls": [] if is_public() else recent_calls()}
 
 
 @app.get("/api/day")

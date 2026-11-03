@@ -209,3 +209,10 @@ table.score { width: 100%; border-collapse: collapse; font-size: 13px; margin: 8
 table.score th, table.score td { padding: 4px 6px; border-bottom: 1px solid var(--border); text-align: left; }
 table.score th { color: var(--muted); font-weight: 500; }
 table.score .num { text-align: right; font-variant-numeric: tabular-nums; }
+/* live Meta model calls: appears under any tab while models are running (GET /api/calls) */
+.calls { border-top: 1px solid var(--rule); padding: 8px 18px 10px; background: var(--surface-2); }
+.calls .eyebrow { margin-bottom: 4px; }
+.call { display: grid; grid-template-columns: 62px 1fr auto; gap: 8px; font: 12px/1.6 var(--mono); }
+.call .what { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.call .model { color: var(--route); font-weight: 500; }
+.call .when, .call .took { color: var(--muted); }

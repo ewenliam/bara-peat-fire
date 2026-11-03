@@ -12,6 +12,11 @@ brigade commander, each morning, where peat fire is likely to spread tomorrow an
 each crew should check today. Rangers and villagers answer back with a WhatsApp voice note, and
 the plan changes.
 
+**Live demo: https://bara-six-smoky.vercel.app** (forecast, crew routes and evidence; data up to
+the last refresh, shown on the page). The actions that spend Meta API money (Ask Bara, written
+briefings, photo and voice reports) and the WhatsApp field loop run only on the operator's machine,
+so the public site cannot use up the budget and holds no phone numbers.
+
 ## Why it matters
 
 2026 is Indonesia's worst fire season in over a decade
@@ -118,7 +123,8 @@ solver and number checks are deterministic code.
 
 ## Does it work?
 
-Three pieces of evidence, strongest first.
+Three pieces of evidence, strongest first. All the headline numbers below are printed from the
+committed result files by `python eval/summary.py` (see [`eval/`](eval/README.md)).
 
 ## Held-out test: the 2023 season (pre-registered, run once)
 
@@ -228,22 +234,36 @@ the same deterministic grader (`src/report_grader.py`).
 - **Region:** Sumatra and Kalimantan only. Other regions in the picker are marked "in development"
   and need their own training data.
 
-## Run it (Windows, Git Bash)
+## Run it: quickstart
+
+Works on Windows (Git Bash), Linux and macOS. On Linux and macOS use `.venv/bin/python` in place of
+`.venv/Scripts/python`.
 
 ```bash
+git clone https://github.com/ewenliam/bara-peat-fire.git
+cd bara-peat-fire
 python -m venv .venv
 .venv/Scripts/python -m pip install -r requirements.txt
-cp .env.example .env   # then add your keys
-```
-
-The web app (needs the processed tables in `data/`, which are not committed; see the data
-sections below to rebuild them):
-
-```bash
+.venv/Scripts/python src/get_demo_data.py   # 120 MB download: the 2026 tables, no key needed
+cp .env.example .env                        # then set META_API_KEY for the Meta features
 .venv/Scripts/python -m uvicorn server:app --app-dir src --port 8600
 ```
 
-Open `http://localhost:8600`. Past days work too, for example `?date=2023-09-15`.
+Open `http://localhost:8600`. Use your own key from [dev.meta.ai](https://dev.meta.ai) and never
+commit `.env`. `logs/meta_usage.jsonl` ships with this project's build spend, which counts against
+`META_SPEND_CAP_USD` (20 by default), so raise the cap or start the file empty for your own testing.
+
+| What you can try | Needs |
+|---|---|
+| Today screen, forecast, crew routes, "Does it work?", season replay, `python eval/summary.py`, tests | No key |
+| Ask Bara, photo reports, written briefing (a first run for a new day takes about 5 minutes and about $0.22, because it fetches satellite images for SAM 3.1), and "Record a field report here" in the Field reports tab (Voice Transcribe and Muse Spark, same pipeline as WhatsApp; needs `ffmpeg` on your PATH) | `META_API_KEY` |
+| The WhatsApp loop | WhatsApp Cloud API keys, `cloudflared`, `ffmpeg` (below) |
+| Refreshing live data | `FIRMS_MAP_KEY`, `EARTHDATA_TOKEN` (below) |
+
+The pack holds only 2026. Opening a 2019 or 2023 day needs those seasons' tables, which can be
+rebuilt from the sources in the data sections below; their results are already in `outputs/`.
+While models run, a "Meta model calls, live" panel under the tabs shows each call. Times in
+the app are the machine's local time, except the live-data build time, which is marked UTC.
 
 The full WhatsApp demo (server, Cloudflare quick tunnel, and the Meta webhook pointed at it;
 needs `cloudflared` and `ffmpeg` installed and the WhatsApp keys in `.env`):
@@ -266,6 +286,26 @@ Tests (no API calls, no messages sent):
 
 ```bash
 for t in tests/test_*.py; do .venv/Scripts/python "$t"; done
+```
+
+CI (`.github/workflows/ci.yml`) runs the same tests and `eval/summary.py` on every push, and
+builds the Docker image.
+
+Docker (the processed tables in `data/` are mounted, not baked in; mounting `logs/` keeps one
+Meta API spend ledger, so the spend cap counts every call):
+
+```bash
+docker build -t bara .
+docker run -p 8600:8600 -v "$(pwd)/data:/app/data" -v "$(pwd)/logs:/app/logs" --env-file .env bara
+```
+
+Public deployment on Vercel (no API keys; `deploy/vercel_bundle.py` copies only the tables the
+public pages read, never `.env` or `data/whatsapp/`). After `src/live.py` and `src/scorecard.py`,
+run this again to publish the new day:
+
+```bash
+.venv/Scripts/python deploy/vercel_bundle.py
+cd build/bara && vercel deploy --prod
 ```
 
 ## Data and licences

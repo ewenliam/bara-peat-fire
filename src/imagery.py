@@ -18,10 +18,9 @@ from pathlib import Path
 
 import matplotlib.image as mpimg
 import numpy as np
-import rasterio
-from pystac_client import Client
-from rasterio.warp import transform as warp_transform
-from rasterio.windows import Window
+
+# rasterio and pystac_client are imported inside the functions that fetch imagery: the web server
+# only needs chip_key, and the public deployment has no GDAL system libraries.
 
 ROOT = Path(__file__).resolve().parents[1]
 CHIPS = ROOT / "data" / "processed" / "chips"
@@ -40,7 +39,10 @@ def chip_key(lat: float, lon: float, size: int) -> str:
     return f"{lat:.3f}_{lon:.3f}_{size}".replace("-", "m")
 
 
-def _window(src, lon: float, lat: float, size: int) -> Window:
+def _window(src, lon: float, lat: float, size: int) -> "Window":
+    from rasterio.warp import transform as warp_transform
+    from rasterio.windows import Window
+
     xs, ys = warp_transform("EPSG:4326", src.crs, [lon], [lat])
     row, col = src.index(xs[0], ys[0])
     return Window(col - size // 2, row - size // 2, size, size)
@@ -52,6 +54,9 @@ def get_chip(lat: float, lon: float, size: int = SIZE_PX) -> dict:
     meta_path = CHIPS / f"{key}.json"
     if meta_path.exists():
         return json.loads(meta_path.read_text(encoding="utf-8"))
+
+    import rasterio
+    from pystac_client import Client
 
     items = Client.open(STAC).search(
         collections=[COLLECTION], intersects={"type": "Point", "coordinates": [lon, lat]},

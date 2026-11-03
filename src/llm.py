@@ -61,6 +61,25 @@ def spent_usd() -> float:
         return sum(json.loads(line)["cost_usd"] for line in f if line.strip())
 
 
+def recent_calls(limit: int = 6, within_s: float = 900, now: float | None = None) -> list[dict]:
+    """Newest Meta model calls for the app's live panel: what ran and how long, not cost or keys."""
+    if not LEDGER.exists():
+        return []
+    now = time.time() if now is None else now
+    out = []
+    with LEDGER.open(encoding="utf-8") as f:
+        for line in f:
+            if not line.strip():
+                continue
+            row = json.loads(line)
+            if "time" not in row:  # a few early rows were logged by hand without one
+                continue
+            if now - time.mktime(time.strptime(row["time"], "%Y-%m-%dT%H:%M:%S")) <= within_s:
+                out.append({"time": row["time"], "model": row["model"], "tag": row.get("tag") or "",
+                            "seconds": row.get("seconds"), "cache_hit": bool(row.get("cache_hit"))})
+    return out[-limit:][::-1]
+
+
 def call_cost(model: str, prompt: int, cached: int, completion: int) -> float:
     p = PRICES[model]
     return ((prompt - cached) * p["input"] + cached * p["cached_input"]

@@ -19,7 +19,6 @@ from pathlib import Path
 
 import matplotlib.image as mpimg
 import numpy as np
-from rasterio.warp import transform as warp_transform
 
 from imagery import CHIPS, get_chip
 from sam import overlay, segment
@@ -81,6 +80,8 @@ def nearest_water(lat: float, lon: float, use_cache: bool = True, tag: str = "")
     _mark(OUT / meta["png"], (rows[i], cols[i]))
     dy, dx = c - rows[i], cols[i] - c  # image rows grow southwards
     bearing = (np.degrees(np.arctan2(dx, dy)) + 360) % 360
+    from rasterio.warp import transform as warp_transform  # imported here: see imagery.py
+
     a, _, x0, _, e, y0 = meta["transform"]
     xs, ys = warp_transform(meta["crs"], "EPSG:4326", [x0 + (cols[i] + 0.5) * a], [y0 + (rows[i] + 0.5) * e])
     return {**out, "river_found": True,

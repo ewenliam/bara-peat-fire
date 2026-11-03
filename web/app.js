@@ -496,6 +496,7 @@ function shiftDay(n) {
 
 async function refreshSpend() {
   state.meta = await api("/api/meta");
+  $("date").min = state.meta.first_day;
   $("date").max = state.meta.last_day;
   $("spend").innerHTML = `Meta API <b>$${state.meta.spent_usd.toFixed(2)}</b> of $${state.meta.cap_usd.toFixed(0)}`;
 }
@@ -507,6 +508,8 @@ $("show-p3").onchange = render;
 $("show-truth").onchange = render;
 document.querySelector('[data-tab="evidence"]').addEventListener("click", async () => {
   await renderEvidence();
+  $("ev-2023").hidden = state.meta.first_day > "2023-09-15";  // those seasons' tables are optional
+  $("ev-2019").hidden = state.meta.first_day > "2019-09-15";
   $("ev-2023").onclick = () => { loadDay("2023-09-15"); showTab("today"); };
   $("ev-2019").onclick = () => { loadDay("2019-09-15"); showTab("today"); };
   $("ev-replay").onclick = startReplay;
@@ -689,10 +692,10 @@ function fieldCard(r) {
   const facts = [STATE_LABEL[rep.fire_state] || rep.fire_state, rep.place_text, rep.area_ha != null ? `${rep.area_ha} ha` : null,
     ...(rep.needs || []).filter((n) => n !== "none").map((n) => `needs ${n}`)].filter(Boolean);
   const kind = r.id.startsWith("web.") ? "Recorded in the app" : r.type === "audio" ? "Voice note" : r.type === "text" ? "Message" : r.type;
-  const sent = r.sent && r.sent.status === "sent" ? `Bara replied on WhatsApp, ${esc(r.sent.sent_at.slice(11, 16))} UTC`
+  const sent = r.sent && r.sent.status === "sent" ? `Bara replied on WhatsApp, ${esc(r.sent.sent_at.slice(11, 16))}`
     : r.sent ? `Bara's reply, not sent: ${esc(r.sent.error || "")}` : r.id.startsWith("web.") ? "Bara's answer" : "Bara's reply, not sent yet";
   return `<div class="card field-card"><div class="card-head"><span class="badge ${r.grounded ? "ok" : "P2"}">${r.grounded ? "every field quoted" : "needs review"}</span>
-      <span class="right">${esc(kind)}, ${esc(time)} UTC</span></div>
+      <span class="right">${esc(kind)}, ${esc(time)}</span></div>
     <p class="said">"${esc(r.transcript)}"</p>
     <div class="facts">${facts.map((x) => `<span class="fact">${esc(x)}</span>`).join("")}</div>
     <div class="reply"><span class="eyebrow">${sent}</span>${esc(r.reply)}</div></div>`;
@@ -730,6 +733,18 @@ function fieldLayers() {
 }
 
 setInterval(loadField, 10000);
+
+// ---------- live Meta model calls: shown under any tab while models run; a public deployment makes none
+async function loadCalls() {
+  if (!state.meta || state.meta.public) return;
+  const r = await api("/api/calls").catch(() => null);
+  if (!r) return;
+  $("calls").hidden = !r.calls.length;
+  $("calls-list").innerHTML = r.calls.map((c) => `<div class="call"><span class="when">${esc(c.time.slice(11, 19))}</span>
+    <span class="what"><span class="model">${esc(c.model)}</span> ${esc(c.tag)}</span>
+    <span class="took">${c.cache_hit ? "cached" : c.seconds == null ? "" : `${fmt(c.seconds, 1)} s`}</span></div>`).join("");
+}
+setInterval(loadCalls, 3000);
 
 // Record a field report in the browser: the fallback when WhatsApp or the tunnel is down.
 // Same steps on the server (intake.process_upload): Voice Transcribe, Muse Spark, fusion.

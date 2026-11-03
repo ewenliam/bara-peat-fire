@@ -9,3 +9,4 @@ __pycache__/
 logs/*
 !logs/meta_usage.jsonl
 !logs/builds/
+build/
