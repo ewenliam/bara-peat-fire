@@ -14,29 +14,48 @@ the plan changes.
 
 ## Why it matters
 
-Indonesia's peat is burning now: on 1 Nov 2026, satellites recorded 555 fire detections across
-Sumatra and Kalimantan, against 164 on a typical day of 2026. The smoke does not stop at the border.
+2026 is Indonesia's worst fire season in over a decade
+([Al Jazeera](https://www.aljazeera.com/news/2026/10/9/malaysia-shuts-schools-as-haze-from-indonesian-fires-chokes-southeast-asia)),
+and it is not over. On 1 Nov 2026,
+satellites recorded **555 fire detections** across Sumatra and Kalimantan, against 164 on a typical
+day of 2026 (Bara's live data). A strong El Niño is expected to last until early 2027
+([AFP/France 24, 28 Sep 2026](https://www.france24.com/en/live-news/20260928-the-wildfires-choking-indonesia-sparking-regional-haze)).
 
-- One study estimates the 2015 haze caused about **100,300 premature deaths**: 91,600 in
-  Indonesia, 6,500 in Malaysia and 2,200 in Singapore (Koplitz et al. 2016; range 26,300 to
-  174,300; [Harvard SEAS](https://seas.harvard.edu/news/2016/09/smoke-2015-indonesian-fires-may-have-caused-100000-premature-deaths)).
-  Another, for Sept to Oct only, estimates **6,150 to 17,270**
-  ([Newcastle University](https://www.ncl.ac.uk/press/articles/archive/2016/11/wildfires)).
-- In 2019, almost **10 million children** lived in the worst-affected areas
-  ([UNICEF](https://www.unicef.org/press-releases/indonesia-10-million-children-risk-air-pollution-due-wild-forest-fires)),
-  and thousands of schools closed in Indonesia and Malaysia
-  ([Al Jazeera](https://www.aljazeera.com/news/2019/9/19/malaysia-indonesia-shut-thousands-of-schools-as-haze-worsens)).
-- Children exposed to the 1997 fire haze in the womb were shorter at age 17 (Tan-Soo and
-  Pattanayak 2019, PNAS; [Duke](https://sanford.duke.edu/story/forest-fires-stunt-growth-cause-permanent-loss-human-potential/)).
-- Wild orangutans in the 2015 smoke rested more and burned their own fat
-  ([Rutgers](https://www.rutgers.edu/news/wildfires-may-cause-long-term-health-problems-endangered-orangutans)).
-- Indonesia's 2015 fires cost **US$16.1 billion, 1.9% of GDP**
-  ([World Bank, 2016](https://documents1.worldbank.org/curated/pt/776101467990969768/pdf/103668-BRI-Cost-of-Fires-Knowledge-Note-PUBLIC-ADD-NEW-SERIES-Indonesia-Sustainable-Landscapes-Knowledge-Note.pdf)).
-  The 2019 season cost at least **US$5.2 billion**
-  ([CNBC/Reuters](https://www.cnbc.com/2019/12/11/world-bank-says-indonesia-fires-cost-5point2-billion-in-economic-losses.html)).
-- Copernicus estimated about **360 Mt CO2** from Indonesian fires between 1 Aug and 18 Sep 2019
-  alone, with smouldering peat the main concern
-  ([CAMS](https://atmosphere.copernicus.eu/copernicus-atmosphere-monitoring-service-tracks-extent-and-pollution-fires-across-indonesia)).
+**People are dying now.**
+- Fire smoke caused an estimated **3,560 deaths in Indonesia in September 2026 alone**, and about
+  **57.8 million people** breathed unhealthy to hazardous air that month (CREA, short-term PM2.5
+  exposure; [AFP/The Star, 30 Oct 2026](https://www.thestar.com.my/aseanplus/aseanplus-news/2026/10/30/fire-pollution-killed-3560-people-in-indonesia-in-september-report)).
+  CREA's estimate for August was about 1,700
+  ([Katadata, Sept 2026](https://katadata.co.id/ekonomi-hijau/energi-baru/6aa79bdd4fef2/crea-polusi-udara-ri-tewaskan-3700-orang-pada-agustus-1700-akibat-karhutla)).
+  The government has not confirmed or rejected these figures.
+- Indonesia's Health Ministry has recorded **more than 170,000 respiratory infections**
+  ([Al Jazeera, 9 Oct 2026](https://www.aljazeera.com/news/2026/10/9/malaysia-shuts-schools-as-haze-from-indonesian-fires-chokes-southeast-asia)).
+
+**The smoke crosses borders.**
+- Malaysia closed schools in Kuala Lumpur, Putrajaya and five states on 9 Oct 2026, keeping about
+  **2 million students** at home ([Al Jazeera](https://www.aljazeera.com/news/2026/10/9/malaysia-shuts-schools-as-haze-from-indonesian-fires-chokes-southeast-asia)).
+  In August, nearly 600 schools in Sarawak closed and Kuching's air index hit 407, the region's
+  worst haze since 2015 ([Al Jazeera, 1 Sep 2026](https://www.aljazeera.com/news/2026/9/1/toxic-haze-from-indonesian-fires-chokes-malaysian-borneo)).
+- On 17 Oct 2026, Singapore was the world's second most polluted major city, with Kuala Lumpur
+  third; ASEAN raised its haze alert to Level 3, the highest, and Timor-Leste closed schools
+  ([AFP/France 24, 18 Oct 2026](https://www.france24.com/en/asia-pacific/20261018-months-long-indonesia-wildfires-spew-toxic-haze-across-southeast-asia)).
+
+**The land and the animals.**
+- Satellite estimates put the area burned from January to August 2026 at more than 637,000 ha
+  (Auriga) to nearly 900,000 ha (Nusantara Atlas)
+  ([France 24, 18 Oct 2026](https://www.france24.com/en/asia-pacific/20261018-months-long-indonesia-wildfires-spew-toxic-haze-across-southeast-asia)).
+- Over 212,000 hotspots were detected inside peat ecosystems in the first eight months, more than
+  double the count in 2015 (Pantau Gambut). Fires reached habitats holding 52% of Borneo's
+  orangutans (IUCN), and 53 orangutans were among 100 animals rescued
+  ([AFP/France 24, 28 Sep 2026](https://www.france24.com/en/live-news/20260928-the-wildfires-choking-indonesia-sparking-regional-haze)).
+
+**It has happened before, and it costs.** One study estimates the 2015 haze caused about
+**100,300 premature deaths** in Indonesia, Malaysia and Singapore (Koplitz et al. 2016;
+[Harvard SEAS](https://seas.harvard.edu/news/2016/09/smoke-2015-indonesian-fires-may-have-caused-100000-premature-deaths)),
+and the World Bank put that year's cost at **US$16.1 billion, 1.9% of GDP**
+([World Bank, 2016](https://documents1.worldbank.org/curated/pt/776101467990969768/pdf/103668-BRI-Cost-of-Fires-Knowledge-Note-PUBLIC-ADD-NEW-SERIES-Indonesia-Sustainable-Landscapes-Knowledge-Note.pdf)).
+Children exposed to the 1997 haze in the womb were shorter at age 17 (Tan-Soo and Pattanayak
+2019, PNAS; [Duke](https://sanford.duke.edu/story/forest-fires-stunt-growth-cause-permanent-loss-human-potential/)).
 
 Crews are few and peat fire hides underground, so the question each morning is where to send
 them. Bara does not claim hectares, CO2 or lives saved: no source links a reached fire cell to
