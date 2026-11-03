@@ -7,72 +7,122 @@
 
 # Bara
 
-*Bara* is Indonesian for embers: peat fires smoulder underground like embers. Bara is a
-next-day fire forecast and crew dispatch planner for Indonesia's peatland fires.
-Built for the Meta Global AI Developer Hackathon (Oct 26 - Nov 4, 2026).
+*Bara* is Indonesian for embers: peat fires smoulder underground like embers. Bara tells a fire
+brigade commander, each morning, where peat fire is likely to spread tomorrow and which places
+each crew should check today. Rangers and villagers answer back with a WhatsApp voice note, and
+the plan changes.
 
-**Hackathon contribution:** all code in this repository was written during the hackathon,
-starting Oct 26, 2026. No earlier project code is reused.
+Built for the Meta Global AI Developer Hackathon (Oct 26 to Nov 4, 2026), Indie track, theme
+"Build for Your World". All code in this repository was written during the hackathon, starting
+Oct 26, 2026. No earlier project code is reused.
 
-## What it does
+## Why it matters
 
-A fire brigade commander asks four questions each morning. Bara answers them:
+Indonesia's peat is burning now: on 1 Nov 2026, satellites recorded 555 fire detections across
+Sumatra and Kalimantan, against 164 on a typical day of 2026. The smoke does not stop at the border.
 
-| Step | Question | Status |
+- One study estimates the 2015 haze caused about **100,300 premature deaths**: 91,600 in
+  Indonesia, 6,500 in Malaysia and 2,200 in Singapore (Koplitz et al. 2016; range 26,300 to
+  174,300; [Harvard SEAS](https://seas.harvard.edu/news/2016/09/smoke-2015-indonesian-fires-may-have-caused-100000-premature-deaths)).
+  Another, for Sept to Oct only, estimates **6,150 to 17,270**
+  ([Newcastle University](https://www.ncl.ac.uk/press/articles/archive/2016/11/wildfires)).
+- In 2019, almost **10 million children** lived in the worst-affected areas
+  ([UNICEF](https://www.unicef.org/press-releases/indonesia-10-million-children-risk-air-pollution-due-wild-forest-fires)),
+  and thousands of schools closed in Indonesia and Malaysia
+  ([Al Jazeera](https://www.aljazeera.com/news/2019/9/19/malaysia-indonesia-shut-thousands-of-schools-as-haze-worsens)).
+- Children exposed to the 1997 fire haze in the womb were shorter at age 17 (Tan-Soo and
+  Pattanayak 2019, PNAS; [Duke](https://sanford.duke.edu/story/forest-fires-stunt-growth-cause-permanent-loss-human-potential/)).
+- Wild orangutans in the 2015 smoke rested more and burned their own fat
+  ([Rutgers](https://www.rutgers.edu/news/wildfires-may-cause-long-term-health-problems-endangered-orangutans)).
+- Indonesia's 2015 fires cost **US$16.1 billion, 1.9% of GDP**
+  ([World Bank, 2016](https://documents1.worldbank.org/curated/pt/776101467990969768/pdf/103668-BRI-Cost-of-Fires-Knowledge-Note-PUBLIC-ADD-NEW-SERIES-Indonesia-Sustainable-Landscapes-Knowledge-Note.pdf)).
+  The 2019 season cost at least **US$5.2 billion**
+  ([CNBC/Reuters](https://www.cnbc.com/2019/12/11/world-bank-says-indonesia-fires-cost-5point2-billion-in-economic-losses.html)).
+- Copernicus estimated about **360 Mt CO2** from Indonesian fires between 1 Aug and 18 Sep 2019
+  alone, with smouldering peat the main concern
+  ([CAMS](https://atmosphere.copernicus.eu/copernicus-atmosphere-monitoring-service-tracks-extent-and-pollution-fires-across-indonesia)).
+
+Crews are few and peat fire hides underground, so the question each morning is where to send
+them. Bara does not claim hectares, CO2 or lives saved: no source links a reached fire cell to
+any of those, so any such number would be invented.
+
+## What Bara does, today
+
+Bara runs on this week's satellite data, not a past season. `src/live.py` brings 2026 up to the
+last complete day: VIIRS detections from NOAA-20 (standard processing to Jul 31, near-real-time
+after), rain from CHIRPS final, then CHIRPS preliminary, then NASA IMERG Early for the newest
+days. On Nov 2 the live day was 2026-11-01, with rain to Oct 30 (the model uses a 2-day rain lag)
+and the forecast for 2026-11-02. The build refuses to run if any rain day is missing.
+
+The **Today** screen answers four questions in plain words:
+
+| Step | Question | How |
 |---|---|---|
-| 1. Detect | Where was each fire first seen? | Working (`src/detect.py`) |
-| 2. Forecast | Which fires will grow tomorrow? | Working, validated on 2019 (`src/train_eval.py`) |
-| 3. Triage | Which need a brigade now? | Working, replayed on 2019 (`src/triage.py`) |
-| 4. Dispatch | In what order should crews go? | Working, replayed on 2019 (`src/dispatch.py`) |
+| Detect | Where is fire burning now? | Satellite detections grouped into fire clusters (`src/detect.py`) |
+| Forecast | Where will it spread tomorrow? | LightGBM on 0.01 deg cells with peat share and recent rain (`src/train_eval.py`), drawn on the map as "chance of fire tomorrow" |
+| Triage | Which places need a crew now? | Peat-weighted risk: high (crew now), medium (village watch), low (`src/triage.py`) |
+| Dispatch | In what order should each crew go? | Exact solver over each crew's 10-hour day (`src/dispatch.py`) |
 
-Meta's models do the parts that need language and vision, never the numbers:
+It also shows yesterday's check: of the 200 spots Bara rated highest, how many burned the next day,
+against the simple guess "where it burned yesterday".
 
-| Meta model | Job in Bara | Code |
+### The field loop: WhatsApp voice notes change the plan
+
+1. A ranger sends a voice note (or text, or photo) to the Bara WhatsApp number.
+2. `src/whatsapp_routes.py` checks the Meta signature; `src/intake.py` downloads the audio,
+   converts it to WAV and sends it to **Muse Voice Transcribe** with local place names as
+   keywords.
+3. **Muse Spark 1.3** turns the transcript into a `FieldReport` (fire state, place, area, smoke,
+   access, people at risk, crew on site, needs). Every value must be backed by a quote from the
+   transcript, or the report is marked for review (`src/field_report.py`, `src/report_schema.py`).
+4. `src/geocode.py` finds the place in the GeoNames gazetteer (exact names only, no guessing).
+   If a name is ambiguous, Bara accepts it only when one candidate is within 15 km of a fire;
+   otherwise it asks "which one?".
+5. `src/fusion.py` applies fixed rules: a report within 5 km of a cluster speaks for it
+   (confirmed fire becomes high risk, smoke or a burn scar at least medium, "nothing here" low);
+   a fire the satellite has not seen is added as a new high-risk stop. The solver re-plans and
+   the route change is shown on the map.
+6. `src/replies.py` sends one WhatsApp reply back to the reporter with what Bara understood and
+   what changed.
+
+Meta models perceive and write. They never set a tier, a route or a number: the forecast, rules,
+solver and number checks are deterministic code.
+
+## Meta AI in Bara
+
+| Meta model | Job | Code |
 |---|---|---|
-| Muse Spark 1.3 | Daily briefing: picks and calls 6 tools, writes the briefing; every number, tier, province and crew order is checked against the tool output | `src/agent.py` |
-| Muse Spark 1.3 | "Ask Bara": answers a commander's questions and what-ifs by re-running the dispatch solver with new crew settings, answers ground-checked | `src/chat.py` |
-| Muse Spark 1.3 (vision) | Field photo reports: says what a ranger's photo shows; Bara's rules then match it to the plan | `src/reports.py` |
-| Muse Spark 1.3 (vision) | Map self-check: reviews a snapshot of the live map against the plan (advisory) | `src/selfcheck.py` |
-| SAM 3.1 | Finds rivers (water for pumps) near each crew stop in Sentinel-2 images | `src/water.py`, `src/sam.py` |
+| Muse Voice Transcribe | WhatsApp voice note to text, with place-name keywords | `src/transcribe.py` |
+| Muse Spark 1.3 | Transcript to a structured, quote-backed field report | `src/field_report.py` |
+| Muse Spark 1.3 | Morning briefing: calls Bara's 6 tools, writes the briefing; every number, tier, province and crew order is checked against the tool output | `src/agent.py` |
+| Muse Spark 1.3 | "Ask Bara": what-if questions answered by re-running the solver | `src/chat.py` |
+| Muse Spark 1.3 (vision) | Field photo category, and a self-check of the live map against the plan | `src/reports.py`, `src/selfcheck.py` |
+| SAM 3.1 | Finds rivers (water for pumps) near crew stops in Sentinel-2 images | `src/water.py`, `src/sam.py` |
+| Muse Spark 1.3 as a builder | Wrote 5 of Bara's modules from specs and tests (see below) | `src/build_with_spark.py`, `logs/builds/` |
+| Muse Glimmer 30B (LoRA, Fireworks) | Experiment: a small open-weight report reader trained on Spark-verified examples | `src/glimmer_*.py`, `outputs/glimmer/` |
 
-"Earliest detection" is not the ignition point: satellites pass only a few times a day,
-so the real start is earlier and possibly elsewhere. It is evidence, not blame.
+Total logged Meta API spend for the whole build: **$13.64** (`python src/llm.py`), of which $7.51
+generated the Glimmer training data. Every call is logged with tokens and cost, a spend cap blocks
+calls past the limit, and responses are cached so a replay costs nothing.
 
-## Setup (Windows, Git Bash)
+## Who built what
 
-```bash
-python -m venv .venv
-.venv/Scripts/python -m pip install -r requirements.txt
-cp .env.example .env   # then add your keys
-```
-
-## Data
-
-| Data | Source |
+| Part | Built by |
 |---|---|
-| Hotspots 2012-2025 | NASA FIRMS VIIRS S-NPP yearly country files, `https://firms.modaps.eosdis.nasa.gov/data/country/viirs-snpp/{year}/viirs-snpp_{year}_Indonesia.csv` |
-| Rainfall 2011-2026 | CHIRPS v2.0 daily, 0.25 deg (`.../global_daily/netcdf/p25/`) and 0.05 deg region subset via `src/chirps_fine.py`, from `https://data.chc.ucsb.edu/products/CHIRPS-2.0/`. Final CHIRPS ends Sep 30, 2026 in our download |
-| Peat extent | Global Forest Watch "Global peatland extent" v20230315 (CC BY 4.0; Miettinen et al. 2016 and Gumbricht et al. 2017 for Indonesia), read from public map tiles at zoom 9 |
-| Drought Code | Copernicus CEMS `cems-fire-historical-v1` on EWDS (CC BY 4.0), 0.25 deg daily, via `src/drought.py`. Download in progress: the EWDS queue allows about 2 requests per user and each waits hours |
-| Places, crew bases | GeoNames Indonesia dump and province codes (CC BY 4.0), `https://download.geonames.org/export/dump/` |
-| Satellite images | Copernicus Sentinel-2 L2A true colour (10 m) from the Earth Search STAC catalogue, `https://earth-search.aws.element84.com/v1` (AWS open data, no key) |
+| Idea, data choices, product decisions, testing on a real phone, review of every diff | ewenliam |
+| Forecast, triage, dispatch solver, live mode, fusion rules, number checks, web app, tests and specs | Claude (Anthropic) as coding assistant, reviewed by ewenliam |
+| `src/whatsapp_webhook.py`, `src/field_report.py`, `src/whatsapp_media.py`, `src/transcribe.py`, `src/geocode.py` (760 lines) | Muse Spark 1.3, from a spec and acceptance tests written by Claude; build cost $0.38 in total |
 
-Raw data goes in `data/raw/` and is not committed.
+The builder loop (`src/build_with_spark.py`): Claude writes the spec (`specs/`) and the tests
+(`tests/`), Muse Spark writes the whole module, the tests run, and review findings go back to
+Muse Spark as feedback (`logs/builds/*_feedback*.md`) until they pass. Every prompt and reply is
+saved in `logs/builds/`, so each generated line can be traced to the call that wrote it. Review
+caught real faults in generated code (checks that failed open, broad excepts, a constant-time
+compare that crashed on non-ASCII input); each got a test before it was fixed.
 
-## Forecast data
+## Does it work?
 
-Each day, candidate cells (0.01 deg, ~1.1 km) are those within 2 cells of any detection in the
-last 7 days. The label is whether the cell has a detection the next day. Fires that start far
-from any recent fire are outside this set: candidates covered 72.9% of next-day fire cells in
-2019 and 64.5% in the training years. The rest need a separate new-ignition model.
-
-```bash
-.venv/Scripts/python src/peat.py
-.venv/Scripts/python src/labels.py --years 2019
-.venv/Scripts/python src/labels.py --years 2012-2018 2020-2022 --neg-frac 0.1 --name samples_train
-.venv/Scripts/python src/features.py samples_2019_2019
-.venv/Scripts/python src/features.py samples_train
-```
+Three pieces of evidence, strongest first.
 
 ## Held-out test: the 2023 season (pre-registered, run once)
 
@@ -124,6 +174,143 @@ What the test does not show, stated as plainly as the wins:
   truth instead of S-NPP: 0.148 vs 0.091.
 - Reaching a fire means a crew checks it; it does not mean the fire is put out.
 
+## Live check: the 2026 season so far (exploratory)
+
+`src/scorecard.py` scores the same frozen forecast on every day of 2026 against what burned the
+next day ([`outputs/live_scorecard.json`](outputs/live_scorecard.json)). It was not
+pre-registered, and the inputs differ from training (NOAA-20 detections instead of S-NPP,
+near-real-time rain), so it is a check, not a test.
+
+- 2 Jan to 31 Oct 2026, 293 days, 10,976,894 candidate cell-days (167,056 burned the next day).
+- Average precision **0.288** against **0.195** for "yesterday's fires" (3x3). The 95% interval of
+  the gap, from 200 day-bootstrap resamples, is 0.085 to 0.105.
+- Last 14 days (18 to 31 Oct): of the 200 spots each method rated highest, Bara had more that
+  burned the next day on 11 days and fewer on 3. The app shows this table under "Does it work?".
+
+## Muse Glimmer report reader (experiment)
+
+Can a small open-weight Meta model do the transcript-to-report job, so it could one day run
+offline? Muse Glimmer 30B was LoRA fine-tuned on Fireworks (training free during the promotion)
+on 545 synthetic voice-note transcripts whose reports Muse Spark extracted correctly and our
+checks verified. It was tested on 100 held-out synthetic rows with places not in training, with
+the same deterministic grader (`src/report_grader.py`).
+
+| Glimmer run | Valid JSON | All fields correct |
+|---|---|---|
+| Base model, no tuning | 0.00 | 0.00 |
+| Tuned, 100 rows, 1 epoch | 1.00 | 0.71 |
+| Tuned, 200 rows, 1 epoch | 1.00 | 0.92 |
+| Tuned, 545 rows, 1 epoch | 1.00 | 0.99 |
+| Tuned, 545 rows, 2 epochs | 1.00 | 0.96 |
+| Tuned, 545 rows, 2 epochs, LoRA rank 16 | 1.00 | 1.00 |
+| Tuned, 545 rows, 2 epochs, learning rate 2e-4 | 1.00 | 0.83 |
+| Tuned, 545 rows, 3 epochs | 1.00 | 1.00 |
+
+- The base model never produced a usable report: without a token limit it did not finish 69 of
+  100 answers; with a 600-token limit it finished none.
+- The test rows were kept only when Muse Spark got them right, so Spark scores 100% on them by
+  construction, and the tuned runs saturate. This shows Glimmer learns the format and fields from
+  a few hundred examples; it does not show it matches Spark on real speech. That needs the
+  scripted real voice notes (`docs/recording_scripts.md`, gold answers in
+  `outputs/glimmer/e1/gold.jsonl`), which are not scored yet.
+- The live app keeps Muse Spark: serving a tuned Glimmer needs a paid deployment.
+
+## Limitations
+
+- **Reaching a fire is checking it, not putting it out.** All dispatch results count fire cells
+  a crew reaches, nothing more.
+- **New fires stay hard.** Fires far from any recent detection are mostly outside the forecast
+  (2023 average precision 0.032 in cells with no recent fire).
+- **Crew bases and speeds are assumptions**: one crew per provincial capital, 30 km/h, 2 hours
+  per visit. Real brigade bases and travel times are not in the model.
+- **Live inputs differ from training**: NOAA-20 instead of S-NPP, and live rain mixes CHIRPS
+  preliminary and IMERG Early (training used CHIRPS final). The 2026 scorecard is how we watch
+  for drift.
+- **The field loop is English-first** and tested by one person on a WhatsApp test number;
+  Indonesian and local languages are the next step. The webhook runs through a temporary tunnel
+  on a laptop, not a hosted service.
+- **Region:** Sumatra and Kalimantan only. Other regions in the picker are marked "in development"
+  and need their own training data.
+
+## Run it (Windows, Git Bash)
+
+```bash
+python -m venv .venv
+.venv/Scripts/python -m pip install -r requirements.txt
+cp .env.example .env   # then add your keys
+```
+
+The web app (needs the processed tables in `data/`, which are not committed; see the data
+sections below to rebuild them):
+
+```bash
+.venv/Scripts/python -m uvicorn server:app --app-dir src --port 8600
+```
+
+Open `http://localhost:8600`. Past days work too, for example `?date=2023-09-15`.
+
+The full WhatsApp demo (server, Cloudflare quick tunnel, and the Meta webhook pointed at it;
+needs `cloudflared` and `ffmpeg` installed and the WhatsApp keys in `.env`):
+
+```bash
+.venv/Scripts/python src/run_demo.py
+```
+
+Paid endpoints (briefing, chat, photo and voice uploads) answer only on localhost, never through
+the tunnel.
+
+Bring live mode up to the latest day, then rescore 2026:
+
+```bash
+.venv/Scripts/python src/live.py
+.venv/Scripts/python src/scorecard.py
+```
+
+Tests (no API calls, no messages sent):
+
+```bash
+for t in tests/test_*.py; do .venv/Scripts/python "$t"; done
+```
+
+## Data and licences
+
+| Data | Source | Licence or terms |
+|---|---|---|
+| Fire detections 2012-2025 | NASA FIRMS VIIRS S-NPP yearly country files | NASA data, open; NASA asks to be acknowledged ([Earthdata](https://www.earthdata.nasa.gov/learn/find-data/near-real-time/citation)). Acknowledgment: data from NASA FIRMS (LANCE, ESDIS) |
+| Fire detections 2023 check and 2026 live | NASA FIRMS area API, VIIRS NOAA-20 standard and near-real-time | As above |
+| Rain | CHIRPS v2.0 final and preliminary (UCSB Climate Hazards Center) | Public domain: copyright waived ([CHC](https://www.chc.ucsb.edu/data/chirps)) |
+| Rain, newest days | NASA GPM IMERG Early daily V07 (GES DISC) | NASA data, free to the public ([GPM data policy](https://gpm.nasa.gov/data/policy)) |
+| Peat extent | Global Forest Watch "Global peatland extent" v20230315 (Miettinen et al. 2016, Gumbricht et al. 2017 for Indonesia) | CC BY 4.0 |
+| Drought Code (downloaded, not in the frozen models) | Copernicus CEMS `cems-fire-historical-v1` | CC BY 4.0 |
+| Places, crew bases | GeoNames | CC BY 4.0 ([GeoNames](https://www.geonames.org/about.html)) |
+| Country borders (to drop fires in neighbouring countries) | Natural Earth 10m | Public domain ([Natural Earth](https://www.naturalearthdata.com/about/terms-of-use/)) |
+| Satellite images for SAM 3.1 | Copernicus Sentinel-2 L2A via Earth Search STAC | Free and open; contains modified Copernicus Sentinel data 2023-2025 ([licence](https://ecds.ecmwf.int/licences/ec-sentinel)) |
+| Basemap | CARTO tiles on OpenStreetMap data | © OpenStreetMap contributors, © CARTO; CARTO basemaps are free for non-commercial use ([CARTO](https://www.carto.com/basemaps/apikey/)) |
+| Demo field photos | 4 Wikimedia Commons photos | CC BY-SA 4.0, credited in `web/samples/credits.json` |
+| Glimmer training starter | Fireworks `fw-ai/cookbook` (used from its own checkout, not copied here) | Apache 2.0 |
+
+Raw data goes in `data/raw/` and is not committed. Field reports and phone numbers in
+`data/whatsapp/` are never committed.
+
+Code: MIT licence ([`LICENSE`](LICENSE)).
+
+# Technical details
+
+## Forecast data
+
+Each day, candidate cells (0.01 deg, ~1.1 km) are those within 2 cells of any detection in the
+last 7 days. The label is whether the cell has a detection the next day. Fires that start far
+from any recent fire are outside this set: candidates covered 72.9% of next-day fire cells in
+2019 and 64.5% in the training years. The rest need a separate new-ignition model.
+
+```bash
+.venv/Scripts/python src/peat.py
+.venv/Scripts/python src/labels.py --years 2019
+.venv/Scripts/python src/labels.py --years 2012-2018 2020-2022 --neg-frac 0.1 --name samples_train
+.venv/Scripts/python src/features.py samples_2019_2019
+.venv/Scripts/python src/features.py samples_train
+```
+
 ## Forecast results (2019 validation)
 
 Scored on all 9.1M candidate cell-days in 2019 (113,469 burn the next day). 2019 was also used
@@ -174,7 +361,7 @@ Ablation: the same LightGBM with and without peat share and rainfall history.
 
 - Rain resolution is not the bottleneck. Rain timeliness matters only for new fires (today's
   rain suppresses tomorrow's ignitions), so a low-latency rain feed is worth it for that model.
-- Not yet tested: groundwater level and the Copernicus Drought Code (download in progress).
+- Not tested: groundwater level. The Copernicus Drought Code is downloaded but was left out of the frozen models, so the 2023 test checks the committed model.
 
 The new-fire model (`src/ignition.py`) covers the 27-35% of fires that start far from recent fires:
 
@@ -187,40 +374,6 @@ The new-fire model (`src/ignition.py`) covers the 27-35% of fires that start far
 ```bash
 .venv/Scripts/python src/train_eval.py --train samples_train_feat --valid samples_2019_2019_feat --target y
 ```
-
-## Web app
-
-```bash
-.venv/Scripts/python -m uvicorn server:app --app-dir src --port 8600
-```
-
-Open `http://localhost:8600` (or `http://localhost:8600/?date=2019-08-20` for another day).
-`src/server.py` serves a JSON API over the deterministic tools and the front end in `web/`
-(MapLibre GL + deck.gl on a CARTO basemap, Fira Sans/Fira Code, no build step).
-
-- **Map:** clusters coloured by tier (red P1, orange P2), crew routes with numbered stops,
-  new-fire watch cells, field reports, and a switch that draws where fire actually appeared the
-  next day (replay truth).
-- **Briefing:** the Muse Spark briefing with its grounding result, token count and cost.
-- **Crews:** each crew's visit order, arrival hours, nearest river with the SAM 3.1 mask, and
-  the map self-check.
-- **Ask Bara:** commander chat; what-if answers draw the changed routes in amber.
-- **Field reports:** send a photo and a location (4 demo photos from Wikimedia Commons, credited
-  in `web/samples/credits.json`; they are placed on crew stops for illustration only).
-- **Evidence:** the 2019 replay results and model scores.
-- **Replay 2019 season:** plays July to October day by day (precomputed by
-  `src/replay_frames.py`), with a running tally of fire reached by Bara against "biggest fire
-  first".
-
-Muse Spark and SAM 3.1 run only on a button press; saved results and cached calls cost nothing.
-
-## Run
-
-```bash
-.venv/Scripts/python src/detect.py --start 2019-09-01 --end 2019-09-30
-```
-
-Writes cluster tables to `data/processed/` and a map to `outputs/`.
 
 ## Triage and Dispatch
 
@@ -376,8 +529,3 @@ coordinates showed all its stops are on Bangka island, so that warning was a fal
 a safeguard anyway, the solver now only lets a crew serve clusters on its own island
 (Sumatra, Kalimantan, Bangka-Belitung, Riau Islands), and the plan sent to the self-check
 includes the island of every stop. The review is advisory: a person decides.
-
-## Evaluation plan
-
-Train on 2012-2018 and 2020-2022, tune on 2019, test once on the held-out 2023 season against
-"yesterday's fires" and rain-based dryness baselines. Done on Oct 31; see "Held-out test" above.
