@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
 <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
-<link href="/style.css?v=today-9" rel="stylesheet">
+<link href="/style.css?v=field-1" rel="stylesheet">
 </head>
 <body>
 <header class="topbar">
@@ -56,12 +56,6 @@
         <label id="truth-toggle"><input type="checkbox" id="show-truth"> What burned the next day</label>
       </div>
     </div>
-    <aside class="phone" id="phone" aria-label="WhatsApp field line" hidden>
-      <div class="phone-head"><span class="phone-title">Bara field line</span><span class="phone-sub">WhatsApp, live</span></div>
-      <div class="phone-body" id="phone-body" aria-live="polite"></div>
-      <div class="phone-foot" id="phone-foot"></div>
-      <div class="phone-rec"><button class="btn ghost" id="rec-btn">Record a field report</button><span id="rec-status" role="status"></span></div>
-    </aside>
     <div class="season-banner" id="season-banner" hidden></div>
     <div class="loading" id="loading" hidden>Running Detect, Forecast, Triage, Dispatch...</div>
     <div class="replay-hud" id="replay-hud" hidden>
@@ -80,7 +74,7 @@
   <aside class="panel">
     <nav class="tabs" role="tablist">
       <button role="tab" data-tab="today" class="active">Today</button>
-      <button role="tab" data-tab="reports">Field reports</button>
+      <button role="tab" data-tab="reports">Field reports<span class="tab-count" id="field-count" hidden></span></button>
       <button role="tab" data-tab="ask">Ask Bara</button>
       <button role="tab" data-tab="evidence">Does it work?</button>
     </nav>
@@ -90,13 +84,22 @@
       <details class="more"><summary>Crew details: water sources (SAM 3.1) and map check</summary><div id="tab-crews"></div></details>
     </div>
     <div class="tab-body" id="tab-ask" hidden></div>
-    <div class="tab-body" id="tab-reports" hidden></div>
+    <div class="tab-body" id="tab-reports" hidden>
+      <section class="field-line" aria-label="WhatsApp field reports">
+        <h3>From WhatsApp</h3>
+        <p class="muted">Rangers send a voice note to the Bara number. Muse Voice Transcribe writes it down, Muse Spark turns it into a report, Bara's rules update the plan, and the ranger gets a reply.</p>
+        <div id="field-list" aria-live="polite"></div>
+        <div class="muted small" id="field-foot"></div>
+        <div class="field-rec"><button class="btn ghost" id="rec-btn">Record a field report here</button><span id="rec-status" role="status"></span></div>
+      </section>
+      <div id="photo-reports"></div>
+    </div>
     <div class="tab-body" id="tab-evidence" hidden></div>
   </aside>
 </main>
 
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script src="https://unpkg.com/deck.gl@9.0.0/dist.min.js"></script>
-<script src="/app.js?v=today-9"></script>
+<script src="/app.js?v=field-2"></script>
 </body>
 </html>

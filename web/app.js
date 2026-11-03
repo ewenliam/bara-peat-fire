@@ -483,8 +483,8 @@ async function loadDay(date) {
   field.sig = null;
   loadField();
   const first = state.day.routes[0];
-  // keep the fires clear of the number strip (top) and the phone frame (right)
-  if (first && !loadDay.done) { map.flyTo({ center: [first.lon, first.lat], zoom: 6.4, padding: { top: 110, right: 330, bottom: 0, left: 0 } }); loadDay.done = true; }
+  // keep the fires clear of the number strip (top)
+  if (first && !loadDay.done) { map.flyTo({ center: [first.lon, first.lat], zoom: 6.4, padding: { top: 110, right: 0, bottom: 0, left: 0 } }); loadDay.done = true; }
 }
 
 function shiftDay(n) {
@@ -580,8 +580,9 @@ function samplePlacement(file) {
 }
 
 function renderReports() {
-  const el = $("tab-reports");
+  const el = $("photo-reports");
   el.innerHTML = `
+    <h3>Photo reports</h3>
     <p class="muted">A ranger sends a photo and a location. Muse Spark 1.3 says what the photo shows; Bara's rules then match it to the nearest fire cluster and say what it means for today's plan.</p>
     <h3>Try a demo photo</h3>
     <div class="samples">${(rep.credits || []).map((c, i) => `<button class="sample" data-i="${i}" title="${esc(c.title)}"><img src="/samples/${c.file}" alt="${esc(c.description)}" loading="lazy"></button>`).join("")}</div>
@@ -593,7 +594,7 @@ function renderReports() {
       <div class="muted" id="report-note">${esc(rep.note)}</div>
       <button class="btn" type="submit" id="report-send">Check photo</button>
     </form>
-    <h3>Reports for ${state.date}</h3>
+    <h3>Photo reports for ${state.date}</h3>
     ${rep.list.length ? rep.list.slice().reverse().map(reportCard).join("") : `<p class="muted">None yet.</p>`}`;
   el.querySelectorAll(".sample").forEach((b) => (b.onclick = () => useSample(Number(b.dataset.i))));
   $("report-file").onchange = (e) => { rep.file = e.target.files[0] || null; rep.note = ""; };
@@ -662,7 +663,7 @@ function reportLayers() {
   loadDay(q || state.meta.default_day);
 })();
 
-// ---------- live WhatsApp field reports (src/fusion.py): phone frame and re-planned routes
+// ---------- live WhatsApp field reports (src/fusion.py): the Field reports tab and re-planned routes
 const field = { data: null, sig: null };
 const STATE_LABEL = { active_flames: "flames", smouldering_peat: "smouldering peat", smoke_only: "smoke only",
   burn_scar: "burn scar", no_fire: "no fire", unclear: "unclear" };
@@ -677,37 +678,37 @@ async function loadField() {
   if (sig === field.sig) return;
   field.data = f;
   field.sig = sig;
-  renderPhone();
+  renderFieldLine();
   render();
   if (state.day) renderToday();
 }
 
-function phoneMessages(r) {
+function fieldCard(r) {
   const rep = r.report || {};
   const time = r.received_at.slice(11, 16);
   const facts = [STATE_LABEL[rep.fire_state] || rep.fire_state, rep.place_text, rep.area_ha != null ? `${rep.area_ha} ha` : null,
     ...(rep.needs || []).filter((n) => n !== "none").map((n) => `needs ${n}`)].filter(Boolean);
-  const kind = r.type === "audio" ? "Voice note" : r.type === "text" ? "Message" : r.type;
-  return `<div class="bubble sent"><div class="meta"><span>${esc(kind)}</span><span>${esc(time)}</span></div>
-      <div class="said">"${esc(r.transcript)}"</div>
-      <div class="facts">${facts.map((x) => `<span class="fact">${esc(x)}</span>`).join("")}
-        <span class="fact">${r.grounded ? "every field quoted" : "needs review"}</span></div></div>
-    <div class="bubble bara"><div class="meta"><span>Bara</span><span>${esc(time)}</span></div>
-      ${esc(r.reply)}<div class="draft">${r.sent && r.sent.status === "sent" ? `Sent on WhatsApp ${esc(r.sent.sent_at.slice(11, 16))}`
-        : r.sent ? `Not sent: ${esc(r.sent.error || "")}` : r.type === "audio" && r.id.startsWith("web.") ? "Recorded in the app; no reply needed."
-        : "Reply not sent yet."}</div></div>`;
+  const kind = r.id.startsWith("web.") ? "Recorded in the app" : r.type === "audio" ? "Voice note" : r.type === "text" ? "Message" : r.type;
+  const sent = r.sent && r.sent.status === "sent" ? `Bara replied on WhatsApp, ${esc(r.sent.sent_at.slice(11, 16))} UTC`
+    : r.sent ? `Bara's reply, not sent: ${esc(r.sent.error || "")}` : r.id.startsWith("web.") ? "Bara's answer" : "Bara's reply, not sent yet";
+  return `<div class="card field-card"><div class="card-head"><span class="badge ${r.grounded ? "ok" : "P2"}">${r.grounded ? "every field quoted" : "needs review"}</span>
+      <span class="right">${esc(kind)}, ${esc(time)} UTC</span></div>
+    <p class="said">"${esc(r.transcript)}"</p>
+    <div class="facts">${facts.map((x) => `<span class="fact">${esc(x)}</span>`).join("")}</div>
+    <div class="reply"><span class="eyebrow">${sent}</span>${esc(r.reply)}</div></div>`;
 }
 
-function renderPhone() {
+function renderFieldLine() {
   const f = field.data;
   if (!f) return;
-  $("phone").hidden = false;
-  $("phone-body").innerHTML = f.reports.length ? f.reports.map(phoneMessages).join("")
-    : `<p class="phone-empty">No field reports in the last ${f.window_hours} hours. Send a voice note to the Bara test number.</p>`;
-  $("phone-body").scrollTop = $("phone-body").scrollHeight;
-  const moved = f.route_diff.length ? ` ${f.route_diff.length} crew route(s) re-planned; risk covered ${fmt(f.risk_covered_before, 1)} to ${fmt(f.risk_covered_after, 1)}.` : "";
+  const n = f.reports.length;
+  $("field-count").hidden = !n;
+  $("field-count").textContent = n;
+  $("field-list").innerHTML = n ? f.reports.slice().reverse().map(fieldCard).join("")
+    : `<p class="muted">No WhatsApp reports in the last ${f.window_hours} hours.</p>`;
+  const moved = f.route_diff.length ? ` ${f.route_diff.length} crew route(s) re-planned (orange on the map); risk covered ${fmt(f.risk_covered_before, 1)} to ${fmt(f.risk_covered_after, 1)}.` : "";
   const live = state.day && state.day.season.mode === "live";
-  $("phone-foot").textContent = live ? `Reports from the last ${f.window_hours} h.${moved}`
+  $("field-foot").textContent = live ? `Reports from the last ${f.window_hours} h, newest first.${moved}`
     : `Reports from the last ${f.window_hours} h, shown on this past day for illustration.${moved}`;
 }
 
@@ -747,7 +748,7 @@ $("rec-btn").onclick = async () => {
   rec.media.ondataavailable = (e) => { if (e.data.size) rec.chunks.push(e.data); };
   rec.media.onstop = async () => {
     stream.getTracks().forEach((t) => t.stop());
-    $("rec-btn").textContent = "Record a field report";
+    $("rec-btn").textContent = "Record a field report here";
     $("rec-status").textContent = "Transcribing (Muse Voice Transcribe), reading (Muse Spark)...";
     const blob = new Blob(rec.chunks, { type: rec.media.mimeType || "audio/webm" });
     const form = new FormData();
