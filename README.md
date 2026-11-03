@@ -105,21 +105,6 @@ Total logged Meta API spend for the whole build: **$13.64** (`python src/llm.py`
 generated the Glimmer training data. Every call is logged with tokens and cost, a spend cap blocks
 calls past the limit, and responses are cached so a replay costs nothing.
 
-## Who built what
-
-| Part | Built by |
-|---|---|
-| Idea, data choices, product decisions, testing on a real phone, review of every diff | ewenliam |
-| Forecast, triage, dispatch solver, live mode, fusion rules, number checks, web app, tests and specs | Claude (Anthropic) as coding assistant, reviewed by ewenliam |
-| `src/whatsapp_webhook.py`, `src/field_report.py`, `src/whatsapp_media.py`, `src/transcribe.py`, `src/geocode.py` (760 lines) | Muse Spark 1.3, from a spec and acceptance tests written by Claude; build cost $0.38 in total |
-
-The builder loop (`src/build_with_spark.py`): Claude writes the spec (`specs/`) and the tests
-(`tests/`), Muse Spark writes the whole module, the tests run, and review findings go back to
-Muse Spark as feedback (`logs/builds/*_feedback*.md`) until they pass. Every prompt and reply is
-saved in `logs/builds/`, so each generated line can be traced to the call that wrote it. Review
-caught real faults in generated code (checks that failed open, broad excepts, a constant-time
-compare that crashed on non-ASCII input); each got a test before it was fixed.
-
 ## Does it work?
 
 Three pieces of evidence, strongest first.
