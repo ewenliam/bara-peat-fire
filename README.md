@@ -12,10 +12,6 @@ brigade commander, each morning, where peat fire is likely to spread tomorrow an
 each crew should check today. Rangers and villagers answer back with a WhatsApp voice note, and
 the plan changes.
 
-Built for the Meta Global AI Developer Hackathon (Oct 26 to Nov 4, 2026), Indie track, theme
-"Build for Your World". All code in this repository was written during the hackathon, starting
-Oct 26, 2026. No earlier project code is reused.
-
 ## Why it matters
 
 Indonesia's peat is burning now: on 1 Nov 2026, satellites recorded 555 fire detections across
@@ -100,10 +96,6 @@ solver and number checks are deterministic code.
 | SAM 3.1 | Finds rivers (water for pumps) near crew stops in Sentinel-2 images | `src/water.py`, `src/sam.py` |
 | Muse Spark 1.3 as a builder | Wrote 5 of Bara's modules from specs and tests (see below) | `src/build_with_spark.py`, `logs/builds/` |
 | Muse Glimmer 30B (LoRA, Fireworks) | Experiment: a small open-weight report reader trained on Spark-verified examples | `src/glimmer_*.py`, `outputs/glimmer/` |
-
-Total logged Meta API spend for the whole build: **$13.64** (`python src/llm.py`), of which $7.51
-generated the Glimmer training data. Every call is logged with tokens and cost, a spend cap blocks
-calls past the limit, and responses are cached so a replay costs nothing.
 
 ## Does it work?
 
