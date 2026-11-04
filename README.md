@@ -21,8 +21,8 @@ so the public site cannot use up the budget and holds no phone numbers.
 
 2026 is Indonesia's worst fire season in over a decade
 ([Al Jazeera](https://www.aljazeera.com/news/2026/10/9/malaysia-shuts-schools-as-haze-from-indonesian-fires-chokes-southeast-asia)),
-and it is not over. On 1 Nov 2026,
-satellites recorded **555 fire detections** across Sumatra and Kalimantan, against 164 on a typical
+and it is not over. On 3 Nov 2026,
+satellites recorded **1,506 fire detections** across Sumatra and Kalimantan, against 166 on a typical
 day of 2026 (Bara's live data). A strong El Niño is expected to last until early 2027
 ([AFP/France 24, 28 Sep 2026](https://www.france24.com/en/live-news/20260928-the-wildfires-choking-indonesia-sparking-regional-haze)).
 
@@ -71,8 +71,8 @@ any of those, so any such number would be invented.
 Bara runs on this week's satellite data, not a past season. `src/live.py` brings 2026 up to the
 last complete day: VIIRS detections from NOAA-20 (standard processing to Jul 31, near-real-time
 after), rain from CHIRPS final, then CHIRPS preliminary, then NASA IMERG Early for the newest
-days. On Nov 2 the live day was 2026-11-01, with rain to Oct 30 (the model uses a 2-day rain lag)
-and the forecast for 2026-11-02. The build refuses to run if any rain day is missing.
+days. On Nov 4 the live day was 2026-11-03, with rain to Nov 1 (the model uses a 2-day rain lag)
+and the forecast for 2026-11-04. The build refuses to run if any rain day is missing.
 
 The **Today** screen answers four questions in plain words:
 
@@ -183,10 +183,10 @@ next day ([`outputs/live_scorecard.json`](outputs/live_scorecard.json)). It was 
 pre-registered, and the inputs differ from training (NOAA-20 detections instead of S-NPP,
 near-real-time rain), so it is a check, not a test.
 
-- 2 Jan to 31 Oct 2026, 293 days, 10,976,894 candidate cell-days (167,056 burned the next day).
+- 2 Jan to 2 Nov 2026, 295 days, 11,040,030 candidate cell-days (167,860 burned the next day).
 - Average precision **0.288** against **0.195** for "yesterday's fires" (3x3). The 95% interval of
-  the gap, from 200 day-bootstrap resamples, is 0.085 to 0.105.
-- Last 14 days (18 to 31 Oct): of the 200 spots each method rated highest, Bara had more that
+  the gap, from 200 day-bootstrap resamples, is 0.085 to 0.103.
+- Last 14 days (20 Oct to 2 Nov): of the 200 spots each method rated highest, Bara had more that
   burned the next day on 11 days and fewer on 3. The app shows this table under "Does it work?".
 
 ## Muse Glimmer report reader (experiment)

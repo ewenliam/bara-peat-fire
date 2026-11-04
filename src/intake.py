@@ -42,9 +42,9 @@ WAV_DIR = WA_DIR / "wav"
 UPLOAD_DIR = WA_DIR / "uploads"
 
 # Recognition hints for Voice Transcribe: places plus fire words it misheard ("peat" as "pit")
-KEYWORDS = ["Bara", "Kalampangan", "Bukit Tunggal", "Sebangau", "Palangka Raya", "peat", "smouldering", "hotspot", "canal"]
+KEYWORDS = ["Bara", "Kalampangan", "Bukit Tunggal", "Sebangau", "Palangka Raya", "Tulung Selapan", "peat", "smouldering", "hotspot", "canal"]
 LANGUAGES = ["English"]
-PLACE_HINTS = ["Kalampangan", "Bukit Tunggal", "Sebangau", "Palangka Raya"]
+PLACE_HINTS = ["Kalampangan", "Bukit Tunggal", "Sebangau", "Palangka Raya", "Tulung Selapan"]
 # Failures that are recorded in the report row; anything else is a bug and propagates
 EXPECTED_ERRORS = (MediaError, TranscribeError, BudgetExceeded, OpenAIError,
                    requests.RequestException, KeyError, OSError)

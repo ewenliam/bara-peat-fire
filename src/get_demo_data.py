@@ -17,8 +17,8 @@ import requests
 
 ROOT = Path(__file__).resolve().parents[1]
 ZIP_NAME = "bara-demo-data-2026.zip"
-URL = f"https://github.com/ewenliam/bara-peat-fire/releases/download/demo-data-v1/{ZIP_NAME}"
-SHA256 = "7a88c8d272a9f58f282ab4f01afcb7adce0207dafb540069c41850e9bee2d4df"  # printed by deploy/data_pack.py
+URL = f"https://github.com/ewenliam/bara-peat-fire/releases/download/demo-data-v2/{ZIP_NAME}"
+SHA256 = "6341944c9e187320520e810d912ba582dd7826b288ead9b4f3e05060c7b262fa"  # printed by deploy/data_pack.py
 MEMBERS = [
     "data/processed/samples_2026_2026_feat.parquet",
     "data/processed/ign_2026.parquet",
