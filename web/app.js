@@ -217,7 +217,7 @@ function renderBriefing() {
   if (!b || !b.briefing || !b.briefing.headline) {
     el.innerHTML = `<h2>No briefing for ${state.date} yet</h2>
       <p class="muted">Muse Spark 1.3 calls the six Bara tools (detect, forecast, new fires, triage, dispatch, SAM 3.1 water search), then writes the briefing. Every number, tier, province and crew order is checked against the tool output before it is shown.</p>
-      <p class="muted">About $0.04 for Muse Spark, plus up to $0.12 for SAM 3.1 on new satellite images. Cached calls are free.</p>
+      <p class="muted">About $0.10 for Muse Spark, plus up to $0.12 for SAM 3.1 on new satellite images, and up to about 5 minutes the first time. Cached calls are free.</p>
       <button class="btn" id="make-briefing">Write briefing</button>`;
     $("make-briefing").onclick = makeBriefing;
     return;
@@ -735,12 +735,18 @@ function fieldLayers() {
 setInterval(loadField, 10000);
 
 // ---------- live Meta model calls: shown under any tab while models run; a public deployment makes none
+const callsSeen = { key: null };
 async function loadCalls() {
   if (!state.meta || state.meta.public) return;
   const r = await api("/api/calls").catch(() => null);
   if (!r) return;
-  $("calls").hidden = !r.calls.length;
-  $("calls-list").innerHTML = r.calls.map((c) => `<div class="call"><span class="when">${esc(c.time.slice(11, 19))}</span>
+  const rows = r.calls.slice(0, 4);
+  const key = rows.length ? `${rows[0].time} ${rows[0].tag}` : null;
+  if (key === callsSeen.key) return;  // redrawing would restart the flash
+  const fresh = callsSeen.key !== null || rows.length === 1;
+  callsSeen.key = key;
+  $("calls").hidden = !rows.length;
+  $("calls-list").innerHTML = rows.map((c, i) => `<div class="call${fresh && i === 0 ? " fresh" : ""}"><span class="when">${esc(c.time.slice(11, 19))}</span>
     <span class="what"><span class="model">${esc(c.model)}</span> ${esc(c.tag)}</span>
     <span class="took">${c.cache_hit ? "cached" : c.seconds == null ? "" : `${fmt(c.seconds, 1)} s`}</span></div>`).join("");
 }

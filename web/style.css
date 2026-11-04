@@ -209,10 +209,14 @@ table.score { width: 100%; border-collapse: collapse; font-size: 13px; margin: 8
 table.score th, table.score td { padding: 4px 6px; border-bottom: 1px solid var(--border); text-align: left; }
 table.score th { color: var(--muted); font-weight: 500; }
 table.score .num { text-align: right; font-variant-numeric: tabular-nums; }
-/* live Meta model calls: appears under any tab while models are running (GET /api/calls) */
-.calls { border-top: 1px solid var(--rule); padding: 8px 18px 10px; background: var(--surface-2); }
-.calls .eyebrow { margin-bottom: 4px; }
-.call { display: grid; grid-template-columns: 62px 1fr auto; gap: 8px; font: 12px/1.6 var(--mono); }
-.call .what { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* live Meta model calls: appears under any tab while models are running (GET /api/calls).
+   Large enough to read in a 1080p video; the newest call flashes when it arrives. */
+.calls { border-top: 2px solid var(--route); padding: 10px 18px 12px; background: var(--surface-2); }
+.calls .eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 13px; color: var(--route); }
+.calls .eyebrow::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--p1); }
+.call { display: grid; grid-template-columns: 72px 1fr auto; gap: 10px; align-items: baseline; padding: 3px 6px; margin: 0 -6px; border-radius: 3px; font: 14px/1.4 var(--mono); }
 .call .model { color: var(--route); font-weight: 500; }
-.call .when, .call .took { color: var(--muted); }
+.call .when, .call .took { color: var(--muted); font-size: 13px; }
+.call.fresh { animation: call-in 2.4s ease-out; }
+@keyframes call-in { 0%, 45% { background: #dcebdf; } 100% { background: transparent; } }
+@media (prefers-reduced-motion: reduce) { .call.fresh { animation: none; background: #dcebdf; } }
