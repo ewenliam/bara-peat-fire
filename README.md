@@ -12,6 +12,8 @@ brigade commander, each morning, where peat fire is likely to spread tomorrow an
 each crew should check today. Rangers and villagers answer back with a WhatsApp voice note, and
 the plan changes.
 
+**Demo video (3 minutes): https://youtu.be/mELeqcftSFc**
+
 **Live demo: https://bara-six-smoky.vercel.app** (forecast, crew routes and evidence; data up to
 the last refresh, shown on the page). The actions that spend Meta API money (Ask Bara, written
 briefings, photo and voice reports) and the WhatsApp field loop run only on the operator's machine,
@@ -102,7 +104,7 @@ against the simple guess "where it burned yesterday".
    (confirmed fire becomes high risk, smoke or a burn scar at least medium, "nothing here" low);
    a fire the satellite has not seen is added as a new high-risk stop. The solver re-plans and
    the route change is shown on the map.
-6. `src/replies.py` sends one WhatsApp reply back to the reporter with what Bara understood and
+6. `src/replies.py` sends one WhatsApp reply through the Cloud API with what Bara understood and
    what changed.
 
 Meta models perceive and write. They never set a tier, a route or a number: the forecast, rules,
@@ -228,6 +230,9 @@ the same deterministic grader (`src/report_grader.py`).
 - **Live inputs differ from training**: NOAA-20 instead of S-NPP, and live rain mixes CHIRPS
   preliminary and IMERG Early (training used CHIRPS final). The 2026 scorecard is how we watch
   for drift.
+- **WhatsApp replies:** the Cloud API accepts the reply (`data/whatsapp/replies.jsonl` records it as sent), but
+  in our tests with the test number it did not arrive on the phone. Delivery is not solved yet; the
+  plan update does not depend on it.
 - **The field loop is English-first** and tested by one person on a WhatsApp test number;
   Indonesian and local languages are the next step. The webhook runs through a temporary tunnel
   on a laptop, not a hosted service.

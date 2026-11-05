@@ -692,7 +692,7 @@ function fieldCard(r) {
   const facts = [STATE_LABEL[rep.fire_state] || rep.fire_state, rep.place_text, rep.area_ha != null ? `${rep.area_ha} ha` : null,
     ...(rep.needs || []).filter((n) => n !== "none").map((n) => `needs ${n}`)].filter(Boolean);
   const kind = r.id.startsWith("web.") ? "Recorded in the app" : r.type === "audio" ? "Voice note" : r.type === "text" ? "Message" : r.type;
-  const sent = r.sent && r.sent.status === "sent" ? `Bara replied on WhatsApp, ${esc(r.sent.sent_at.slice(11, 16))}`
+  const sent = r.sent && r.sent.status === "sent" ? `Reply accepted by the WhatsApp API, ${esc(r.sent.sent_at.slice(11, 16))}`
     : r.sent ? `Bara's reply, not sent: ${esc(r.sent.error || "")}` : r.id.startsWith("web.") ? "Bara's answer" : "Bara's reply, not sent yet";
   return `<div class="card field-card"><div class="card-head"><span class="badge ${r.grounded ? "ok" : "P2"}">${r.grounded ? "every field quoted" : "needs review"}</span>
       <span class="right">${esc(kind)}, ${esc(time)}</span></div>
